@@ -1,9 +1,9 @@
 #include <string>
 #include <functional>
 #include <SDL_opengl.h>
-#include "handle.h"
-#include "util.h"
-#include "gltexture.h"
+#include "../include/handle.h"
+#include "../include/util.h"
+#include "../include/gltexture.h"
 
 const std::function<void(GLuint*)> GL::Texture::sTexDeleter = 
 	[](GLuint *i){ glDeleteTextures(1, i); };

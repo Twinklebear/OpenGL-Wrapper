@@ -1,6 +1,6 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
-#include "glfunctions.h"
+#include "../include/glfunctions.h"
 
 void GL::SetupGLFunctions(){
     //For interacting with VBOs

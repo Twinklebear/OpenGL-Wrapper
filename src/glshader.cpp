@@ -4,9 +4,9 @@
 #include <memory>
 #include <vector>
 #include <SDL_opengl.h>
-#include "glfunctions.h"
-#include "util.h"
-#include "glshader.h"
+#include "../include/glfunctions.h"
+#include "../include/util.h"
+#include "../include/glshader.h"
 
 const std::function<void(GLuint*)> GL::Shader::sShaderDelete =
 	[](GLuint *i){ GL::DeleteShader(*i); };

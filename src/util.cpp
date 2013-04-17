@@ -8,8 +8,8 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SOIL.h>
-#include "glfunctions.h"
-#include "util.h"
+#include "../include/glfunctions.h"
+#include "../include/util.h"
 
 std::ostream& operator<<(std::ostream &os, const glm::vec2 &v){
 	for (size_t i = 0; i < v.length(); ++i)

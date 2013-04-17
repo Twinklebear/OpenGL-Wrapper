@@ -1,7 +1,7 @@
 #include <string>
 #include <glm/glm.hpp>
-#include "gltexture.h"
-#include "material.h"
+#include "../include/gltexture.h"
+#include "../include/material.h"
 
 Material::Material(){}
 Material::Material(std::string name, glm::vec3 kA, glm::vec3 kD, glm::vec3 kS, float nS)

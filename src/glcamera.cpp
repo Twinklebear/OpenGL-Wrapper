@@ -1,6 +1,6 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-#include "glcamera.h"
+#include "../include/glcamera.h"
 
 GL::Camera::Camera(const glm::vec3 &eye, const glm::vec3 &center, const glm::vec3 &up)
 	: mEye(eye), mCenter(center), mUp(up)

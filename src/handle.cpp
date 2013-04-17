@@ -1,6 +1,6 @@
 #include <functional>
 #include <SDL_opengl.h>
-#include "handle.h"
+#include "../include/handle.h"
 
 GL::Handle::Handle() : mObj(nullptr) {
 	mObj = std::shared_ptr<GLuint>(new GLuint(-1));

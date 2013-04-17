@@ -4,10 +4,10 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-#include "glvertexarray.h"
-#include "glprogram.h"
-#include "material.h"
-#include "model.h"
+#include "../include/glvertexarray.h"
+#include "../include/glprogram.h"
+#include "../include/material.h"
+#include "../include/model.h"
 
 Model::Model(const std::vector<glm::vec3> &verts, const std::vector<unsigned short> &indices)
 	: mActiveMat(nullptr)

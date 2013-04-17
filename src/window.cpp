@@ -4,10 +4,10 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_syswm.h>
-#include "glfunctions.h"
-#include "glvertexarray.h"
-#include "glprogram.h"
-#include "window.h"
+#include "../include/glfunctions.h"
+#include "../include/glvertexarray.h"
+#include "../include/glprogram.h"
+#include "../include/window.h"
 
 #include <iostream>
 

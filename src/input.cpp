@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <SDL_haptic.h>
 #include <glm/glm.hpp>
-#include "input.h"
+#include "../include/input.h"
 
 SDL_Event Input::evt;
 Uint8* Input::mKeyStates = nullptr;

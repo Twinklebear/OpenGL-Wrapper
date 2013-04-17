@@ -1,10 +1,10 @@
 #include <vector>
 #include <functional>
 #include <SDL_opengl.h>
-#include "handle.h"
-#include "glfunctions.h"
-#include "glvertexbuffer.h"
-#include "glvertexarray.h"
+#include "../include/handle.h"
+#include "../include/glfunctions.h"
+#include "../include/glvertexbuffer.h"
+#include "../include/glvertexarray.h"
 
 #include <iostream>
 

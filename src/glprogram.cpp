@@ -4,10 +4,10 @@
 #include <SDL_opengl.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-#include "handle.h"
-#include "glfunctions.h"
-#include "glshader.h"
-#include "glprogram.h"
+#include "../include/handle.h"
+#include "../include/glfunctions.h"
+#include "../include/glshader.h"
+#include "../include/glprogram.h"
 
 const std::function<void(GLuint*)> GL::Program::sProgDelete = 
 	[](GLuint *i){ GL::DeleteProgram(*i); };

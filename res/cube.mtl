@@ -1,0 +1,19 @@
+# Untextured cube, just simple color: white ambient
+# with blue diffuse and red spec
+newmtl Color
+Ka 1.000 1.000 1.000
+Kd 0.000 0.000 1.000
+Ks 1.000 0.000 0.000
+Ns 50.00
+
+# Textured cube
+newmtl Textured
+Ka 1.000 1.000 1.000
+Kd 1.000 1.000 1.000
+Ks 1.000 1.000 1.000
+Ns 50.00
+# specify the texture maps
+map_Ka map.png
+map_Kd map.png
+map_Ks map.png
+# for now no bump maps, but I should soon

@@ -63,6 +63,10 @@ public:
 	void Draw();
 
 private:
+	///Update the material color properties being sent to the shader
+	void UpdateColors();
+
+private:
 	///The model transformation matrix
 	glm::mat4 mModel;
 	///The model's VAO

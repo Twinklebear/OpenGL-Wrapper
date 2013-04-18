@@ -117,6 +117,17 @@ void Util::LoadObj(const std::string &file, std::vector<glm::vec3> &verts,
 			std::cout << "this model will use mtllib:" << mtl << std::endl;
 			std::map<std::string, Material> mats;
 			LoadMaterials("../res/" + mtl, mats);
+			//Print the loaded materials
+			std::map<std::string, Material>::const_iterator it = mats.begin();
+			for (; it != mats.end(); ++it){
+				std::cout << "material @: " << it->first
+					<< "\nname: " << it->second.name
+					<<"\nKa: " << it->second.kA
+					<< "\nKd: " << it->second.kD
+					<< "\nKs: " << it->second.kS
+					<< "\nNs: " << it->second.nS
+					<< std::endl;
+			}
 		}
 	}
 }
@@ -143,17 +154,27 @@ void Util::LoadMaterials(const std::string &file, std::map<std::string, Material
 			Material material;
 			//read the name
 			material.name = line.substr(line.find_first_of(' ') + 1);
-			std::cout << "reading mat name:" << material.name << std::endl;
+			//Read in material properties and grab the textures and colors
 			while (std::getline(mtlFile, line) && !line.empty() && line.substr(0, 6) != "newmtl"){
 				if (line.substr(0, 2) == "Ka")
-					std::cout << "ambient color: " << line.substr(2) << std::endl;
+					material.kA = capture<glm::vec3>(line, matchNum);
 				else if (line.substr(0, 2) == "Kd")
-					std::cout << "diffuse color: " << line.substr(2) << std::endl;
+					material.kD = capture<glm::vec3>(line, matchNum);
 				else if (line.substr(0, 2) == "Ks")
-					std::cout << "specular color: " << line.substr(2) << std::endl;
+					material.kS = capture<glm::vec3>(line, matchNum);
 				else if (line.substr(0, 2) == "Ns")
-					std::cout << "specular exponent: " << line.substr(2) << std::endl;
+					material.nS = capture<float>(line, matchNum);
+				//Read texture maps
+				else if (line.substr(0, 3) == "map"){
+					if (line.substr(4, 2) == "Ka")
+						std::cout << "ambient texture: " << line.substr(7) << std::endl;
+					else if (line.substr(4, 2) == "Kd")
+						std::cout << "diffuse texture: " << line.substr(7) << std::endl;
+					else if (line.substr(4, 2) == "Ks")
+						std::cout << "specular texture: " << line.substr(7) << std::endl;
+				}
 			}
+			mats[material.name] = material;
 		}
 	}
 }

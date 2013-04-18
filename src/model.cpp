@@ -31,13 +31,7 @@ void Model::UseProgram(GL::Program &prog){
 
 	//Setup uniforms
 	mProg.UniformMat4x4("m", mModel);
-	//If a material is selected pass that info as well
-	if (mActiveMat != nullptr){
-		mProg.Uniform3fv("kA", mActiveMat->kA);
-		mProg.Uniform3fv("kD", mActiveMat->kD);
-		mProg.Uniform3fv("kS", mActiveMat->kS);
-		mProg.Uniform1f("nS", mActiveMat->nS);
-	}
+	UpdateColors();
 }
 void Model::UseMaterial(const std::string &name){
 	std::map<std::string, Material>::iterator mat = mMaterials.find(name);
@@ -47,11 +41,7 @@ void Model::UseMaterial(const std::string &name){
 		return;
 	}
 	mActiveMat = &(mat->second);
-	//Set the program uniform info
-	mProg.Uniform3fv("kA", mActiveMat->kA);
-	mProg.Uniform3fv("kD", mActiveMat->kD);
-	mProg.Uniform3fv("kS", mActiveMat->kS);
-	mProg.Uniform1f("nS", mActiveMat->nS);
+	UpdateColors();
 }
 void Model::Translate(const glm::vec3 &vect){
 	mModel = glm::translate(vect) * mModel;
@@ -68,4 +58,13 @@ void Model::Draw(){
 	GL::UseProgram(mProg);
 	GL::BindVertexArray(mVao);
 	glDrawElements(GL_TRIANGLES, mVao.NumElements("elem"), GL_UNSIGNED_SHORT, 0);
+}
+void Model::UpdateColors(){
+	//If a material is set, pass the info
+	if (mActiveMat != nullptr){
+		mProg.Uniform3fv("kA", mActiveMat->kA);
+		mProg.Uniform3fv("kD", mActiveMat->kD);
+		mProg.Uniform3fv("kS", mActiveMat->kS);
+		mProg.Uniform1f("nS", mActiveMat->nS);
+	}
 }

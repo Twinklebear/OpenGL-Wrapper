@@ -4,7 +4,7 @@ newmtl Color
 Ka 1.000 1.000 1.000
 Kd 0.000 0.000 1.000
 Ks 1.000 0.000 0.000
-Ns 50.00
+Ns 80.00
 
 # Textured cube
 newmtl Textured

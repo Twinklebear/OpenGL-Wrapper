@@ -67,21 +67,46 @@ namespace Util {
 		sscanf(str.c_str(), "%d", &i);
 		return i;
 	}
+	//Capture a single item
+	template<class T>
+	T capture(const std::string &str, const std::regex &reg){
+		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
+		auto end = std::sregex_iterator();
+		T t;
+		for (std::sregex_iterator i = begin; i != end; ++i)
+			t = lexicalCast<T>(i->str());
+		return t;
+	}
+	//Capture a glm::vec3
+	template<>
+	inline glm::vec3 capture<glm::vec3>(const std::string &str, const std::regex &reg){
+		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
+		auto end = std::sregex_iterator();
+		glm::vec3 v;
+		size_t idx = 0;
+		for (std::sregex_iterator i = begin; i != end, idx < v.length(); ++i, ++idx)
+			v[idx] = lexicalCast<float>(i->str());
+		return v;
+	}
+	//Capture a glm::vec2
+	template<>
+	inline glm::vec2 capture<glm::vec2>(const std::string &str, const std::regex &reg){
+		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
+		auto end = std::sregex_iterator();
+		glm::vec2 v;
+		size_t idx = 0;
+		for (std::sregex_iterator i = begin; i != end, idx < v.length(); ++i, ++idx)
+			v[idx] = lexicalCast<float>(i->str());
+		return v;
+	}
 	//Capture matched values from regex results, values will be pushed onto vector
 	template<class T>
 	void capture(const std::string &str, const std::regex &reg, std::vector<T> &vect){
 		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
 		auto end = std::sregex_iterator();
 		for (std::sregex_iterator i = begin; i != end; ++i)
-			vect.push_back(lexicalCast<T>(i->str()));
+			vect.push_back(capture<T>(i->str(), reg));
 	}
-	//Capture matched floats for filling a glm::vec2
-	void capture(const std::string &str, std::vector<glm::vec2> &vect,
-		const std::regex &reg = std::regex("((\\+|-)?[0-9]+)((\\.[0-9]+)?)"));
-	//Capture matched floats for filling a glm::vec3
-	void capture(const std::string &str, std::vector<glm::vec3> &vect,
-		const std::regex &reg = std::regex("((\\+|-)?[0-9]+)((\\.[0-9]+)?)"));
-	//Capture a glm::vec3
 }
 
 #endif

@@ -71,15 +71,15 @@ void Util::LoadObj(const std::string &file, std::vector<glm::vec3> &verts,
 		if (line.at(0) == 'v'){
 			//Matching vertices
 			if (line.at(1) == ' '){
-				capture(line, tempVert);
+				tempVert.push_back(capture<glm::vec3>(line, matchNum));
 			}
 			//Match texture coords
 			if (line.at(1) == 't'){
-				capture(line, tempTex);
+				tempTex.push_back(capture<glm::vec2>(line, matchNum));
 			}
 			//Match texture coords
 			if (line.at(1) == 'n')
-				capture(line, tempNorm);
+				tempNorm.push_back(capture<glm::vec3>(line, matchNum));
 		}
 		//Match faces
 		if (line.at(0) == 'f'){
@@ -160,24 +160,4 @@ void Util::LoadMaterials(const std::string &file, std::map<std::string, Material
 GLuint Util::LoadTexture(const std::string &file){
 	return SOIL_load_OGL_texture(file.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 
 		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB);
-}
-void Util::capture(const std::string &str, std::vector<glm::vec2> &vect, const std::regex &reg){
-	auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
-	auto end = std::sregex_iterator();
-	size_t idx = 0;
-	glm::vec2 v;
-	for (std::sregex_iterator i = begin; i != end, idx < v.length(); ++i, ++idx)
-		v[idx] = lexicalCast<float>(i->str());
-
-	vect.push_back(v);
-}
-void Util::capture(const std::string &str, std::vector<glm::vec3> &vect, const std::regex &reg){
-	auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
-	auto end = std::sregex_iterator();
-	size_t idx = 0;
-	glm::vec3 v;
-	for (std::sregex_iterator i = begin; i != end, idx < v.length(); ++i, ++idx)
-		v[idx] = lexicalCast<float>(i->str());
-
-	vect.push_back(v);
 }

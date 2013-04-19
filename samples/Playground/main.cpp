@@ -48,7 +48,7 @@ int main(int argc, char** argv){
 	Model model(verts, indices);
 	
 	//Setup program
-	GL::Program prog("../res/modelshader.v.glsl", "../res/modelshader.f.glsl");
+	GL::Program prog("../res/modelshader.v.glsl", "../res/texturemodel.f.glsl");
 	
 	//This is a parallel to gluLookAt, see http://www.opengl.org/sdk/docs/man2/xhtml/gluLookAt.xml for
 	//information on what eye, center and up represent, provides enough info to figure out math/transformations
@@ -66,7 +66,7 @@ int main(int argc, char** argv){
 	model.UseProgram(prog);
 	//Load the materials in this bad way until we tie in the loading
 	Util::LoadMaterials("../res/cube.mtl", model.mMaterials);
-	model.UseMaterial("Color");
+	model.UseMaterial("Textured", true);
 	model.Translate(glm::vec3(0, 0, -5));
 
 	//Track if model matrix was be updated
@@ -151,7 +151,7 @@ int main(int argc, char** argv){
 		
 		//Rendering
 		window.Clear();
-		model.Draw();
+		model.Draw(true);
 		window.Present();
 
 		//cap at 60fps

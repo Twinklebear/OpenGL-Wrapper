@@ -39,9 +39,11 @@ public:
 	void UseProgram(GL::Program &prog);
 	/**
 	* Specify which material should be used when drawing the model
+	* The texture stuff is super lazy again
 	* @param name Name of material to use
+	* @param textured If we should load the textures up
 	*/
-	void UseMaterial(const std::string &name);
+	void UseMaterial(const std::string &name, bool textured);
 	/**
 	* Translate the model by some amount from its current position
 	* @param vect The vector describing the amount to translate by
@@ -59,8 +61,9 @@ public:
 	* @param scale The scale vector to use containg the x, y, z scale information
 	*/
 	void Scale(const glm::vec3 &scale);
-	///Draw the model
-	void Draw();
+	///Draw the model, textured specifies if we want to pass textures
+	///This is really awful, come up with something better when it's not just a test
+	void Draw(bool textured);
 
 private:
 	///Update the material color properties being sent to the shader

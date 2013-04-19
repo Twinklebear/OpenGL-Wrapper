@@ -31,6 +31,8 @@ namespace GL {
 		void Load();
 		///Unload the texture
 		void Unload();
+		///Get file name
+		std::string File();
 		///Pretend to be a GLuint
 		operator GLuint();
 

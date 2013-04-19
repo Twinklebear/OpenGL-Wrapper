@@ -33,14 +33,18 @@ void Model::UseProgram(GL::Program &prog){
 	mProg.UniformMat4x4("m", mModel);
 	UpdateColors();
 }
-void Model::UseMaterial(const std::string &name){
+void Model::UseMaterial(const std::string &name, bool textured){
 	std::map<std::string, Material>::iterator mat = mMaterials.find(name);
 	if (mat == mMaterials.end()){
 		//Throw runtime err?
 		std::cout << "Invalid material name: " << name << std::endl;
 		return;
 	}
+	if (mActiveMat != nullptr)
+		mActiveMat->UnloadTextures();
 	mActiveMat = &(mat->second);
+	if (textured)
+		mActiveMat->LoadTextures();
 	UpdateColors();
 }
 void Model::Translate(const glm::vec3 &vect){
@@ -54,8 +58,16 @@ void Model::Rotate(float angle, const glm::vec3 &axis){
 void Model::Scale(const glm::vec3 &scale){
 	//The order of operations with rotate scale may be an issue
 }
-void Model::Draw(){
+void Model::Draw(bool textured){
 	GL::UseProgram(mProg);
+	if (textured){
+		GL::ActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mActiveMat->mapKa);
+		//GL::ActiveTexture(GL_TEXTURE1);
+		//glBindTexture(GL_TEXTURE_2D, mActiveMat->mapKd);
+		//GL::ActiveTexture(GL_TEXTURE2);
+		//glBindTexture(GL_TEXTURE_2D, mActiveMat->mapKs);
+	}
 	GL::BindVertexArray(mVao);
 	glDrawElements(GL_TRIANGLES, mVao.NumElements("elem"), GL_UNSIGNED_SHORT, 0);
 }

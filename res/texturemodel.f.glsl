@@ -6,7 +6,10 @@ uniform vec4 lightPos;
 //Color inputs
 uniform vec3 kA, kD, kS;
 uniform float nS;
-
+//Texture inputs, 0: ambient, 1: diffuse, 2: specular
+//uniform sampler2D samplers[3];
+uniform sampler2D tex;
+	
 in vec4 vPos;
 in vec3 vNorm;
 in vec3 texCoord;
@@ -31,5 +34,7 @@ void main(){
 	float spec = pow(clamp(nDoth, 0, 1), nS);
 
 	//Compute final color
-	outColor = vec4(spec * kS + diffuse * kD + 0.2f * kA, 1.0f);
+	outColor = spec * texture(tex, texCoord.xy) 
+		+ diffuse * texture(tex, texCoord.xy)
+		+ 0.2f * texture(tex, texCoord.xy);
 }

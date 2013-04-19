@@ -167,11 +167,11 @@ void Util::LoadMaterials(const std::string &file, std::map<std::string, Material
 				//Read texture maps
 				else if (line.substr(0, 3) == "map"){
 					if (line.substr(4, 2) == "Ka")
-						std::cout << "ambient texture: " << line.substr(7) << std::endl;
+						material.mapKa = GL::Texture("../res/" + line.substr(7), false);
 					else if (line.substr(4, 2) == "Kd")
-						std::cout << "diffuse texture: " << line.substr(7) << std::endl;
+						material.mapKd = GL::Texture("../res/" + line.substr(7), false);
 					else if (line.substr(4, 2) == "Ks")
-						std::cout << "specular texture: " << line.substr(7) << std::endl;
+						material.mapKs = GL::Texture("../res/" + line.substr(7), false);
 				}
 			}
 			mats[material.name] = material;

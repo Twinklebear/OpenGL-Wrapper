@@ -19,18 +19,24 @@ namespace GL {
 		/**
 		* Load a texture from a file
 		* @param file File to load from
+		* @param load If we should load the texture onto the GPU now
 		*/
-		Texture(const std::string &file);
+		Texture(const std::string &file, bool load = true);
 		/**
 		* Load a texture into this object
 		* @param file File to load texture from
 		*/
 		void Load(const std::string &file);
+		///Load the texture referenced by mFile
+		void Load();
+		///Unload the texture
+		void Unload();
 		///Pretend to be a GLuint
 		operator GLuint();
 
 	private:
 		Handle mHandle;
+		std::string mFile;
 		///The deleter function
 		const static std::function<void(GLuint*)> sTexDeleter;
 	};

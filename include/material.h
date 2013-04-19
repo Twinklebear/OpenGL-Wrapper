@@ -30,9 +30,14 @@ struct Material {
 	* @param mapKa Ambient texture 
 	* @param mapKd Diffuse texture
 	* @param mapKs Specular texture
+	* @param load If we should load the textures onto the GPU now
 	*/
 	Material(std::string name, glm::vec3 kA, glm::vec3 kD, glm::vec3 kS, float nS,
 		GL::Texture mapKa, GL::Texture mapKd, GL::Texture mapKs);
+	///Load the texture files onto the GPU for usage
+	void LoadTextures();
+	///Unload the textures
+	void UnloadTextures();
 
 	std::string name;
 	glm::vec3 kA, kD, kS;

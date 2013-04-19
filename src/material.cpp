@@ -11,3 +11,13 @@ Material::Material(std::string name, glm::vec3 kA, glm::vec3 kD, glm::vec3 kS, f
 	GL::Texture mapKa, GL::Texture mapKd, GL::Texture mapKs)
 	: name(name), kA(kA), kD(kD), kS(kS), nS(nS), mapKa(mapKa), mapKd(mapKd), mapKs(mapKs)
 {}
+void Material::LoadTextures(){
+	mapKa.Load();
+	mapKd.Load();
+	mapKs.Load();
+}
+void Material::UnloadTextures(){
+	mapKa.Unload();
+	mapKd.Unload();
+	mapKs.Unload();
+}

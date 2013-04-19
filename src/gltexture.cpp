@@ -10,11 +10,19 @@ const std::function<void(GLuint*)> GL::Texture::sTexDeleter =
 
 GL::Texture::Texture(){
 }
-GL::Texture::Texture(const std::string &file){
-	Load(file);
+GL::Texture::Texture(const std::string &file, bool load) : mFile(file) {
+	if (load)
+		Load(file);
 }
 void GL::Texture::Load(const std::string &file){
-	mHandle = Handle(Util::LoadTexture(file), sTexDeleter);
+	mFile = file;
+	mHandle = Handle(Util::LoadTexture(mFile), sTexDeleter);
+}
+void GL::Texture::Load(){
+	mHandle = Handle(Util::LoadTexture(mFile), sTexDeleter);
+}
+void GL::Texture::Unload(){
+	mHandle.Release();
 }
 GL::Texture::operator GLuint(){
 	return mHandle;

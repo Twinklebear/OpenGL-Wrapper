@@ -55,6 +55,7 @@ namespace GL {
         GLint GetAttribute(std::string name);
         //TODO: Come up with a better idea for making all these methods
         //or can i?
+		void Uniform1i(const std::string &attrib, int i);
 		///Pass a float as a uniform to some attrib
 		void Uniform1f(const std::string &attrib, float f);
 		/**

@@ -53,6 +53,11 @@ bool GL::Program::Status(){
 GLint GL::Program::GetAttribute(std::string name){
     return GetAttribLocation(mHandle, name.c_str());
 }
+void GL::Program::Uniform1i(const std::string &attrib, int i){
+	UseProgram(mHandle);
+	GLint attribLoc = GetUniformLocation(mHandle, attrib.c_str());
+	GL::Uniform1i(attribLoc, i);
+}
 void GL::Program::Uniform1f(const std::string &attrib, float f){
 	UseProgram(mHandle);
 	GLint attribLoc = GetUniformLocation(mHandle, attrib.c_str());

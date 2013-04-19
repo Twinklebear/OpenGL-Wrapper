@@ -48,6 +48,7 @@ namespace GL {
     extern PFNGLENABLEVERTEXATTRIBARRAYPROC EnableVertexAttribArray;
     extern PFNGLDISABLEVERTEXATTRIBARRAYPROC DisableVertexAttribArray;
     extern PFNGLGETUNIFORMLOCATIONPROC GetUniformLocation;
+	extern PFNGLUNIFORM1IPROC Uniform1i;
 	extern PFNGLUNIFORM1FPROC Uniform1f;
 	extern PFNGLUNIFORM4FVPROC Uniform4fv;
 	extern PFNGLUNIFORM3FVPROC Uniform3fv;

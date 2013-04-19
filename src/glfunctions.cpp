@@ -34,6 +34,7 @@ void GL::SetupGLFunctions(){
     SetProcAddress(EnableVertexAttribArray, "glEnableVertexAttribArray");
     SetProcAddress(DisableVertexAttribArray, "glDisableVertexAttribArray");
     SetProcAddress(GetUniformLocation, "glGetUniformLocation");
+	SetProcAddress(Uniform1i, "glUniform1i");
 	SetProcAddress(Uniform1f, "glUniform1f");
 	SetProcAddress(Uniform3fv, "glUniform3fv");
 	SetProcAddress(Uniform4fv, "glUniform4fv");
@@ -73,6 +74,7 @@ PFNGLVERTEXATTRIBPOINTERPROC GL::VertexAttribPointer = nullptr;
 PFNGLENABLEVERTEXATTRIBARRAYPROC GL::EnableVertexAttribArray = nullptr;
 PFNGLDISABLEVERTEXATTRIBARRAYPROC GL::DisableVertexAttribArray = nullptr;
 PFNGLGETUNIFORMLOCATIONPROC GL::GetUniformLocation = nullptr;
+PFNGLUNIFORM1IPROC GL::Uniform1i = nullptr;
 PFNGLUNIFORM1FPROC GL::Uniform1f = nullptr;
 PFNGLUNIFORM3FVPROC GL::Uniform3fv = nullptr;
 PFNGLUNIFORM4FVPROC GL::Uniform4fv = nullptr;

@@ -34,5 +34,5 @@ void main(){
 	float spec = pow(clamp(nDoth, 0, 1), nS);
 
 	//Compute final color
-	outColor = spec * kS + diffuse * kD + kA * 0.2f;
+	outColor = vec4(spec * kS + diffuse * kD + kA * 0.2f, 1.0f);
 }

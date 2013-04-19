@@ -66,7 +66,8 @@ private:
 	///Update the material color properties being sent to the shader
 	void UpdateColors();
 
-private:
+//Temporarily public while I work on stuff
+public:
 	///The model transformation matrix
 	glm::mat4 mModel;
 	///The model's VAO

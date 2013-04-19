@@ -10,7 +10,7 @@
 #include "../include/model.h"
 
 Model::Model(const std::vector<glm::vec3> &verts, const std::vector<unsigned short> &indices)
-	: mActiveMat(nullptr)
+	: mActiveMat(nullptr), mModel(glm::mat4())
 {
 	mVao.Reference(GL::VertexBuffer(verts), "vbo");
 	mVao.ElementBuffer(indices);

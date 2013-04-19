@@ -114,20 +114,10 @@ void Util::LoadObj(const std::string &file, std::vector<glm::vec3> &verts,
 			//then split string at that and take the second half
 			size_t pos = line.find_first_of(' ');
 			std::string mtl = line.substr(pos + 1);
-			std::cout << "this model will use mtllib:" << mtl << std::endl;
 			std::map<std::string, Material> mats;
 			LoadMaterials("../res/" + mtl, mats);
 			//Print the loaded materials
 			std::map<std::string, Material>::const_iterator it = mats.begin();
-			for (; it != mats.end(); ++it){
-				std::cout << "material @: " << it->first
-					<< "\nname: " << it->second.name
-					<<"\nKa: " << it->second.kA
-					<< "\nKd: " << it->second.kD
-					<< "\nKs: " << it->second.kS
-					<< "\nNs: " << it->second.nS
-					<< std::endl;
-			}
 		}
 	}
 }

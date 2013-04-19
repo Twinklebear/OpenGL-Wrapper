@@ -40,7 +40,7 @@ int main(int argc, char** argv){
 	std::vector<unsigned short> indices;
 	//Time the loading
 	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-	Util::LoadObj("../res/cube.obj", verts, indices);
+	Util::LoadObj("../res/suzanne.obj", verts, indices);
 	std::cout << "Model load time: " 
 		<< std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() / 1000.0f
 		<< std::endl;

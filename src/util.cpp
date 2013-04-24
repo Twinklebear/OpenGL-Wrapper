@@ -67,6 +67,9 @@ void Util::LoadObj(const std::string &file, std::vector<glm::vec3> &verts,
 	//Read the file and apply appropriate regexes to lines to get data
 	std::string line = "";
 	while (std::getline(objFile, line)){
+		//Skip empty lines
+		if (line.empty())
+			continue;
 		//Parse vertex info, points, texture coords and normals
 		if (line.at(0) == 'v'){
 			//Matching vertices

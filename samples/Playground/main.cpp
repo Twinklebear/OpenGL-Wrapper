@@ -40,7 +40,7 @@ int main(int argc, char** argv){
 	std::vector<unsigned short> indices;
 	//Time the loading
 	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-	Util::LoadObj("../res/suzanne.obj", verts, indices);
+	Util::LoadObj("../res/cube.obj", verts, indices);
 	std::cout << "Model load time: " 
 		<< std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() / 1000.0f
 		<< std::endl;
@@ -66,7 +66,7 @@ int main(int argc, char** argv){
 	model.UseProgram(prog);
 	//Load the materials in this bad way until we tie in the loading
 	Util::LoadMaterials("../res/cube.mtl", model.mMaterials);
-	model.UseMaterial("Textured", true);
+	model.UseMaterial("Wood", true);
 	model.Translate(glm::vec3(0, 0, -5));
 
 	//Track if model matrix was be updated

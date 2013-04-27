@@ -7,13 +7,25 @@ Ks 0.000 1.000 0.000
 Ns 80.00
 
 # Textured cube
-newmtl Textured
+newmtl UV
 Ka 0.500 0.500 0.500
 Kd 0.600 0.000 0.000
 Ks 1.000 1.000 0.000
 Ns 100.00
 # specify the texture maps
-map_Ka map.png
-map_Kd wood.png
-map_Ks wood.png
+map_Ka cube_base_map.png
+map_Kd cube_base_map.png
+map_Ks cube_base_map.png
+# for now no bump maps, but I should soon
+
+# Wood cube
+newmtl Wood
+Ka 0.500 0.500 0.500
+Kd 0.600 0.000 0.000
+Ks 1.000 1.000 0.000
+Ns 100.00
+# specify the texture maps
+map_Ka wood_cube.png
+map_Kd wood_cube.png
+map_Ks wood_cube.png
 # for now no bump maps, but I should soon

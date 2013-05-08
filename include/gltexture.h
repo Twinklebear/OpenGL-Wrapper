@@ -32,7 +32,7 @@ namespace GL {
 		///Unload the texture
 		void Unload();
 		///Get file name
-		std::string File();
+		std::string File() const;
 		///Pretend to be a GLuint
 		operator GLuint();
 

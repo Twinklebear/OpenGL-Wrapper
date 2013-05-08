@@ -24,8 +24,10 @@ public:
 	* passed in, this basic mode will simply draw a gray model
 	* @param verts The model vertices interleaved like: vec3(pos), vec3(normal), vec3(texCoord)
 	* @param indices The indices for the element buffer
+	* @param mats The materials for the model to use
 	*/
-	Model(const std::vector<glm::vec3> &verts, const std::vector<unsigned short> &indices);
+	Model(const std::vector<glm::vec3> &verts, const std::vector<unsigned short> &indices,
+		const std::map<std::string, Material> &mats);
 	/**
 	* Add a material for usage by the model
 	* @param name Name to associate with the material
@@ -41,9 +43,8 @@ public:
 	* Specify which material should be used when drawing the model
 	* The texture stuff is super lazy again
 	* @param name Name of material to use
-	* @param textured If we should load the textures up
 	*/
-	void UseMaterial(const std::string &name, bool textured);
+	void UseMaterial(const std::string &name);
 	/**
 	* Translate the model by some amount from its current position
 	* @param vect The vector describing the amount to translate by

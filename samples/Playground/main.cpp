@@ -36,17 +36,13 @@ int main(int argc, char** argv){
 	//Setup main window to read input
 	int w = 640, h = 480;
 	Window window("Main window", w, h);
-	std::vector<glm::vec3> verts;
-	std::vector<unsigned short> indices;
 	//Time the loading
 	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-	Util::LoadObj("../res/cube.obj", verts, indices);
+	std::shared_ptr<Model> model = Util::LoadObj("../res/cube.obj");
 	std::cout << "Model load time: " 
 		<< std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() / 1000.0f
 		<< std::endl;
 
-	Model model(verts, indices);
-	
 	//Setup program
 	GL::Program prog("../res/modelshader.v.glsl", "../res/texturemodel.f.glsl");
 	
@@ -63,11 +59,8 @@ int main(int argc, char** argv){
 	glm::vec4 lightPos(0.0f, 0.0f, 0.0f, 1.0f);
 	prog.Uniform4fv("lightPos", lightPos);
 
-	model.UseProgram(prog);
-	//Load the materials in this bad way until we tie in the loading
-	Util::LoadMaterials("../res/cube.mtl", model.mMaterials);
-	model.UseMaterial("Wood", true);
-	model.Translate(glm::vec3(0, 0, -5));
+	model->UseProgram(prog);
+	model->Translate(glm::vec3(0, 0, -5));
 
 	//Track if model matrix was be updated
 	bool mUpdate = false;
@@ -85,41 +78,41 @@ int main(int argc, char** argv){
 		//Cube Controls------------------
 		//Cube rotation
 		if (Input::KeyDown(SDL_SCANCODE_D)){
-			model.Rotate(rotateSpeed * dT, glm::vec3(0, 1, 0));
+			model->Rotate(rotateSpeed * dT, glm::vec3(0, 1, 0));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_A)){
-			model.Rotate(-rotateSpeed * dT, glm::vec3(0, 1, 0));
+			model->Rotate(-rotateSpeed * dT, glm::vec3(0, 1, 0));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_W)){
-			model.Rotate(-rotateSpeed * dT, glm::vec3(1, 0, 0));
+			model->Rotate(-rotateSpeed * dT, glm::vec3(1, 0, 0));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_S)){
-			model.Rotate(rotateSpeed * dT, glm::vec3(1, 0, 0));
+			model->Rotate(rotateSpeed * dT, glm::vec3(1, 0, 0));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_Q)){
-			model.Rotate(rotateSpeed * dT, glm::vec3(0, 0, 1));
+			model->Rotate(rotateSpeed * dT, glm::vec3(0, 0, 1));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_E)){
-			model.Rotate(-rotateSpeed * dT, glm::vec3(0, 0, 1));
+			model->Rotate(-rotateSpeed * dT, glm::vec3(0, 0, 1));
 		}
 		//Cube translation
 		if (Input::KeyDown(SDL_SCANCODE_UP)){
-			model.Translate(glm::vec3(0, speed * dT, 0));
+			model->Translate(glm::vec3(0, speed * dT, 0));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_DOWN)){
-			model.Translate(glm::vec3(0, -speed * dT, 0));
+			model->Translate(glm::vec3(0, -speed * dT, 0));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_LEFT)){
-			model.Translate(glm::vec3(-speed * dT, 0, 0));
+			model->Translate(glm::vec3(-speed * dT, 0, 0));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_RIGHT)){
-			model.Translate(glm::vec3(speed * dT, 0, 0));
+			model->Translate(glm::vec3(speed * dT, 0, 0));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_Z)){
-			model.Translate(glm::vec3(0, 0, speed * dT));
+			model->Translate(glm::vec3(0, 0, speed * dT));
 		}
 		if (Input::KeyDown(SDL_SCANCODE_X)){
-			model.Translate(glm::vec3(0, 0, -speed * dT));
+			model->Translate(glm::vec3(0, 0, -speed * dT));
 		}
 		//Camera strafe Left/Right
 		if (Input::KeyDown(SDL_SCANCODE_H))
@@ -151,7 +144,7 @@ int main(int argc, char** argv){
 		
 		//Rendering
 		window.Clear();
-		model.Draw(true);
+		model->Draw(true);
 		window.Present();
 
 		//cap at 60fps

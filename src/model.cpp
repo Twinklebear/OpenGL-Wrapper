@@ -9,8 +9,9 @@
 #include "../include/material.h"
 #include "../include/model.h"
 
-Model::Model(const std::vector<glm::vec3> &verts, const std::vector<unsigned short> &indices)
-	: mActiveMat(nullptr), mModel(glm::mat4())
+Model::Model(const std::vector<glm::vec3> &verts, const std::vector<unsigned short> &indices,
+	const std::map<std::string, Material> &mats)
+		: mActiveMat(nullptr), mModel(glm::mat4()), mMaterials(mats)
 {
 	mVao.Reference(GL::VertexBuffer(verts), "vbo");
 	mVao.ElementBuffer(indices);
@@ -33,7 +34,7 @@ void Model::UseProgram(GL::Program &prog){
 	mProg.UniformMat4x4("m", mModel);
 	UpdateColors();
 }
-void Model::UseMaterial(const std::string &name, bool textured){
+void Model::UseMaterial(const std::string &name){
 	std::map<std::string, Material>::iterator mat = mMaterials.find(name);
 	if (mat == mMaterials.end()){
 		//Throw runtime err?
@@ -43,7 +44,9 @@ void Model::UseMaterial(const std::string &name, bool textured){
 	if (mActiveMat != nullptr)
 		mActiveMat->UnloadTextures();
 	mActiveMat = &(mat->second);
-	if (textured)
+	//Need to setup color uniforms if not using a texture
+	//Actually we'd need to use a whole different shader too huh?
+	if (!mActiveMat->mapKa.File().empty())
 		mActiveMat->LoadTextures();
 	UpdateColors();
 }
@@ -60,7 +63,7 @@ void Model::Scale(const glm::vec3 &scale){
 }
 void Model::Draw(bool textured){
 	GL::UseProgram(mProg);
-	if (textured){
+	if (!mActiveMat->mapKa.File().empty()){
 		GL::ActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mActiveMat->mapKa);
 		//GL::ActiveTexture(GL_TEXTURE1);

@@ -8,9 +8,11 @@
 #include <regex>
 #include <sstream>
 #include <iostream>
+#include <memory>
 #include <glm/glm.hpp>
 #include <SDL_opengl.h>
 #include "material.h"
+#include "model.h"
 
 //Functions for reading in and printing out glm vectors, should be free of any namespace
 //restrictions
@@ -22,22 +24,19 @@ namespace Util {
     //Read a file and return its contents as a string
 	std::string ReadFile(const std::string &file);
 	/**
-	* Load the object file passed into the verts vector, data will be interleaved and stored as 
-	* glm::vec3, in the order of position, normal, uv, with indices for the element buffer
-	* being placed in the indices vector
+	* Load the object file passed and return the model, will also try to 
+	* load and pick active material based on mtllib and usemtl commands in file
 	* @param file File to load from
-	* @param verts Vector to fill with vertex data
-	* @param indices Vector to fill with the index data
+	* @return The loaded model
 	*/
-	void LoadObj(const std::string &file, std::vector<glm::vec3> &verts, 
-		std::vector<unsigned short> &indices);
+	std::shared_ptr<Model> LoadObj(const std::string &file);
 	/**
 	* Load the materials defined in a material lib file. Materials will be placed into
 	* the map passed indexed by their name
 	* @param file The mtl file to load from
-	* @param mats The map to store the materials in
+	* @return The map of material name : material
 	*/
-	void LoadMaterials(const std::string &file, std::map<std::string, Material> &mats);
+	 std::map<std::string, Material> LoadMaterials(const std::string &file);
 	/**
 	* Load a texture and return the handle
 	* TODO: Add ability to set options for loading the texture

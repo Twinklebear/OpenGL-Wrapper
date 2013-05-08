@@ -4,10 +4,13 @@
 #include <regex>
 #include <map>
 #include <iostream>
+#include <memory>
 #include <glm/glm.hpp>
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SOIL.h>
+#include "../include/material.h"
+#include "../include/model.h"
 #include "../include/glfunctions.h"
 #include "../include/util.h"
 
@@ -30,18 +33,17 @@ std::string Util::ReadFile(const std::string &file){
     }
     return content;
 }
-void Util::LoadObj(const std::string &file, std::vector<glm::vec3> &verts, 
-		std::vector<unsigned short> &indices)
-{
+std::shared_ptr<Model> Util::LoadObj(const std::string &file){
+	std::shared_ptr<Model> model(nullptr);
 	if (file.substr(file.length() - 3, 3) != "obj"){
 		std::cout << "substr: " << file.substr(file.length() - 4, 3) << std::endl;
 		std::cout << "Only .obj files are supported, passed: " << file << std::endl;
-		return;
+		return model;
 	}
 	std::ifstream objFile(file);
 	if (!objFile.is_open()){
 		std::cout << "Failed to find obj file: " << file << std::endl;
-		return;
+		return model;
 	}
 	//Matches a float value ie. of form xx.xx
 	std::regex matchNum("((\\+|-)?[0-9]+)((\\.[0-9]+)?)");
@@ -63,9 +65,13 @@ void Util::LoadObj(const std::string &file, std::vector<glm::vec3> &verts,
 	std::vector<glm::vec3> tempVert, tempNorm;
 	std::vector<glm::vec2> tempTex;
 	std::map<std::string, unsigned short> vertIndices;
+	std::map<std::string, Material> mats;
+	//The final vertex/index info
+	std::vector<glm::vec3> verts;
+	std::vector<unsigned short> indices;
 
 	//Read the file and apply appropriate regexes to lines to get data
-	std::string line = "";
+	std::string line, useMtl;
 	while (std::getline(objFile, line)){
 		//Skip empty lines
 		if (line.empty())
@@ -85,7 +91,7 @@ void Util::LoadObj(const std::string &file, std::vector<glm::vec3> &verts,
 				tempNorm.push_back(capture<glm::vec3>(line, matchNum));
 		}
 		//Match faces
-		if (line.at(0) == 'f'){
+		else if (line.at(0) == 'f'){
 			auto begin = std::sregex_iterator(line.begin(), line.end(), matchVert);
 			auto end = std::sregex_iterator();
 			//Check if the vertex is already stored, if it is push back the index,
@@ -112,28 +118,32 @@ void Util::LoadObj(const std::string &file, std::vector<glm::vec3> &verts,
 			}
 		}
 		//Load material
-		if (line.substr(0, 3) == "mtl"){
+		else if (line.substr(0, 3) == "mtl"){
 			//The mtllib is specified like: mtllib name.mtl, so we find the first space
 			//then split string at that and take the second half
-			size_t pos = line.find_first_of(' ');
+			size_t pos = line.find(' ');
 			std::string mtl = line.substr(pos + 1);
-			std::map<std::string, Material> mats;
-			LoadMaterials("../res/" + mtl, mats);
-			//Print the loaded materials
-			std::map<std::string, Material>::const_iterator it = mats.begin();
+			mats = LoadMaterials("../res/" + mtl);
 		}
+		//If we've found the material we want to use
+		else if (line.substr(0, 6) == "usemtl")
+			useMtl = line.substr(line.find(' ') + 1);
 	}
+	model = std::make_shared<Model>(verts, indices, mats);
+	model->UseMaterial(useMtl);
+	return model;
 }
-void Util::LoadMaterials(const std::string &file, std::map<std::string, Material> &mats){
+std::map<std::string, Material> Util::LoadMaterials(const std::string &file){
+	std::map<std::string, Material> mats;
 	if (file.substr(file.length() - 3, 3) != "mtl"){
 		std::cout << "substr: " << file.substr(file.length() - 4, 3) << std::endl;
 		std::cout << "Only .mtl files are supported, passed: " << file << std::endl;
-		return;
+		return mats;
 	}
 	std::ifstream mtlFile(file);
 	if (!mtlFile.is_open()){
 		std::cout << "Failed to find mtl file: " << file << std::endl;
-		return;
+		return mats;
 	}
 	//For matching numbers
 	std::regex matchNum("((\\+|-)?[0-9]+)((\\.[0-9]+)?)");
@@ -170,6 +180,7 @@ void Util::LoadMaterials(const std::string &file, std::map<std::string, Material
 			mats[material.name] = material;
 		}
 	}
+	return mats;
 }
 GLuint Util::LoadTexture(const std::string &file){
 	return SOIL_load_OGL_texture(file.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 

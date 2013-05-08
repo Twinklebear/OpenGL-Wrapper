@@ -24,7 +24,7 @@ void GL::Texture::Load(){
 void GL::Texture::Unload(){
 	mHandle.Release();
 }
-std::string GL::Texture::File(){
+std::string GL::Texture::File() const {
 	return mFile;
 }
 GL::Texture::operator GLuint(){

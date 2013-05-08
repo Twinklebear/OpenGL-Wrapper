@@ -14,10 +14,7 @@
 #include <glfunctions.h>
 #include <glshader.h>
 #include <glprogram.h>
-#include <glvertexbuffer.h>
-#include <glvertexarray.h>
 #include <util.h>
-#include <gltexture.h>
 #include <model.h>
 #include <material.h>
 

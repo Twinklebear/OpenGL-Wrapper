@@ -39,7 +39,7 @@ int main(int argc, char** argv){
 	std::cout << "Model load time: " 
 		<< std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() / 1000.0f
 		<< std::endl;
-
+	
 	//Setup program
 	GL::Program prog("../res/modelshader.v.glsl", "../res/texturemodel.f.glsl");
 	
@@ -52,9 +52,23 @@ int main(int argc, char** argv){
 	prog.UniformMat4x4("p", proj);
 	prog.UniformMat4x4("v", camera.View());
 
+	//Setup the Uniform buffer object
+	GLuint uboIdx = GL::GetUniformBlockIndex(prog, "Lighting");
+	if (uboIdx == GL_INVALID_INDEX)
+		std::cout << "Invalid UBO Index" << std::endl;
+
+	GLint uboSize;
+	GL::GetActiveUniformBlockiv(prog, uboIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &uboSize);
+	std::cout << "Ubo size: " << uboSize << std::endl;
+
 	//Make a light @ origin
 	glm::vec4 lightPos(0.0f, 0.0f, 0.0f, 1.0f);
-	prog.Uniform4fv("lightPos", lightPos);
+	//prog.Uniform4fv("lightPos", lightPos);
+	std::array<float, 4> lPos = { lightPos.x, lightPos.y, lightPos.z, lightPos.w };
+	//TODO: Generic Buffers, templated based on type maybe?? Also need to be able to allocate
+	//arbitrary size buffer and write data to it instead of forced into passing vect/array/etc
+	GL::VertexBuffer ubo(lPos, GL::BUFFER::UNIFORM);
+	GL::BindBufferBase(GL::BUFFER::UNIFORM, uboIdx, ubo);
 
 	model->UseProgram(prog);
 	model->Translate(glm::vec3(0, 0, -5));

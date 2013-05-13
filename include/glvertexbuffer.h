@@ -10,7 +10,8 @@
 #include "glfunctions.h"
 
 namespace GL {
-	enum BUFFER { ARRAY = GL_ARRAY_BUFFER, ELEMENT = GL_ELEMENT_ARRAY_BUFFER };
+	enum BUFFER { ARRAY = GL_ARRAY_BUFFER, ELEMENT = GL_ELEMENT_ARRAY_BUFFER,
+		UNIFORM = GL_UNIFORM_BUFFER };
 	/**
 	* Handles and simplifies interacting with OpenGL VBOs
 	*/

@@ -28,17 +28,26 @@ void GL::SetupGLFunctions(){
     SetProcAddress(GetProgramiv, "glGetProgramiv");
     SetProcAddress(GetProgramInfoLog, "glGetProgramInfoLog");
     SetProcAddress(UseProgram, "glUseProgram");
-    //For interacting with program attributes and uniforms
+    //For interacting with program attributes
     SetProcAddress(GetAttribLocation, "glGetAttribLocation");
     SetProcAddress(VertexAttribPointer, "glVertexAttribPointer");
     SetProcAddress(EnableVertexAttribArray, "glEnableVertexAttribArray");
     SetProcAddress(DisableVertexAttribArray, "glDisableVertexAttribArray");
+	//For interacting with uniforms
     SetProcAddress(GetUniformLocation, "glGetUniformLocation");
+	SetProcAddress(GetActiveUniformsiv, "glGetActiveUniformsiv");
 	SetProcAddress(Uniform1i, "glUniform1i");
 	SetProcAddress(Uniform1f, "glUniform1f");
 	SetProcAddress(Uniform3fv, "glUniform3fv");
 	SetProcAddress(Uniform4fv, "glUniform4fv");
     SetProcAddress(UniformMatrix4fv, "glUniformMatrix4fv");
+	//For intercting with uniform blocks/buffers
+	SetProcAddress(GetUniformBlockIndex, "glGetUniformBlockIndex");
+	SetProcAddress(BindBufferRange, "glBindBufferRange");
+	SetProcAddress(BindBufferBase, "glBindBufferBase");
+	SetProcAddress(UniformBlockBinding, "glUniformBlockBinding");
+	SetProcAddress(GetUniformIndices, "glGetUniformIndices");
+	SetProcAddress(GetActiveUniformBlockiv, "glGetActiveUniformBlockiv");
 	//Texture functions
 	SetProcAddress(ActiveTexture, "glActiveTexture");
 	SetProcAddress(GenerateMipmap, "glGenerateMipmap");
@@ -68,17 +77,26 @@ PFNGLLINKPROGRAMPROC GL::LinkProgram = nullptr;
 PFNGLGETPROGRAMIVPROC GL::GetProgramiv = nullptr;
 PFNGLGETPROGRAMINFOLOGPROC GL::GetProgramInfoLog = nullptr;
 PFNGLUSEPROGRAMPROC GL::UseProgram = nullptr;
-//For interacting with program attributes and uniforms
+//For interacting with program attributes
 PFNGLGETATTRIBLOCATIONPROC GL::GetAttribLocation = nullptr;
 PFNGLVERTEXATTRIBPOINTERPROC GL::VertexAttribPointer = nullptr;
 PFNGLENABLEVERTEXATTRIBARRAYPROC GL::EnableVertexAttribArray = nullptr;
 PFNGLDISABLEVERTEXATTRIBARRAYPROC GL::DisableVertexAttribArray = nullptr;
+//For interacting with program uniforms
 PFNGLGETUNIFORMLOCATIONPROC GL::GetUniformLocation = nullptr;
+PFNGLGETACTIVEUNIFORMSIVPROC GL::GetActiveUniformsiv = nullptr;
 PFNGLUNIFORM1IPROC GL::Uniform1i = nullptr;
 PFNGLUNIFORM1FPROC GL::Uniform1f = nullptr;
 PFNGLUNIFORM3FVPROC GL::Uniform3fv = nullptr;
 PFNGLUNIFORM4FVPROC GL::Uniform4fv = nullptr;
 PFNGLUNIFORMMATRIX4FVPROC GL::UniformMatrix4fv = nullptr;
+//For intercting with uniform blocks/buffers
+PFNGLGETUNIFORMBLOCKINDEXPROC GL::GetUniformBlockIndex = nullptr;
+PFNGLBINDBUFFERRANGEPROC GL::BindBufferRange = nullptr;
+PFNGLBINDBUFFERBASEPROC GL::BindBufferBase = nullptr;
+PFNGLUNIFORMBLOCKBINDINGPROC GL::UniformBlockBinding = nullptr;
+PFNGLGETUNIFORMINDICESPROC GL::GetUniformIndices = nullptr;
+PFNGLGETACTIVEUNIFORMBLOCKIVPROC GL::GetActiveUniformBlockiv = nullptr;
 //Texture functions
 PFNGLACTIVETEXTUREPROC GL::ActiveTexture = nullptr;
 PFNGLGENERATEMIPMAPPROC GL::GenerateMipmap = nullptr;

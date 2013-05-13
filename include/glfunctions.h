@@ -42,17 +42,26 @@ namespace GL {
     extern PFNGLGETPROGRAMIVPROC GetProgramiv;
     extern PFNGLGETPROGRAMINFOLOGPROC GetProgramInfoLog;
     extern PFNGLUSEPROGRAMPROC UseProgram;
-    //For interacting with program attributes and uniforms
+    //For interacting with program attributes
     extern PFNGLGETATTRIBLOCATIONPROC GetAttribLocation;
     extern PFNGLVERTEXATTRIBPOINTERPROC VertexAttribPointer;
     extern PFNGLENABLEVERTEXATTRIBARRAYPROC EnableVertexAttribArray;
     extern PFNGLDISABLEVERTEXATTRIBARRAYPROC DisableVertexAttribArray;
+	//For interacting with program uniforms
     extern PFNGLGETUNIFORMLOCATIONPROC GetUniformLocation;
+	extern PFNGLGETACTIVEUNIFORMSIVPROC GetActiveUniformsiv;
 	extern PFNGLUNIFORM1IPROC Uniform1i;
 	extern PFNGLUNIFORM1FPROC Uniform1f;
 	extern PFNGLUNIFORM4FVPROC Uniform4fv;
 	extern PFNGLUNIFORM3FVPROC Uniform3fv;
     extern PFNGLUNIFORMMATRIX4FVPROC UniformMatrix4fv;
+	//For intercting with uniform blocks/buffers
+	extern PFNGLGETUNIFORMBLOCKINDEXPROC GetUniformBlockIndex;
+	extern PFNGLBINDBUFFERRANGEPROC BindBufferRange;
+	extern PFNGLBINDBUFFERBASEPROC BindBufferBase;
+	extern PFNGLUNIFORMBLOCKBINDINGPROC UniformBlockBinding;
+	extern PFNGLGETUNIFORMINDICESPROC GetUniformIndices;
+	extern PFNGLGETACTIVEUNIFORMBLOCKIVPROC GetActiveUniformBlockiv;
 	//Texture function
 	extern PFNGLACTIVETEXTUREPROC ActiveTexture;
 	extern PFNGLGENERATEMIPMAPPROC GenerateMipmap;

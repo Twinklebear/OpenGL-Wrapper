@@ -1,19 +1,14 @@
 #version 330
 
 //Shared viewing and projection matrices since all
-//object will have the same setup
-//Will this also be accessible in the fragment shader?
-// uniform MatVP {
-// 	mat4 v;
-// 	mat4 p;
-// };
+//object will have the same v & p
+layout(shared, std140) uniform MatVP {
+	mat4 v;
+	mat4 p;
+};
 
 //Model transform matrix
 uniform mat4 m;
-//View matrix
-uniform mat4 v;
-//Projection matrix
-uniform mat4 p;
 
 in vec3 position;
 in vec3 normal;

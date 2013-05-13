@@ -1,17 +1,15 @@
 #version 330
 
-// uniform MatVP {
-// 	mat4 v;
-// 	mat4 p;
-// };
+layout(shared, std140) uniform MatVP {
+	mat4 v;
+	mat4 p;
+};
 
 layout(shared, std140) uniform Lighting {
 	vec4 lightPos;
 };
 
 uniform mat4 m;
-uniform mat4 v;
-// uniform vec4 lightPos;
 //Color inputs
 uniform vec3 kA, kD, kS;
 uniform float nS;

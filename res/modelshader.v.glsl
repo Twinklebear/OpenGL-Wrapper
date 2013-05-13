@@ -2,7 +2,7 @@
 
 //Shared viewing and projection matrices since all
 //object will have the same v & p
-layout(shared, std140) uniform MatVP {
+layout(shared, std140) uniform VP {
 	mat4 v;
 	mat4 p;
 };

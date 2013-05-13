@@ -35,7 +35,7 @@ int main(int argc, char** argv){
 	Window window("Main window", w, h);
 	//Time the loading
 	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-	std::shared_ptr<Model> model = Util::LoadObj("../res/cube.obj");
+	std::shared_ptr<Model> model = Util::LoadObj("../res/suzanne.obj");
 	std::cout << "Model load time: " 
 		<< std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() / 1000.0f
 		<< std::endl;
@@ -49,8 +49,6 @@ int main(int argc, char** argv){
 	//Create a camera slightly above the box looking down at it
 	GL::Camera camera(glm::vec3(0, 0, 1), glm::vec3(0, 0, -5), glm::vec3(0, 1, 0));
 	glm::mat4 proj = glm::perspective(60.0f, (float)w / (float)h, 0.1f, 100.0f);
-	//prog.UniformMat4x4("p", proj);
-	//prog.UniformMat4x4("v", camera.View());
 
 	//Setup the Uniform buffer object
 	GLuint uboIdx = GL::GetUniformBlockIndex(prog, "Lighting");
@@ -62,13 +60,12 @@ int main(int argc, char** argv){
 
 	//Make a light @ origin
 	glm::vec4 lightPos(0.0f, 0.0f, 0.0f, 1.0f);
-	//prog.Uniform4fv("lightPos", lightPos);
 	//TODO: Generic Buffers, templated based on type maybe?? Also need to be able to allocate
 	//arbitrary size buffer and write data to it instead of forced into passing vect/array/etc
 	GL::VertexBuffer ubo(lightPos, GL::BUFFER::UNIFORM);
 	GL::BindBufferBase(GL::BUFFER::UNIFORM, uboIdx, ubo);
 
-	uboIdx = GL::GetUniformBlockIndex(prog, "MatVP");
+	uboIdx = GL::GetUniformBlockIndex(prog, "VP");
 	if (uboIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid UBO Index" << std::endl;
 	GL::GetActiveUniformBlockiv(prog, uboIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &uboSize);

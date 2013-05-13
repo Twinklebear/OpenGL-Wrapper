@@ -8,6 +8,7 @@ void GL::SetupGLFunctions(){
     SetProcAddress(DeleteBuffers, "glDeleteBuffers");
     SetProcAddress(BindBuffer, "glBindBuffer");
     SetProcAddress(BufferData, "glBufferData");
+	SetProcAddress(BufferSubData, "glBufferSubData");
     //For interacting with VAOs
     SetProcAddress(GenVertexArrays, "glGenVertexArrays");
     SetProcAddress(DeleteVertexArrays, "glDeleteVertexArrays");
@@ -57,6 +58,7 @@ PFNGLGENBUFFERSPROC GL::GenBuffers = nullptr;
 PFNGLDELETEBUFFERSPROC GL::DeleteBuffers = nullptr;
 PFNGLBINDBUFFERPROC GL::BindBuffer = nullptr;
 PFNGLBUFFERDATAPROC GL::BufferData = nullptr;
+PFNGLBUFFERSUBDATAPROC GL::BufferSubData = nullptr;
 //For interacting with VAOs
 PFNGLGENVERTEXARRAYSPROC GL::GenVertexArrays = nullptr;
 PFNGLDELETEVERTEXARRAYSPROC GL::DeleteVertexArrays = nullptr;

@@ -13,11 +13,11 @@ namespace GL {
 	enum BUFFER { ARRAY = GL_ARRAY_BUFFER, ELEMENT = GL_ELEMENT_ARRAY_BUFFER,
 		UNIFORM = GL_UNIFORM_BUFFER };
 	/**
-	* Handles and simplifies interacting with OpenGL VBOs
+	* Handles and simplifies interacting with OpenGL Buffers
 	*/
 	class VertexBuffer {
 	public:
-		///Blank constructor, literally does nothing, but it seems I need to define it
+		///Blank constructor, literally does nothing, but I need to define it
 		VertexBuffer() : mType(BUFFER::ARRAY) {};
 		/**
 		* Create a new VBO using the data stored in the array passed
@@ -26,29 +26,15 @@ namespace GL {
 		* @param data The array of data to be passed
 		* @param type Type of buffer to create, defaults to array buffer
 		*/
-		template<size_t N>
-		VertexBuffer(const std::array<float, N> &data, BUFFER type = BUFFER::ARRAY)
+		template<class T, size_t N>
+		VertexBuffer(const std::array<T, N> &data, BUFFER type = BUFFER::ARRAY)
 			: mType(type), mNvals(N)
 		{
 			GLuint vbo;
 			GenBuffers(1, &vbo);
 			mHandle = Handle(vbo, sVboDeleter);
 			BindBuffer(mType, mHandle);
-			BufferData(mType, N * sizeof(float), &data[0], GL_STATIC_DRAW);
-		}
-		/**
-		* Create a new VBO using the data stored in the vector passed
-		* @param data Vertex data to buffer
-		* @param type Type of buffer to create, defaults to array buffer
-		*/
-		VertexBuffer(const std::vector<glm::vec3> &data, BUFFER type = BUFFER::ARRAY)
-			: mType(type), mNvals(data.size())
-		{
-			GLuint vbo;
-			GenBuffers(1, &vbo);
-			mHandle = Handle(vbo, sVboDeleter);
-			BindBuffer(mType, mHandle);
-			BufferData(mType, data.size() * sizeof(glm::vec3), &data[0], GL_STATIC_DRAW);
+			BufferData(mType, N * sizeof(T), &data[0], GL_STATIC_DRAW);
 		}
 		/**
 		* Create a new VBO using the data in the vector

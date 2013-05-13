@@ -22,6 +22,7 @@ namespace GL {
     extern PFNGLDELETEBUFFERSPROC DeleteBuffers;
     extern PFNGLBINDBUFFERPROC BindBuffer;
     extern PFNGLBUFFERDATAPROC BufferData;
+	extern PFNGLBUFFERSUBDATAPROC BufferSubData;
     //For interacting with VAOs
     extern PFNGLGENVERTEXARRAYSPROC GenVertexArrays;
     extern PFNGLDELETEVERTEXARRAYSPROC DeleteVertexArrays;

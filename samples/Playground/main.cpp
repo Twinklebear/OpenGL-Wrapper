@@ -59,7 +59,6 @@ int main(int argc, char** argv){
 
 	GLint uboSize;
 	GL::GetActiveUniformBlockiv(prog, uboIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &uboSize);
-	std::cout << "Ubo size: " << uboSize << std::endl;
 
 	//Make a light @ origin
 	glm::vec4 lightPos(0.0f, 0.0f, 0.0f, 1.0f);

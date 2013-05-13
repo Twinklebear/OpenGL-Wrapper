@@ -33,8 +33,7 @@ namespace GL {
 			GLuint vbo;
 			GenBuffers(1, &vbo);
 			mHandle = Handle(vbo, sVboDeleter);
-			BindBuffer(mType, mHandle);
-			BufferData(mType, N * sizeof(T), &data[0], GL_STATIC_DRAW);
+			BufferData(data);
 		}
 		/**
 		* Create a new VBO using the data in the vector
@@ -48,8 +47,7 @@ namespace GL {
 			GLuint vbo;
 			GenBuffers(1, &vbo);
 			mHandle = Handle(vbo, sVboDeleter);
-			BindBuffer(mType, mHandle);
-			BufferData(mType, data.size() * sizeof(T), &data[0], GL_STATIC_DRAW);
+			BufferData(data);
 		}
 		/**
 		* Create a VBO to handle interaction with an existing object
@@ -59,6 +57,36 @@ namespace GL {
 		VertexBuffer(GLuint vbo, BUFFER type = BUFFER::ARRAY) 
 			: mType(type), mHandle(vbo, sVboDeleter)
 		{}
+		/**
+		* Write some data to the buffer, creating a new data store
+		* and erasing any previous data
+		* @param data The data to write
+		*/
+		template<class T, size_t N>
+		void BufferData(const std::array<T, N> &data){
+			BindBuffer(mType, mHandle);
+			GL::BufferData(mType, N * sizeof(T), &data[0], GL_STATIC_DRAW);
+		}
+		template<class T>
+		void BufferData(const std::vector<T> &data){
+			BindBuffer(mType, mHandle);
+			GL::BufferData(mType, data.size() * sizeof(T), &data[0], GL_STATIC_DRAW);
+		}
+		/**
+		* Update a subset of the buffer's data
+		* @param data The data to write
+		* @param offset The offset to write too
+		*/
+		template<class T, size_t N>
+		void BufferSubData(const std::array<T, N> &data, size_t offset){
+			BindBuffer(mType, mHandle);
+			GL::BufferSubData(mType, offset, N * sizeof(T), &data[0]);
+		}
+		template<class T>
+		void BufferSubData(const std::vector<T> &data, size_t offset){
+			BindBuffer(mType, mHandle);
+			GL::BufferSubData(mType, offset, data.size() * sizeof(T), &data[0]);
+		}
 		/**
 		* Get the buffer type 
 		* @return the buffer type

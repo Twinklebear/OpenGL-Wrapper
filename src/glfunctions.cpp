@@ -49,6 +49,7 @@ void GL::SetupGLFunctions(){
 	SetProcAddress(UniformBlockBinding, "glUniformBlockBinding");
 	SetProcAddress(GetUniformIndices, "glGetUniformIndices");
 	SetProcAddress(GetActiveUniformBlockiv, "glGetActiveUniformBlockiv");
+	SetProcAddress(GetActiveUniformsiv, "glGetActiveUniformsiv");
 	//Texture functions
 	SetProcAddress(ActiveTexture, "glActiveTexture");
 	SetProcAddress(GenerateMipmap, "glGenerateMipmap");
@@ -99,6 +100,7 @@ PFNGLBINDBUFFERBASEPROC GL::BindBufferBase = nullptr;
 PFNGLUNIFORMBLOCKBINDINGPROC GL::UniformBlockBinding = nullptr;
 PFNGLGETUNIFORMINDICESPROC GL::GetUniformIndices = nullptr;
 PFNGLGETACTIVEUNIFORMBLOCKIVPROC GL::GetActiveUniformBlockiv = nullptr;
+PFNGLGETACTIVEUNIFORMSIVPROC GetActiveUniformsiv = nullptr;
 //Texture functions
 PFNGLACTIVETEXTUREPROC GL::ActiveTexture = nullptr;
 PFNGLGENERATEMIPMAPPROC GL::GenerateMipmap = nullptr;

@@ -63,6 +63,7 @@ namespace GL {
 	extern PFNGLUNIFORMBLOCKBINDINGPROC UniformBlockBinding;
 	extern PFNGLGETUNIFORMINDICESPROC GetUniformIndices;
 	extern PFNGLGETACTIVEUNIFORMBLOCKIVPROC GetActiveUniformBlockiv;
+	extern PFNGLGETACTIVEUNIFORMSIVPROC GetActiveUniformsiv;
 	//Texture function
 	extern PFNGLACTIVETEXTUREPROC ActiveTexture;
 	extern PFNGLGENERATEMIPMAPPROC GenerateMipmap;

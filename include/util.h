@@ -21,6 +21,9 @@ std::ostream& operator<<(std::ostream &os, const glm::vec2 &v);
 std::ostream& operator<<(std::ostream &os, const glm::vec3 &v);
 
 namespace Util {
+	//Check if there was an error and print it with some log message
+	//return true if error
+	bool CheckError(std::string msg);
     //Read a file and return its contents as a string
 	std::string ReadFile(const std::string &file);
 	/**

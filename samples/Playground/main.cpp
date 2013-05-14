@@ -39,7 +39,7 @@ int main(int argc, char** argv){
 	std::cout << "Model load time: " 
 		<< std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() / 1000.0f
 		<< std::endl;
-	
+
 	//Setup program
 	GL::Program prog("../res/modelshader.v.glsl", "../res/texturemodel.f.glsl");
 	
@@ -75,7 +75,18 @@ int main(int argc, char** argv){
 	std::array<glm::mat4, 2> matVP = { camera.View(), proj };
 	GL::VertexBuffer matVPubo(matVP, GL::BUFFER::UNIFORM);
 	GL::BindBufferBase(GL::BUFFER::UNIFORM, uboIdx, matVPubo);
-	
+
+	//Trying to figure out what's wrong with this on Nvidia
+	const char *names[] = { "v", "p" };
+	GLuint indices[2];
+	GL::GetUniformIndices(prog, 2, names, indices);
+	std::cout << "Indices: " << indices[0] << ", " << indices[1] << std::endl;
+
+	Util::CheckError("Post UBO setup");
+
+	//now query some info
+	GLint info[2];
+	//GL::GetActiveUniformsiv
 
 	model->UseProgram(prog);
 	model->Translate(glm::vec3(0, 0, -5));

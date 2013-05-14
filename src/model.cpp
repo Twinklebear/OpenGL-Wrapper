@@ -48,7 +48,9 @@ void Model::UseMaterial(const std::string &name){
 	//Actually we'd need to use a whole different shader too huh?
 	if (!mActiveMat->mapKa.File().empty())
 		mActiveMat->LoadTextures();
-	UpdateColors();
+	//Need to be smarter about how the model stuff works, this isn't right
+	//if the shader has no color inputs
+	//UpdateColors();
 }
 void Model::Translate(const glm::vec3 &vect){
 	mModel = glm::translate(vect) * mModel;

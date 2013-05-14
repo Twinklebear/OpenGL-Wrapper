@@ -24,6 +24,14 @@ std::ostream& operator<<(std::ostream &os, const glm::vec3 &v){
 		os << v[i] << ", ";
 	return os;
 }
+bool Util::CheckError(std::string msg){
+		GLint err = glGetError();
+		if (err != GL_NO_ERROR){
+			std::cout << msg << " error: " << std::hex << err << std::endl;
+			return true;
+		}
+		return false;
+	}
 std::string Util::ReadFile(const std::string &file){
     std::string content = "";
     std::ifstream fileIn(file.c_str());
@@ -129,8 +137,11 @@ std::shared_ptr<Model> Util::LoadObj(const std::string &file){
 		else if (line.substr(0, 6) == "usemtl")
 			useMtl = line.substr(line.find(' ') + 1);
 	}
+	Util::CheckError("Pre-make model");
 	model = std::make_shared<Model>(verts, indices, mats);
+	Util::CheckError("Post-make model");
 	model->UseMaterial(useMtl);
+	Util::CheckError("Post-pick material");
 	return model;
 }
 std::map<std::string, Material> Util::LoadMaterials(const std::string &file){

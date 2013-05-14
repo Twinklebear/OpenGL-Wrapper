@@ -87,6 +87,9 @@ int main(int argc, char** argv){
 	GL::GetActiveUniformsiv(prog, 2, indices, GL_UNIFORM_OFFSET, info);
 	std::cout << "Offsets: " << info[0] << ", " << info[1] << std::endl;
 
+	GL::GetActiveUniformsiv(prog, 2, indices, GL_UNIFORM_MATRIX_STRIDE, info);
+	std::cout << "Matrix strides: " << info[0] << ", " << info[1] << std::endl;
+
 	model->UseProgram(prog);
 	model->Translate(glm::vec3(0, 0, -5));
 

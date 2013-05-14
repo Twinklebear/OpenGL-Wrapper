@@ -1,11 +1,11 @@
 #version 330
 
-layout(shared, std140) uniform VP {
+layout (std140) uniform VP {
 	mat4 v;
 	mat4 p;
 };
 
-layout(shared, std140) uniform Lighting {
+layout (std140) uniform Lighting {
 	vec4 lightPos;
 };
 

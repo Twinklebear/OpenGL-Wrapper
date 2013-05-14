@@ -82,11 +82,10 @@ int main(int argc, char** argv){
 	GL::GetUniformIndices(prog, 2, names, indices);
 	std::cout << "Indices: " << indices[0] << ", " << indices[1] << std::endl;
 
-	Util::CheckError("Post UBO setup");
-
 	//now query some info
 	GLint info[2];
-	//GL::GetActiveUniformsiv
+	GL::GetActiveUniformsiv(prog, 2, indices, GL_UNIFORM_OFFSET, info);
+	std::cout << "Offsets: " << info[0] << ", " << info[1] << std::endl;
 
 	model->UseProgram(prog);
 	model->Translate(glm::vec3(0, 0, -5));

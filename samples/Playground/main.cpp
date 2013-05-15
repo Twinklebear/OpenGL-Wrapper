@@ -18,9 +18,15 @@
 #include <model.h>
 #include <material.h>
 
+//This function demos working usage of ubo for matrices
+int uboWorking();
+
 //Note that we build with console as the system so that we'll be able to see
 //the debug output and have the window stay open after closing the program
 int main(int argc, char** argv){
+	uboWorking();
+	return 0;
+
 	//Start our window
 	try {
 		Window::Init();
@@ -186,4 +192,108 @@ int main(int argc, char** argv){
 	Window::Quit();
 	
 	return 0;
+}
+const char *vShaderSrc = 
+	"#version 330 \n \
+	layout (std140) uniform Mat { mat4 p; mat4 m; }; \
+	in vec4 position; \
+	void main(){ gl_Position = p * m * position; } ";
+
+const char *fShaderSrc =
+	"#version 330 \n \
+	out vec4 color; \
+	void main(){ color = vec4(1.0f, 1.0f, 1.0f, 1.0f); } ";
+
+//Don't want to bother with element buffers for this simple ex.
+const std::array<glm::vec4, 3> quad = {
+	glm::vec4(-1.0, -1.0, -2.0, 1.0),
+	glm::vec4(1.0, -1.0, -2.0, 1.0),
+	glm::vec4(-1.0, 1.0, -2.0, 1.0)
+};
+
+int uboWorking(){
+	try {
+		Window::Init();
+	}
+	catch (const std::runtime_error &e){
+		std::cout << e.what() << std::endl;
+	}
+	Input::Init();
+	Window window("Test");
+
+	//Setup vbo
+	GLuint vbo;
+	GL::GenBuffers(1, &vbo);
+	GL::BindBuffer(GL_ARRAY_BUFFER, vbo);
+	GL::BufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * quad.size(), &quad[0], GL_STATIC_DRAW);
+	Util::CheckError("VBO Setup");
+	//Setup vao
+	GLuint vao;
+	GL::GenVertexArrays(1, &vao);
+	GL::BindVertexArray(vao);
+	Util::CheckError("VAO Setup");
+
+	//Setup program
+	GLuint vShader = GL::CreateShader(GL_VERTEX_SHADER);
+	GL::ShaderSource(vShader, 1, &vShaderSrc, NULL);
+	GL::CompileShader(vShader);
+	GLint status;
+	GL::GetShaderiv(vShader, GL_COMPILE_STATUS, &status);
+	if (status != GL_TRUE)
+		std::cout << "vert shader compile error" << std::endl;
+	Util::CheckError("Vert shader Setup");
+
+	GLuint fShader = GL::CreateShader(GL_FRAGMENT_SHADER);
+	GL::ShaderSource(fShader, 1, &fShaderSrc, NULL);
+	GL::CompileShader(fShader);
+	GL::GetShaderiv(fShader, GL_COMPILE_STATUS, &status);
+	if (status != GL_TRUE)
+		std::cout << "frag shader compile error" << std::endl;
+	Util::CheckError("Frag shader Setup");
+
+	GLuint program = GL::CreateProgram();
+	GL::AttachShader(program, vShader);
+	GL::AttachShader(program, fShader);
+	GL::LinkProgram(program);
+	GL::GetProgramiv(program, GL_LINK_STATUS, &status);
+	if (status != GL_TRUE)
+		std::cout << "link program error" << std::endl;
+	Util::CheckError("Prog Setup");
+	GL::UseProgram(program);
+
+	//Pass vertex pos into position attrib
+	GLint posAttrib = GL::GetAttribLocation(program, "position");
+	if (posAttrib == -1)
+		std::cout << "Invalid attribute location!" << std::endl;
+	GL::EnableVertexAttribArray(posAttrib);
+	GL::VertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+	Util::CheckError("Pos attrib Setup");
+
+	//Set the projection and model matrices
+	glm::mat4 proj = glm::perspective(60.0f, (float)640 / (float)480, 0.1f, 100.0f);
+	glm::mat4 model = glm::translate<float>(0, 0, -1) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
+	std::array<glm::mat4, 2> matrices = { proj, model };
+
+	GLint projBufIdx = GL::GetUniformBlockIndex(program, "Mat");
+	if (projBufIdx == -1)
+		std::cout << "Invalid attribute location!" << std::endl;
+
+	GLuint ubo;
+	GL::GenBuffers(1, &ubo);
+	GL::BindBuffer(GL_UNIFORM_BUFFER, ubo);
+	GL::BufferData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 2, &matrices[0], GL_STATIC_DRAW);
+	GL::BindBufferBase(GL_UNIFORM_BUFFER, projBufIdx, ubo);
+	Util::CheckError("Proj buf Setup");
+
+	while (!Input::Quit()){
+		Input::PollEvents();
+		if (Input::KeyDown(SDL_SCANCODE_ESCAPE))
+			Input::Quit(true);
+
+		window.Clear();
+
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		
+		window.Present();
+	}
 }

@@ -20,7 +20,6 @@ GL::VertexArray::VertexArray(){
 void GL::VertexArray::Reference(VertexBuffer &b, const std::string &name){
 	GL::BindVertexArray(mHandle);
 	GL::BindBuffer(b.Type(), b);
-	GL::BindBuffer(b.Type(), 0);
 	//Store a reference to the vbo to keep it alive
 	mVbos[name] = b;
 }

@@ -205,7 +205,7 @@ const char *fShaderSrc =
 	void main(){ color = vec4(1.0f, 1.0f, 1.0f, 1.0f); } ";
 
 //Don't want to bother with element buffers for this simple ex.
-const std::array<glm::vec4, 3> quad = {
+const std::array<glm::vec4, 3> tri = {
 	glm::vec4(-1.0, -1.0, -2.0, 1.0),
 	glm::vec4(1.0, -1.0, -2.0, 1.0),
 	glm::vec4(-1.0, 1.0, -2.0, 1.0)
@@ -225,7 +225,7 @@ int uboWorking(){
 	GLuint vbo;
 	GL::GenBuffers(1, &vbo);
 	GL::BindBuffer(GL_ARRAY_BUFFER, vbo);
-	GL::BufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * quad.size(), &quad[0], GL_STATIC_DRAW);
+	GL::BufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * tri.size(), &tri[0], GL_STATIC_DRAW);
 	Util::CheckError("VBO Setup");
 	//Setup vao
 	GLuint vao;

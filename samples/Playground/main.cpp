@@ -24,9 +24,6 @@ int uboWorking();
 //Note that we build with console as the system so that we'll be able to see
 //the debug output and have the window stay open after closing the program
 int main(int argc, char** argv){
-	uboWorking();
-	return 0;
-
 	//Start our window
 	try {
 		Window::Init();
@@ -74,11 +71,17 @@ int main(int argc, char** argv){
 	uboIdx = GL::GetUniformBlockIndex(prog, "VP");
 	if (uboIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid UBO Index" << std::endl;
+	std::cout << "VP ubo idx: " << uboIdx << std::endl;
+
 	GL::GetActiveUniformBlockiv(prog, uboIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &uboSize);
 	if (uboSize != sizeof(glm::mat4) * 2)
 		std::cout << "ubo size isn't right!" << std::endl;
 
-	std::array<glm::mat4, 2> matVP = { camera.View(), proj };
+	std::cout << "Creating vp ubo" << std::endl;
+	//std::array<glm::mat4, 2> matVP = { camera.View(), proj };
+	std::vector<glm::mat4> matVP;
+	matVP.push_back(camera.View());
+	matVP.push_back(proj);
 	GL::VertexBuffer matVPubo(matVP, GL::BUFFER::UNIFORM);
 	GL::BindBufferBase(GL::BUFFER::UNIFORM, uboIdx, matVPubo);
 
@@ -275,7 +278,7 @@ int uboWorking(){
 	std::array<glm::mat4, 2> matrices = { proj, model };
 
 	GLint projBufIdx = GL::GetUniformBlockIndex(program, "Mat");
-	if (projBufIdx == -1)
+	if (projBufIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid attribute location!" << std::endl;
 
 	GLuint ubo;

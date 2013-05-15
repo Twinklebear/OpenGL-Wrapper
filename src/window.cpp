@@ -1,6 +1,7 @@
 #include <string>
 #include <stdexcept>
 #include <memory>
+#include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_syswm.h>
@@ -44,7 +45,11 @@ Window::Window(std::string title, int width, int height)
         << "OpenGL Vendor: " << glGetString(GL_VENDOR) << std::endl
         << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl
         << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << "\n\n";
-    MakeCurrent();
+	
+	GLenum glewErr = glewInit();
+	if (glewErr != GLEW_OK)
+		std::cout << "Glew init error: " << glewGetErrorString(glewErr) << std::endl;
+
     GL::SetupGLFunctions();
 }
 Window::~Window(){

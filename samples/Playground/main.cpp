@@ -3,6 +3,7 @@
 #include <iostream>
 #include <functional>
 #include <chrono>
+#include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <glm/glm.hpp>
@@ -36,6 +37,7 @@ int main(int argc, char** argv){
 	//Setup main window to read input
 	int w = 640, h = 480;
 	Window window("Main window", w, h);
+
 	//Time the loading
 	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 	std::shared_ptr<Model> model = Util::LoadObj("../res/suzanne.obj");
@@ -68,7 +70,7 @@ int main(int argc, char** argv){
 	GL::VertexBuffer ubo(lightPos, GL::BUFFER::UNIFORM);
 	GL::BindBufferBase(GL::BUFFER::UNIFORM, uboIdx, ubo);
 
-	uboIdx = GL::GetUniformBlockIndex(prog, "VP");
+	uboIdx = glGetUniformBlockIndex(prog, "VP");
 	if (uboIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid UBO Index" << std::endl;
 	std::cout << "VP ubo idx: " << uboIdx << std::endl;

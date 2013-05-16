@@ -51,8 +51,8 @@ int uboWorking(){
 	Util::CheckError("VAO Setup");
 	
 	//Setup vbo & ebo
-	GL::Buffer<GL::BUFFER::ARRAY> vbo(quad, GL::USAGE::STATIC_DRAW);
-	GL::Buffer<GL::BUFFER::ELEMENT_ARRAY> ebo(quadElems, GL::USAGE::STATIC_DRAW);
+	GL::ArrayBuffer vbo(quad, GL::USAGE::STATIC_DRAW);
+	GL::ElementBuffer ebo(quadElems, GL::USAGE::STATIC_DRAW);
 
 	Util::CheckError("VBO & EBO Setup");
 
@@ -88,7 +88,7 @@ int uboWorking(){
 	if (projBufIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid attribute location!" << std::endl;
 
-	GL::Buffer<GL::BUFFER::UNIFORM> ubo(matrices, GL::USAGE::STATIC_DRAW);
+	GL::UniformBuffer ubo(matrices, GL::USAGE::STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, projBufIdx, ubo);
 	Util::CheckError("Proj buf Setup");
 

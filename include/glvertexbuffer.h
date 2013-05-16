@@ -100,6 +100,20 @@ namespace GL {
 	const std::function<void(GLuint*)> Buffer<B>::sDeleter = [](GLuint *b){
 		glDeleteBuffers(1, b);
 	};
+	//Some convenient typedefs for shorter names
+	typedef Buffer<BUFFER::ARRAY> ArrayBuffer;
+	typedef Buffer<BUFFER::ATOMIC_COUNTER> AtomicCounterBuffer;
+	typedef Buffer<BUFFER::COPY_READ> CopyReadBuffer;
+	typedef Buffer<BUFFER::COPY_WRITE> CopyWriteBuffer;
+	typedef Buffer<BUFFER::DRAW_INDIRECT> DrawIndirectBuffer;
+	typedef Buffer<BUFFER::DISPATCH_INDIRECT> DispatchIndirectBuffer;
+	typedef Buffer<BUFFER::ELEMENT_ARRAY> ElementBuffer;
+	typedef Buffer<BUFFER::PIXEL_PACK> PixelPackBuffer;
+	typedef Buffer<BUFFER::PIXEL_UNPACK> PixelUnpackBuffer;
+	typedef Buffer<BUFFER::SHADER_STORAGE> ShaderStorageBuffer;
+	typedef Buffer<BUFFER::TEXTURE_BUFFER> TextureBuffer;
+	typedef Buffer<BUFFER::TRANSFORM_FEEDBACK> TransformFeedbackBuffer;
+	typedef Buffer<BUFFER::UNIFORM> UniformBuffer;
 }
 
 #endif

@@ -23,11 +23,15 @@ int main(int argc, char** argv){
 	return uboWorking();
 }
 
-//Don't want to bother with element buffers for this simple ex.
-const std::array<glm::vec4, 3> tri = {
-	glm::vec4(-1.0, -1.0, -2.0, 1.0),
-	glm::vec4(1.0, -1.0, -2.0, 1.0),
-	glm::vec4(-1.0, 1.0, -2.0, 1.0)
+const std::array<glm::vec4, 4> quad = {
+	glm::vec4(-1.0, -1.0, 0.0, 1.0),
+	glm::vec4(1.0, -1.0, 0.0, 1.0),
+	glm::vec4(-1.0, 1.0, 0.0, 1.0),
+	glm::vec4(1.0, 1.0, 0.0, 1.0)
+};
+const std::array<unsigned short, 6> quadElems = {
+	0, 1, 2,
+	1, 3, 2
 };
 
 int uboWorking(){
@@ -40,15 +44,17 @@ int uboWorking(){
 	Input::Init();
 	Window window("Test");
 
-	//Setup vbo
-	GL::Buffer<GL::BUFFER::ARRAY> vbo(tri, GL::USAGE::STATIC_DRAW);
-
-	Util::CheckError("VBO Setup");
 	//Setup vao
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 	Util::CheckError("VAO Setup");
+	
+	//Setup vbo & ebo
+	GL::Buffer<GL::BUFFER::ARRAY> vbo(quad, GL::USAGE::STATIC_DRAW);
+	GL::Buffer<GL::BUFFER::ELEMENT_ARRAY> ebo(quadElems, GL::USAGE::STATIC_DRAW);
+
+	Util::CheckError("VBO & EBO Setup");
 
 	//Setup program
 	GL::Shader<GL::SHADER::VERTEX> vShader("../res/basic.v.glsl");
@@ -75,7 +81,7 @@ int uboWorking(){
 
 	//Set the projection and model matrices
 	glm::mat4 proj = glm::perspective(60.0f, (float)640 / (float)480, 0.1f, 100.0f);
-	glm::mat4 model = glm::translate<float>(0, 0, -1) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
+	glm::mat4 model = glm::translate<float>(0, 0, -4) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
 	std::array<glm::mat4, 2> matrices = { proj, model };
 
 	GLint projBufIdx = glGetUniformBlockIndex(program, "Mat");
@@ -94,7 +100,7 @@ int uboWorking(){
 
 		window.Clear();
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 		
 		window.Present();
 	}

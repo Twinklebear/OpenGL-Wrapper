@@ -61,16 +61,12 @@ namespace GL {
 		template<class T, size_t N>
 		void bufferData(const std::array<T, N> &data, USAGE usage){
 			mNvals = N;
-			std::cout << "Writing array to " << std::hex << B
-				<< " buffer, size: " << std::dec << N * sizeof(T) << std::endl;
 			glBindBuffer(B, mHandle);
 			glBufferData(B, N * sizeof(T), &data[0], usage);
 		}
 		template<class T>
 		void bufferData(const std::vector<T> &data, USAGE usage){
 			mNvals = data.size();
-			std::cout << "Writing vector to " << std::hex << B
-				<< " buffer, size: " << std::dec << data.size() * sizeof(T) << std::endl;
 			glBindBuffer(B, mHandle);
 			glBufferData(B, data.size() * sizeof(T), &data[0], usage);
 		}

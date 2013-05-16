@@ -1,55 +1,44 @@
 #include <vector>
+#include <string>
 #include <functional>
-#include <SDL_opengl.h>
+#include <GL/glew.h>
 #include "../include/handle.h"
-#include "../include/glfunctions.h"
 #include "../include/glvertexbuffer.h"
 #include "../include/glvertexarray.h"
 
-#include <iostream>
-
-const std::function<void(GLuint*)> GL::VertexArray::sVaoDeleter = 
-	[](GLuint *vao){ GL::DeleteVertexArrays(1, vao); };
+const std::function<void(GLuint*)> GL::VertexArray::sDeleter = 
+	[](GLuint *vao){ glDeleteVertexArrays(1, vao); };
 
 GL::VertexArray::VertexArray(){
 	//Generate VAO, associate with the buffer and assign it to the handle
 	GLuint vao;
-	GL::GenVertexArrays(1, &vao);
-	mHandle = Handle(vao, sVaoDeleter);
+	glGenVertexArrays(1, &vao);
+	mHandle = Handle(vao, sDeleter);
 }
-void GL::VertexArray::Reference(VertexBuffer &b, const std::string &name){
-	GL::BindVertexArray(mHandle);
-	GL::BindBuffer(b.Type(), b);
-	//Store a reference to the vbo to keep it alive
-	mVbos[name] = b;
-}
-void GL::VertexArray::ElementBuffer(std::vector<unsigned short> indices){
+void GL::VertexArray::elementBuffer(std::vector<unsigned short> indices){
 	//TODO: Am I not associating the element buffer correctly? The constructor
 	//will bind the buffer so shouldn't the vao pick it up?
-	GL::BindVertexArray(mHandle);
-	mVbos["elem"] = GL::VertexBuffer(indices, GL::BUFFER::ELEMENT);
+	glBindVertexArray(mHandle);
+	mElems = Buffer<ELEMENT_ARRAY>(indices, STATIC_DRAW);
 	GLuint err = glGetError();
 	if (err != GL_NO_ERROR)
 		std::cout << "gl error #: " << err << std::endl;
 }
-size_t GL::VertexArray::NumElements(const std::string &name){
-	std::map<std::string, VertexBuffer>::iterator vbo = mVbos.find(name);
-	if (vbo == mVbos.end())
-		return -1;
-	return vbo->second.NumVals();
+size_t GL::VertexArray::numElements(const std::string &name){
+	return mElems.numVals();
 }
-void GL::VertexArray::SetAttribPointer(const std::string &name, GLint attrib, size_t size, GLenum type,
+void GL::VertexArray::setAttribPointer(const std::string &name, GLint attrib, size_t size, GLenum type,
 			bool normalized, size_t stride, void *offset)
 {
 	//Make sure it's a vbo we've stored
-	std::map<std::string, VertexBuffer>::iterator vbo = mVbos.find(name);
+	std::map<std::string, Buffer<ARRAY>>::iterator vbo = mVbos.find(name);
 	if (vbo == mVbos.end())
 		throw std::runtime_error("Invalid vbo name: " + name);
 
-	GL::BindVertexArray(mHandle);
-	GL::BindBuffer(vbo->second.Type(), vbo->second);
-	GL::EnableVertexAttribArray(attrib);
-	GL::VertexAttribPointer(attrib, size, type, normalized, stride, offset);
+	glBindVertexArray(mHandle);
+	glBindBuffer(BUFFER::ARRAY, vbo->second);
+	glEnableVertexAttribArray(attrib);
+	glVertexAttribPointer(attrib, size, type, normalized, stride, offset);
 }
 GL::VertexArray::operator GLuint(){
 	return mHandle;

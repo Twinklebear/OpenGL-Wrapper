@@ -1,30 +1,29 @@
 #include <string>
 #include <functional>
-#include <SDL_opengl.h>
+#include <GL/glew.h>
 #include "../include/handle.h"
 #include "../include/util.h"
 #include "../include/gltexture.h"
 
-const std::function<void(GLuint*)> GL::Texture::sTexDeleter = 
-	[](GLuint *i){ glDeleteTextures(1, i); };
+const std::function<void(GLuint*)> GL::Texture::sDeleter = 
+	[](GLuint *t){ glDeleteTextures(1, t); };
 
-GL::Texture::Texture(){
+GL::Texture::Texture(){}
+GL::Texture::Texture(const std::string &file, bool upload) : mFile(file) {
+	if (upload)
+		load(file);
 }
-GL::Texture::Texture(const std::string &file, bool load) : mFile(file) {
-	if (load)
-		Load(file);
-}
-void GL::Texture::Load(const std::string &file){
+void GL::Texture::load(const std::string &file){
 	mFile = file;
-	mHandle = Handle(Util::LoadTexture(mFile), sTexDeleter);
+	mHandle = Handle(Util::LoadTexture(mFile), sDeleter);
 }
-void GL::Texture::Load(){
-	mHandle = Handle(Util::LoadTexture(mFile), sTexDeleter);
+void GL::Texture::load(){
+	mHandle = Handle(Util::LoadTexture(mFile), sDeleter);
 }
-void GL::Texture::Unload(){
+void GL::Texture::unload(){
 	mHandle.Release();
 }
-std::string GL::Texture::File() const {
+std::string GL::Texture::file() const {
 	return mFile;
 }
 GL::Texture::operator GLuint(){

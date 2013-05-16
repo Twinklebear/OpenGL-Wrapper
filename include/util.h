@@ -9,8 +9,8 @@
 #include <sstream>
 #include <iostream>
 #include <memory>
+#include <GL/glew.h>
 #include <glm/glm.hpp>
-#include <SDL_opengl.h>
 #include "material.h"
 #include "model.h"
 
@@ -32,7 +32,7 @@ namespace Util {
 	* @param file File to load from
 	* @return The loaded model
 	*/
-	std::shared_ptr<Model> LoadObj(const std::string &file);
+	//std::shared_ptr<Model> LoadObj(const std::string &file);
 	/**
 	* Load the materials defined in a material lib file. Materials will be placed into
 	* the map passed indexed by their name

@@ -92,12 +92,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\glcamera.cpp" />
-    <ClCompile Include="..\src\glfunctions.cpp" />
     <ClCompile Include="..\src\glprogram.cpp" />
-    <ClCompile Include="..\src\glshader.cpp" />
     <ClCompile Include="..\src\gltexture.cpp" />
     <ClCompile Include="..\src\glvertexarray.cpp" />
-    <ClCompile Include="..\src\glvertexbuffer.cpp" />
     <ClCompile Include="..\src\handle.cpp" />
     <ClCompile Include="..\src\input.cpp" />
     <ClCompile Include="..\src\material.cpp" />
@@ -108,7 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\glcamera.h" />
-    <ClInclude Include="..\include\glfunctions.h" />
     <ClInclude Include="..\include\glprogram.h" />
     <ClInclude Include="..\include\glshader.h" />
     <ClInclude Include="..\include\gltexture.h" />

@@ -5,19 +5,14 @@
 #include <chrono>
 #include <GL/glew.h>
 #include <SDL.h>
-#include <SDL_opengl.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <window.h>
 #include <input.h>
-#include <timer.h>
-#include <glcamera.h>
-#include <glfunctions.h>
+#include <glvertexbuffer.h>
 #include <glshader.h>
 #include <glprogram.h>
 #include <util.h>
-#include <model.h>
-#include <material.h>
 
 //This function demos working usage of ubo for matrices
 int uboWorking();
@@ -25,6 +20,8 @@ int uboWorking();
 //Note that we build with console as the system so that we'll be able to see
 //the debug output and have the window stay open after closing the program
 int main(int argc, char** argv){
+	return uboWorking();
+	/*
 	//Start our window
 	try {
 		Window::Init();
@@ -56,26 +53,26 @@ int main(int argc, char** argv){
 	glm::mat4 proj = glm::perspective(60.0f, (float)w / (float)h, 0.1f, 100.0f);
 
 	//Setup the Uniform buffer object
-	GLuint uboIdx = GL::GetUniformBlockIndex(prog, "Lighting");
+	GLuint uboIdx = glGetUniformBlockIndex(prog, "Lighting");
 	if (uboIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid UBO Index" << std::endl;
 
 	GLint uboSize;
-	GL::GetActiveUniformBlockiv(prog, uboIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &uboSize);
+	glGetActiveUniformBlockiv(prog, uboIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &uboSize);
 
 	//Make a light @ origin
 	glm::vec4 lightPos(0.0f, 0.0f, 0.0f, 1.0f);
 	//TODO: Generic Buffers, templated based on type maybe?? Also need to be able to allocate
 	//arbitrary size buffer and write data to it instead of forced into passing vect/array/etc
 	GL::VertexBuffer ubo(lightPos, GL::BUFFER::UNIFORM);
-	GL::BindBufferBase(GL::BUFFER::UNIFORM, uboIdx, ubo);
+	glBindBufferBase(GL::BUFFER::UNIFORM, uboIdx, ubo);
 
 	uboIdx = glGetUniformBlockIndex(prog, "VP");
 	if (uboIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid UBO Index" << std::endl;
 	std::cout << "VP ubo idx: " << uboIdx << std::endl;
 
-	GL::GetActiveUniformBlockiv(prog, uboIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &uboSize);
+	glGetActiveUniformBlockiv(prog, uboIdx, GL_UNIFORM_BLOCK_DATA_SIZE, &uboSize);
 	if (uboSize != sizeof(glm::mat4) * 2)
 		std::cout << "ubo size isn't right!" << std::endl;
 
@@ -85,20 +82,20 @@ int main(int argc, char** argv){
 	matVP.push_back(camera.View());
 	matVP.push_back(proj);
 	GL::VertexBuffer matVPubo(matVP, GL::BUFFER::UNIFORM);
-	GL::BindBufferBase(GL::BUFFER::UNIFORM, uboIdx, matVPubo);
+	glBindBufferBase(GL::BUFFER::UNIFORM, uboIdx, matVPubo);
 
 	//Trying to figure out what's wrong with this on Nvidia
 	const char *names[] = { "v", "p" };
 	GLuint indices[2];
-	GL::GetUniformIndices(prog, 2, names, indices);
+	glGetUniformIndices(prog, 2, names, indices);
 	std::cout << "Indices: " << indices[0] << ", " << indices[1] << std::endl;
 
 	//now query some info
 	GLint info[2];
-	GL::GetActiveUniformsiv(prog, 2, indices, GL_UNIFORM_OFFSET, info);
+	glGetActiveUniformsiv(prog, 2, indices, GL_UNIFORM_OFFSET, info);
 	std::cout << "Offsets: " << info[0] << ", " << info[1] << std::endl;
 
-	GL::GetActiveUniformsiv(prog, 2, indices, GL_UNIFORM_MATRIX_STRIDE, info);
+	glGetActiveUniformsiv(prog, 2, indices, GL_UNIFORM_MATRIX_STRIDE, info);
 	std::cout << "Matrix strides: " << info[0] << ", " << info[1] << std::endl;
 
 	model->UseProgram(prog);
@@ -195,7 +192,7 @@ int main(int argc, char** argv){
 	}
 	window.Close();
 	Window::Quit();
-	
+	*/
 	return 0;
 }
 const char *vShaderSrc = 
@@ -227,51 +224,36 @@ int uboWorking(){
 	Window window("Test");
 
 	//Setup vbo
-	GLuint vbo;
-	GL::GenBuffers(1, &vbo);
-	GL::BindBuffer(GL_ARRAY_BUFFER, vbo);
-	GL::BufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * tri.size(), &tri[0], GL_STATIC_DRAW);
+	GL::Buffer<GL::BUFFER::ARRAY> vbo(tri, GL::USAGE::STATIC_DRAW);
+
 	Util::CheckError("VBO Setup");
 	//Setup vao
 	GLuint vao;
-	GL::GenVertexArrays(1, &vao);
-	GL::BindVertexArray(vao);
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
 	Util::CheckError("VAO Setup");
 
 	//Setup program
-	GLuint vShader = GL::CreateShader(GL_VERTEX_SHADER);
-	GL::ShaderSource(vShader, 1, &vShaderSrc, NULL);
-	GL::CompileShader(vShader);
-	GLint status;
-	GL::GetShaderiv(vShader, GL_COMPILE_STATUS, &status);
-	if (status != GL_TRUE)
-		std::cout << "vert shader compile error" << std::endl;
+	GL::Shader<GL::SHADER::VERTEX> vShader("../res/basic.v.glsl");
+	if (!vShader.status())
+		std::cout << vShader.getLog() << std::endl;
 	Util::CheckError("Vert shader Setup");
 
-	GLuint fShader = GL::CreateShader(GL_FRAGMENT_SHADER);
-	GL::ShaderSource(fShader, 1, &fShaderSrc, NULL);
-	GL::CompileShader(fShader);
-	GL::GetShaderiv(fShader, GL_COMPILE_STATUS, &status);
-	if (status != GL_TRUE)
-		std::cout << "frag shader compile error" << std::endl;
+	GL::Shader<GL::SHADER::FRAGMENT> fShader("../res/basic.f.glsl");
+	if (!fShader.status())
+		std::cout << fShader.getLog() << std::endl;
 	Util::CheckError("Frag shader Setup");
 
-	GLuint program = GL::CreateProgram();
-	GL::AttachShader(program, vShader);
-	GL::AttachShader(program, fShader);
-	GL::LinkProgram(program);
-	GL::GetProgramiv(program, GL_LINK_STATUS, &status);
-	if (status != GL_TRUE)
-		std::cout << "link program error" << std::endl;
+	GL::Program program(vShader, fShader);
 	Util::CheckError("Prog Setup");
-	GL::UseProgram(program);
 
 	//Pass vertex pos into position attrib
-	GLint posAttrib = GL::GetAttribLocation(program, "position");
+	GLint posAttrib = program.getAttribute("position");
 	if (posAttrib == -1)
-		std::cout << "Invalid attribute location!" << std::endl;
-	GL::EnableVertexAttribArray(posAttrib);
-	GL::VertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+		std::cout << "Invalid position attrib loc" << std::endl;
+
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
 	Util::CheckError("Pos attrib Setup");
 
 	//Set the projection and model matrices
@@ -279,17 +261,15 @@ int uboWorking(){
 	glm::mat4 model = glm::translate<float>(0, 0, -1) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
 	std::array<glm::mat4, 2> matrices = { proj, model };
 
-	GLint projBufIdx = GL::GetUniformBlockIndex(program, "Mat");
+	GLint projBufIdx = glGetUniformBlockIndex(program, "Mat");
 	if (projBufIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid attribute location!" << std::endl;
 
-	GLuint ubo;
-	GL::GenBuffers(1, &ubo);
-	GL::BindBuffer(GL_UNIFORM_BUFFER, ubo);
-	GL::BufferData(GL_UNIFORM_BUFFER, sizeof(glm::mat4) * 2, &matrices[0], GL_STATIC_DRAW);
-	GL::BindBufferBase(GL_UNIFORM_BUFFER, projBufIdx, ubo);
+	GL::Buffer<GL::BUFFER::UNIFORM> ubo(matrices, GL::USAGE::STATIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, projBufIdx, ubo);
 	Util::CheckError("Proj buf Setup");
 
+	program.use();
 	while (!Input::Quit()){
 		Input::PollEvents();
 		if (Input::KeyDown(SDL_SCANCODE_ESCAPE))

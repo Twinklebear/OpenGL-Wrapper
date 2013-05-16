@@ -3,11 +3,9 @@
 #include <memory>
 #include <GL/glew.h>
 #include <SDL.h>
-#include <SDL_opengl.h>
 #include <SDL_syswm.h>
-#include "../include/glfunctions.h"
-#include "../include/glvertexarray.h"
-#include "../include/glprogram.h"
+//#include "../include/glvertexarray.h"
+//#include "../include/glprogram.h"
 #include "../include/window.h"
 
 #include <iostream>
@@ -49,8 +47,6 @@ Window::Window(std::string title, int width, int height)
 	GLenum glewErr = glewInit();
 	if (glewErr != GLEW_OK)
 		std::cout << "Glew init error: " << glewGetErrorString(glewErr) << std::endl;
-
-    GL::SetupGLFunctions();
 }
 Window::~Window(){
 	Close();
@@ -63,23 +59,23 @@ void Window::Init(){
 void Window::Quit(){
     SDL_Quit();
 }
-void Window::Draw(GL::VertexArray &vao, GL::Program &p, GLenum mode, int first, size_t count){
-    GL::UseProgram(p);
-    GL::BindVertexArray(vao);
-    glDrawArrays(mode, first, count);
-}
-void Window::DrawElements(GL::VertexArray &vao, GL::Program &p, GLenum mode, int count, size_t offset){
-	GL::UseProgram(p);
-	GL::BindVertexArray(vao);
-	glDrawElements(mode, count, GL_UNSIGNED_SHORT, (void*)offset);
-}
-void Window::DrawElementsTextured(GL::VertexArray &vao, GL::Program &p, GL::Texture &tex, GLenum mode, int count, size_t offset){
-	GL::UseProgram(p);
-	GL::ActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
-	GL::BindVertexArray(vao);
-	glDrawElements(mode, count, GL_UNSIGNED_SHORT, (void*)offset);
-}
+//void Window::Draw(GL::VertexArray &vao, GL::Program &p, GLenum mode, int first, size_t count){
+//    glUseProgram(p);
+//    glBindVertexArray(vao);
+//    glDrawArrays(mode, first, count);
+//}
+//void Window::DrawElements(GL::VertexArray &vao, GL::Program &p, GLenum mode, int count, size_t offset){
+//	glUseProgram(p);
+//	glBindVertexArray(vao);
+//	glDrawElements(mode, count, GL_UNSIGNED_SHORT, (void*)offset);
+//}
+//void Window::DrawElementsTextured(GL::VertexArray &vao, GL::Program &p, GL::Texture &tex, GLenum mode, int count, size_t offset){
+//	glUseProgram(p);
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_2D, tex);
+//	glBindVertexArray(vao);
+//	glDrawElements(mode, count, GL_UNSIGNED_SHORT, (void*)offset);
+//}
 void Window::Clear(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

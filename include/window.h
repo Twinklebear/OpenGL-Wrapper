@@ -6,9 +6,9 @@
 #include <memory>
 #include <SDL.h>
 #include <SDL_opengl.h>
-#include "glvertexarray.h"
-#include "glprogram.h"
-#include "gltexture.h"
+//#include "glvertexarray.h"
+//#include "glprogram.h"
+//#include "gltexture.h"
 
 /**
 *  Window management class, provides a simple wrapper around
@@ -40,7 +40,7 @@ public:
     * @param first The first index to begin drawing from
     * @param count The number of entries to draw
     */
-    void Draw(GL::VertexArray &vao, GL::Program &p, GLenum mode, int first, size_t count);
+    //void Draw(GL::VertexArray &vao, GL::Program &p, GLenum mode, int first, size_t count);
 	/**
     * Draw a VAO using some program with the desired draw mode using the DrawElements command
 	* this requires that the VAO has been associated with an element buffer before calling this function
@@ -50,7 +50,7 @@ public:
     * @param count The number of entries to draw
 	* @param offset Offset in index array to start reading from
     */
-	void DrawElements(GL::VertexArray &vao, GL::Program &p, GLenum mode, int count, size_t offset = 0);
+	//void DrawElements(GL::VertexArray &vao, GL::Program &p, GLenum mode, int count, size_t offset = 0);
 	/**
     * Draw a VAO using some program and a texture with the desired draw mode using the DrawElements command
 	* this requires that the VAO has been associated with an element buffer before calling this function
@@ -61,7 +61,7 @@ public:
     * @param count The number of entries to draw
 	* @param offset Offset in index array to start reading from
     */
-	void DrawElementsTextured(GL::VertexArray &vao, GL::Program &p, GL::Texture &tex, GLenum mode, int count, size_t offset = 0);
+	//void DrawElementsTextured(GL::VertexArray &vao, GL::Program &p, GL::Texture &tex, GLenum mode, int count, size_t offset = 0);
     ///Clear the renderer
     void Clear();
     ///Present the renderer, ie. update screen

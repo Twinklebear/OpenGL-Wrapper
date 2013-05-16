@@ -3,7 +3,7 @@
 
 #include <map>
 #include <functional>
-#include <SDL_opengl.h>
+#include <GL/glew.h>
 #include "handle.h"
 #include "glvertexbuffer.h"
 
@@ -22,18 +22,26 @@ namespace GL {
 		* @param b VBO to reference
 		* @param name Name to associate with the vbo
 		*/
-		void Reference(VertexBuffer &b, const std::string &name);
+		template<BUFFER B>
+		void reference(Buffer<B> &b, const std::string &name){
+			glBindVertexArray(mHandle);
+			glBindBuffer(B, b);
+			//Store a reference to the vbo to keep it alive
+			//I guess i'll need to define a map for each type?
+			//along with specializing the function template for each? ugh
+			//mVbos[name] = b;
+		}
 		/**
 		* Set the element buffer for indexed rendering, if desired
 		* @param indices The indices to use
 		*/
-		void ElementBuffer(std::vector<unsigned short> indices);
+		void elementBuffer(std::vector<unsigned short> indices);
 		/**
 		* Get the number of elements in a buffer
 		* @param name Name of the buffer to get # of elements of
 		* @return # of elements, or -1 if no buffer with that name
 		*/
-		size_t NumElements(const std::string &name);
+		size_t numElements(const std::string &name);
 		/**
 		* Set some attribute to use values taken from a vbo given some
 		* size of components to take, a type, if the values are normalize
@@ -47,7 +55,7 @@ namespace GL {
 		* @param stried The byte offset between attributes, default 0
 		* @param offset The byte offset to begin reading attributes, default 0
 		*/
-		void SetAttribPointer(const std::string &name, GLint attrib, size_t size, GLenum type,
+		void setAttribPointer(const std::string &name, GLint attrib, size_t size, GLenum type,
 			bool normalized = GL_FALSE, size_t stride = 0, void *offset = 0);
 		/**
 		* Implicitly convert to a GLuint if trying to use
@@ -59,9 +67,10 @@ namespace GL {
 		///The VAO handle
 		Handle mHandle;
 		///The VBOs the VAO is referencing
-		std::map<std::string, VertexBuffer> mVbos;
+		std::map<std::string, Buffer<ARRAY>> mVbos;
+		Buffer<ELEMENT_ARRAY> mElems;
 		///A function to delete a single vao
-		const static std::function<void(GLuint*)> sVaoDeleter;
+		const static std::function<void(GLuint*)> sDeleter;
 	};
 }
 

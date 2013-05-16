@@ -22,22 +22,13 @@
     <ClCompile Include="..\src\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\glvertexbuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\glvertexarray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\gltexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\glshader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\glprogram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\glfunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\glcamera.cpp">
@@ -54,9 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\glcamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\glfunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\glprogram.h">

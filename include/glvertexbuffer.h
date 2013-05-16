@@ -4,120 +4,87 @@
 #include <functional>
 #include <array>
 #include <vector>
-#include <SDL_opengl.h>
-#include <glm/glm.hpp>
+#include <GL/glew.h>
 #include "handle.h"
-#include "glfunctions.h"
 
 #include <iostream>
 
 namespace GL {
-	enum BUFFER { ARRAY = GL_ARRAY_BUFFER, ELEMENT = GL_ELEMENT_ARRAY_BUFFER,
-		UNIFORM = GL_UNIFORM_BUFFER };
+	//All OpenGL buffer types
+	enum BUFFER { ARRAY = GL_ARRAY_BUFFER, ATOMIC_COUNTER = GL_ATOMIC_COUNTER_BUFFER,
+		COPY_READ = GL_COPY_READ_BUFFER, COPY_WRITE = GL_COPY_WRITE_BUFFER,
+		DRAW_INDIRECT = GL_DRAW_INDIRECT_BUFFER, DISPATCH_INDIRECT = GL_DISPATCH_INDIRECT_BUFFER,
+		ELEMENT_ARRAY = GL_ELEMENT_ARRAY_BUFFER, PIXEL_PACK = GL_PIXEL_PACK_BUFFER,
+		PIXEL_UNPACK = GL_PIXEL_UNPACK_BUFFER, SHADER_STORAGE = GL_SHADER_STORAGE_BUFFER,
+		TEXTURE_BUFFER = GL_TEXTURE_BUFFER, TRANSFORM_FEEDBACK = GL_TRANSFORM_FEEDBACK,
+		UNIFORM = GL_UNIFORM_BUFFER
+	};
+	//Buffer usage types
+	enum USAGE { STREAM_DRAW = GL_STREAM_DRAW, STREAM_READ = GL_STREAM_READ,
+		STREAM_COPY = GL_STREAM_COPY, STATIC_DRAW = GL_STATIC_DRAW,
+		STATIC_READ = GL_STATIC_READ, STATIC_COPY = GL_STATIC_COPY,
+		DYNAMIC_DRAW = GL_DYNAMIC_DRAW, DYNAMIC_READ = GL_DYNAMIC_READ,
+		DYNAMIC_COPY = GL_DYNAMIC_COPY
+	};
 	/**
 	* Handles and simplifies interacting with OpenGL Buffers
 	*/
-	class VertexBuffer {
+	template<BUFFER B>
+	class Buffer {
 	public:
-		///Blank constructor, literally does nothing, but I need to define it
-		VertexBuffer() : mType(BUFFER::ARRAY) {};
+		Buffer() : mNvals(0) {};
 		/**
-		* Create a new VBO using the data stored in the array passed
-		* Currently just doing with GL_STATIC_DRAW since that's all I need but 
-		* I'll probably expand to handle all types later
+		* Create a new buffer using the data stored in the array passed
 		* @param data The array of data to be passed
-		* @param type Type of buffer to create, defaults to array buffer
+		* @param usage The usage hint for the buffer
 		*/
 		template<class T, size_t N>
-		VertexBuffer(const std::array<T, N> &data, BUFFER type = BUFFER::ARRAY)
-			: mType(type), mNvals(N)
-		{
-			GLuint vbo;
-			GenBuffers(1, &vbo);
-			mHandle = Handle(vbo, sVboDeleter);
-			BufferData(data);
+		Buffer(const std::array<T, N> &data, USAGE usage) : mNvals(N) {
+			GLuint buf;
+			glGenBuffers(1, &buf);
+			mHandle = Handle(buf, sDeleter);
+			bufferData(data, usage);
 		}
 		template<class T>
-		VertexBuffer(const std::vector<T> &data, BUFFER type = BUFFER::ARRAY)
-			: mType(type), mNvals(data.size())
-		{
-			GLuint vbo;
-			GenBuffers(1, &vbo);
-			mHandle = Handle(vbo, sVboDeleter);
-			BufferData(data);
+		Buffer(const std::vector<T> &data, USAGE usage) : mNvals(data.size()) {
+			GLuint buf;
+			glGenBuffers(1, &buf);
+			mHandle = Handle(buf, sDeleter);
+			bufferData(data, usage);
 		}
-		template<class T>
-		VertexBuffer(const T &t, BUFFER type = BUFFER::ARRAY)
-			: mType(type), mNvals(1)
-		{
-			GLuint vbo;
-			GenBuffers(1, &vbo);
-			mHandle = Handle(vbo, sVboDeleter);
-			BufferData(t);
-		}
-		/**
-		* Create a VBO to handle interaction with an existing object
-		* @param vbo The existing vbo to take ownership of
-		* @param type The type of buffer being managed
-		*/
-		VertexBuffer(GLuint vbo, BUFFER type = BUFFER::ARRAY) 
-			: mType(type), mHandle(vbo, sVboDeleter)
-		{}
 		/**
 		* Write some data to the buffer, creating a new data store
 		* and erasing any previous data
 		* @param data The data to write
+		* @param usage The usage hint for the buffer
 		*/
 		template<class T, size_t N>
-		void BufferData(const std::array<T, N> &data){
-			std::cout << "Writing array to " << std::hex << mType
+		void bufferData(const std::array<T, N> &data, USAGE usage){
+			mNvals = N;
+			std::cout << "Writing array to " << std::hex << B
 				<< " buffer, size: " << std::dec << N * sizeof(T) << std::endl;
-			GL::BindBuffer(mType, mHandle);
-			GL::BufferData(mType, N * sizeof(T), &data[0], GL_STATIC_DRAW);
+			glBindBuffer(B, mHandle);
+			glBufferData(B, N * sizeof(T), &data[0], usage);
 		}
 		template<class T>
-		void BufferData(const std::vector<T> &data){
-			std::cout << "Writing vector to buffer, size: " << data.size() * sizeof(T) << std::endl;
-			GL::BindBuffer(mType, mHandle);
-			GL::BufferData(mType, data.size() * sizeof(T), &data[0], GL_STATIC_DRAW);
-		}
-		template<class T>
-		void BufferData(const T &data){
-			std::cout << "Writing single item to buffer, size: " << sizeof(T) << std::endl;
-			GL::BindBuffer(mType, mHandle);
-			GL::BufferData(mType, sizeof(T), &data, GL_STATIC_DRAW);
-		}
-		/**
-		* Update a subset of the buffer's data
-		* @param data The data to write
-		* @param offset The offset to write too
-		*/
-		template<class T>
-		void BufferSubData(const T &t, size_t offset){
-			BindBuffer(mType, mHandle);
-			GL::BufferSubData(mType, offset, sizeof(T), &t);
-		}
-		template<class T, size_t N>
-		void BufferSubData(const std::array<T, N> &data, size_t offset){
-			BindBuffer(mType, mHandle);
-			GL::BufferSubData(mType, offset, N * sizeof(T), &data[0]);
-		}
-		template<class T>
-		void BufferSubData(const std::vector<T> &data, size_t offset){
-			BindBuffer(mType, mHandle);
-			GL::BufferSubData(mType, offset, data.size() * sizeof(T), &data[0]);
+		void bufferData(const std::vector<T> &data, USAGE usage){
+			mNvals = data.size();
+			std::cout << "Writing vector to " << std::hex << B
+				<< " buffer, size: " << std::dec << data.size() * sizeof(T) << std::endl;
+			glBindBuffer(B, mHandle);
+			glBufferData(B, data.size() * sizeof(T), &data[0], usage);
 		}
 		/**
 		* Get the buffer type 
 		* @return the buffer type
 		*/
-		BUFFER Type(){
-			return mType;
+		BUFFER type(){
+			return B;
 		}
 		/**
 		* Get the number of values
 		*/
-		size_t NumVals(){
+		size_t numVals(){
 			return mNvals;
 		}
 		/**
@@ -130,15 +97,13 @@ namespace GL {
 
 	private:
 		Handle mHandle;
-		BUFFER mType;
-		///Number of values in the buffer
 		size_t mNvals;
-		/**
-		* Wrapper around the delete buffers function to make a delete 1 vbo
-		* function that can be passed as a handle destructor
-		*/
-		static const std::function<void(GLuint*)> sVboDeleter;
-	};    
+		const static std::function<void(GLuint*)> sDeleter;
+	};
+	template<BUFFER B>
+	const std::function<void(GLuint*)> Buffer<B>::sDeleter = [](GLuint *b){
+		glDeleteBuffers(1, b);
+	};
 }
 
 #endif

@@ -2,43 +2,91 @@
 #define GLSHADER_H
 
 #include <string>
-#include <SDL_opengl.h>
+#include <GL/glew.h>
 #include "handle.h"
+#include "util.h"
 
 namespace GL {
+	//The various shader types
+    enum SHADER { VERTEX = GL_VERTEX_SHADER, TESS_CONTROL = GL_TESS_CONTROL_SHADER,
+		TESS_EVAL = GL_TESS_EVALUATION_SHADER, GEOMETRY = GL_GEOMETRY_SHADER,
+		FRAGMENT = GL_FRAGMENT_SHADER, COMPUTE = GL_COMPUTE_SHADER
+	};
     /**
     * Handles and simplifies interacting with OpenGL Shader objects
     */
+	template<SHADER S>
     class Shader {
     public:
-        //We want type checking of the value passed to make sure it's
-        //a valid shader type flag
-        enum TYPE { FRAGMENT = GL_FRAGMENT_SHADER, VERTEX = GL_VERTEX_SHADER, 
-            GEOMETRY = GL_GEOMETRY_SHADER };
-    public:
+		//Blank constructor, don't do anything
+		Shader() {}
         /**
         * Create a new shader of the desired type using the contents
         * of file as the shader source code
         * @param file The shader source filename
-        * @param type The type of shader to create
         */
-        Shader(std::string file, TYPE type);
+		Shader(const std::string &file){
+			create(file);
+		}
         /**
         * Debug a shader, check if it compiled successfully and get back
         * the shader info log
         * @return The shader info log
         */
-        std::string Debug();
+		std::string getLog(){
+			if (!status()){
+				//Get the log length and then get the log
+				GLint logLength;
+				glGetShaderiv(mHandle, GL_INFO_LOG_LENGTH, &logLength);
+				std::vector<char> log(logLength);
+				glGetShaderInfoLog(mHandle, logLength, NULL, &log[0]);
+
+				//Setup our error string
+				std::string errorMsg = "";
+				switch (S){
+				case VERTEX:
+					errorMsg = "Vertex shader error log:\n";
+					break;
+				case TESS_CONTROL:
+					errorMsg = "Tess_control shader error log:\n";
+					break;
+				case TESS_EVAL:
+					errorMsg = "Tess_eval shader error log:\n";
+					break;
+				case GEOMETRY:
+					errorMsg = "Geometry shader error log:\n";
+					break;
+				case FRAGMENT:
+					errorMsg = "Fragment shader error log:\n";
+					break;
+				case COMPUTE:
+					errorMsg = "Compute shader error log:\n";
+					break;
+				default:
+					break;
+				}
+				//Construct and return log message
+				errorMsg += std::string(log.begin(), log.end());
+				return errorMsg;
+			}
+			return "Success";
+		}
         /**
         * Check the status of compiling the shader, True if ok
         * @return True if compiled successfully
         */
-        bool Status();
+		bool status(){
+			GLint status;
+			glGetShaderiv(mHandle, GL_COMPILE_STATUS, &status);
+			return (status == GL_TRUE);
+		}
         /**
         * Implicitly convert to a GLuint if trying to use
         * the shader as such
         */
-        operator GLuint();
+		operator GLuint(){
+			return mHandle;
+		}
 
     private:
         /**
@@ -47,14 +95,21 @@ namespace GL {
         * @param file The file to read contents from
         * @param type The type of shader to create
         */
-        void Create(const std::string &file);
+		void create(const std::string &file){
+			mHandle = Handle(glCreateShader(S), sDeleter);
+			std::string src = Util::ReadFile(file);
+			const char *srcPtr = src.c_str();
+			glShaderSource(mHandle, 1, &srcPtr, NULL);
+			glCompileShader(mHandle);
+		}
     
     private:
         Handle mHandle;
-        TYPE mType;
 		//The shader deleter function
-		const static std::function<void(GLuint*)> sShaderDelete;
+		const static std::function<void(GLuint*)> sDeleter;
     };
+	template<SHADER S>
+	const std::function<void(GLuint*)> Shader<S>::sDeleter = [](GLuint *s){ glDeleteShader(*s); };
 }
 
 #endif

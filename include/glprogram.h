@@ -25,13 +25,14 @@ namespace GL {
         /**
         * Create a shader program from existing vertex and fragment shaders
         * The function assumes that the shaders being passed have 
-        * been compiled successfully
+        * been compiled successfully. The shaders will be detached before
+		* returning from link
         * @param vertex The vertex shader
         * @param frag The fragment shader
         */
         Program(Shader<VERTEX> &vert, Shader<FRAGMENT> &frag);
 		/**
-		* Link the program from two shaders
+		* Link the program from two shaders and detach the shaders after linking
 		* @param vert Vertex shader
 		* @param frag Fragment shader
 		*/

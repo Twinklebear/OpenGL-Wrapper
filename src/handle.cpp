@@ -14,6 +14,6 @@ void GL::Handle::Release(){
 	if (mObj != nullptr)
 		mObj.reset();
 }
-GL::Handle::operator GLuint(){
+GL::Handle::operator GLuint() const {
     return *mObj.get();
 }

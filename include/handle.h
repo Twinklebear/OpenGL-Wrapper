@@ -15,8 +15,13 @@ namespace GL {
         Handle();
         //Construct the handler, giving it an object to handle and a destruction function
         Handle(GLuint obj, std::function<void(GLuint*)> del);
-        //Behave like the stored object (GLuint) implicitly
-        operator GLuint();
+        /**
+		* Behave like the stored object (GLuint) implicitly
+		* It's const b/c we need it to be for comparison operators in STL
+		* but we can't actually guarantee that the object can't be changed
+		* since the GLuint is really the object
+		*/
+        operator GLuint() const;
         //Release the reference
         void Release();
 

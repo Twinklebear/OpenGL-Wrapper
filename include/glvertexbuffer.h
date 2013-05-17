@@ -87,7 +87,7 @@ namespace GL {
 		* Implicitly convert to a GLuint if trying to use
 		* the program as such
 		*/
-		operator GLuint(){
+		operator GLuint() const {
 			return mHandle;
 		}
 
@@ -100,8 +100,13 @@ namespace GL {
 	const std::function<void(GLuint*)> Buffer<B>::sDeleter = [](GLuint *b){
 		glDeleteBuffers(1, b);
 	};
+	//To compare buffers we just see if their handles are the same, ie. same GLuint ref
+	template<BUFFER B>
+	bool operator<(const Buffer<B> &rhs, const Buffer<B> &lhs){
+		return (static_cast<GLuint>(rhs) < static_cast<GLuint>(lhs));
+	}
 	//Some convenient typedefs for shorter names
-	typedef Buffer<BUFFER::ARRAY> ArrayBuffer;
+	typedef Buffer<BUFFER::ARRAY> VertexBuffer;
 	typedef Buffer<BUFFER::ATOMIC_COUNTER> AtomicCounterBuffer;
 	typedef Buffer<BUFFER::COPY_READ> CopyReadBuffer;
 	typedef Buffer<BUFFER::COPY_WRITE> CopyWriteBuffer;

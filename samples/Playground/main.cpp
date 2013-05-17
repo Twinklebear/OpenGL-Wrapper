@@ -10,6 +10,7 @@
 #include <window.h>
 #include <input.h>
 #include <glvertexbuffer.h>
+#include <glvertexarray.h>
 #include <glshader.h>
 #include <glprogram.h>
 #include <util.h>
@@ -43,18 +44,16 @@ int uboWorking(){
 	}
 	Input::Init();
 	Window window("Test");
-
-	//Setup vao
-	GLuint vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	Util::CheckError("VAO Setup");
 	
 	//Setup vbo & ebo
-	GL::ArrayBuffer vbo(quad, GL::USAGE::STATIC_DRAW);
+	GL::VertexBuffer vbo(quad, GL::USAGE::STATIC_DRAW);
 	GL::ElementBuffer ebo(quadElems, GL::USAGE::STATIC_DRAW);
 
 	Util::CheckError("VBO & EBO Setup");
+
+	GL::VertexArray vao;
+	vao.elementBuffer(ebo);
+	Util::CheckError("VAO setup");
 
 	//Setup program
 	GL::VertexShader vShader("../res/basic.v.glsl");
@@ -75,8 +74,7 @@ int uboWorking(){
 	if (posAttrib == -1)
 		std::cout << "Invalid position attrib loc" << std::endl;
 
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+	vao.setAttribPointer(vbo, posAttrib, 4, GL_FLOAT);
 	Util::CheckError("Pos attrib Setup");
 
 	//Set the projection and model matrices
@@ -104,4 +102,5 @@ int uboWorking(){
 		
 		window.Present();
 	}
+	Window::Quit();
 }

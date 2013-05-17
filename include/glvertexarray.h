@@ -1,7 +1,7 @@
 #ifndef GLVERTEXARRAY_H
 #define GLVERTEXARRAY_H
 
-#include <map>
+#include <set>
 #include <functional>
 #include <GL/glew.h>
 #include "handle.h"
@@ -18,35 +18,19 @@ namespace GL {
 		*/
 		VertexArray();
 		/**
-		* Reference a vbo object and associate it with some name
-		* @param b VBO to reference
-		* @param name Name to associate with the vbo
-		*/
-		template<BUFFER B>
-		void reference(Buffer<B> &b, const std::string &name){
-			glBindVertexArray(mHandle);
-			glBindBuffer(B, b);
-			//Store a reference to the vbo to keep it alive
-			//I guess i'll need to define a map for each type?
-			//along with specializing the function template for each? ugh
-			//mVbos[name] = b;
-		}
-		/**
 		* Set the element buffer for indexed rendering, if desired
-		* @param indices The indices to use
+		* if the indices version is used a new element buffer will be made
+		* if an existing element buffer is passed, it will be used
 		*/
 		void elementBuffer(std::vector<unsigned short> indices);
-		/**
-		* Get the number of elements in a buffer
-		* @param name Name of the buffer to get # of elements of
-		* @return # of elements, or -1 if no buffer with that name
-		*/
-		size_t numElements(const std::string &name);
+		void elementBuffer(ElementBuffer &e);
+		//Get the number of elements in the element buffer
+		size_t numElements();
 		/**
 		* Set some attribute to use values taken from a vbo given some
 		* size of components to take, a type, if the values are normalize
 		* a byte stride and an offset
-		* @param name The name of the buffer stored to use as the data
+		* @param b Vertex Buffer containing the data for this attribute
 		* @param attrib The name of the attribute to set
 		* @param vao The vertex array to get the values from
 		* @param size The number of components per attribute
@@ -55,7 +39,7 @@ namespace GL {
 		* @param stried The byte offset between attributes, default 0
 		* @param offset The byte offset to begin reading attributes, default 0
 		*/
-		void setAttribPointer(const std::string &name, GLint attrib, size_t size, GLenum type,
+		void setAttribPointer(VertexBuffer &b, GLint attrib, size_t size, GLenum type,
 			bool normalized = GL_FALSE, size_t stride = 0, void *offset = 0);
 		/**
 		* Implicitly convert to a GLuint if trying to use
@@ -66,9 +50,9 @@ namespace GL {
 	private:
 		///The VAO handle
 		Handle mHandle;
-		///The VBOs the VAO is referencing
-		std::map<std::string, Buffer<ARRAY>> mVbos;
-		Buffer<ELEMENT_ARRAY> mElems;
+		///The VBOs the VAO is referencing, we use a set to store two references to the same vbo
+		std::set<VertexBuffer> mVbos;
+		ElementBuffer mElemBuf;
 		///A function to delete a single vao
 		const static std::function<void(GLuint*)> sDeleter;
 	};

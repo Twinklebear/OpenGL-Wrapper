@@ -94,7 +94,7 @@ int uboWorking(){
 	glm::mat4 model = glm::translate<float>(0, 0, -4) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
 	std::array<glm::mat4, 2> matrices = { proj, model };
 
-	GLint projBufIdx = glGetUniformBlockIndex(program, "Mat");
+	GLint projBufIdx = program.getUniformBlockIndex("Mat");
 	if (projBufIdx == GL_INVALID_INDEX)
 		std::cout << "Invalid attribute location!" << std::endl;
 

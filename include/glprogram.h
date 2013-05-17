@@ -54,7 +54,12 @@ namespace GL {
         * Get the location of an attribute with some name
         * @param name The name of the attribute to get the location of
         */
-        GLint getAttribute(std::string name);
+        GLint getAttribute(const std::string &name);
+		/**
+		* Get the location of a uniform block  with some name
+		* @param name Name of the uniform block to get location of
+		*/
+		GLint getUniformBlockIndex(const std::string &name);
         //TODO: Come up with a better idea for making all these methods
         //or can i?
 		void uniform1i(const std::string &attrib, int i);

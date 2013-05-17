@@ -54,8 +54,11 @@ bool GL::Program::status(){
 void GL::Program::use(){
 	glUseProgram(mHandle);
 }
-GLint GL::Program::getAttribute(std::string name){
+GLint GL::Program::getAttribute(const std::string &name){
 	return glGetAttribLocation(mHandle, name.c_str());
+}
+GLint GL::Program::getUniformBlockIndex(const std::string &name){
+	return glGetUniformBlockIndex(mHandle, name.c_str());
 }
 void GL::Program::uniform1i(const std::string &attrib, int i){
 	glUseProgram(mHandle);

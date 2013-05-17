@@ -38,6 +38,13 @@ namespace GL {
 		* @param data The array of data to be passed
 		* @param usage The usage hint for the buffer
 		*/
+		template<class T>
+		Buffer(const T &data, USAGE usage) : mNvals(1) {
+			GLuint buf;
+			glGenBuffers(1, &buf);
+			mHandle = Handle(buf, sDeleter);
+			bufferData(data, usage);
+		}
 		template<class T, size_t N>
 		Buffer(const std::array<T, N> &data, USAGE usage) : mNvals(N) {
 			GLuint buf;
@@ -58,6 +65,12 @@ namespace GL {
 		* @param data The data to write
 		* @param usage The usage hint for the buffer
 		*/
+		template<class T>
+		void bufferData(const T &data, USAGE usage){
+			mNvals = 1;
+			glBindBuffer(B, mHandle);
+			glBufferData(B, sizeof(T), &data, usage);
+		}
 		template<class T, size_t N>
 		void bufferData(const std::array<T, N> &data, USAGE usage){
 			mNvals = N;

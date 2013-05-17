@@ -22,6 +22,11 @@ namespace GL {
 		* if the indices version is used a new element buffer will be made
 		* if an existing element buffer is passed, it will be used
 		*/
+		template<size_t N>
+		void elementBuffer(const std::array<unsigned short, N> &indices){
+			glBindVertexArray(mHandle);
+			mElemBuf = ElementBuffer(indices, USAGE::STATIC_DRAW);
+		}
 		void elementBuffer(const std::vector<unsigned short> &indices);
 		void elementBuffer(ElementBuffer &e);
 		//Get the number of elements in the element buffer

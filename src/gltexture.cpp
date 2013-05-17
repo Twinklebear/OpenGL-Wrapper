@@ -15,10 +15,10 @@ GL::Texture::Texture(const std::string &file, bool upload) : mFile(file) {
 }
 void GL::Texture::load(const std::string &file){
 	mFile = file;
-	mHandle = Handle(Util::LoadTexture(mFile), sDeleter);
+	mHandle = Handle(Util::loadTexture(mFile), sDeleter);
 }
 void GL::Texture::load(){
-	mHandle = Handle(Util::LoadTexture(mFile), sDeleter);
+	mHandle = Handle(Util::loadTexture(mFile), sDeleter);
 }
 void GL::Texture::unload(){
 	mHandle.Release();

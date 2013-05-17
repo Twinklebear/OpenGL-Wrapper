@@ -55,25 +55,25 @@ int uboWorking(){
 	GL::VertexBuffer vbo(quad, GL::USAGE::STATIC_DRAW);
 	GL::ElementBuffer ebo(quadElems, GL::USAGE::STATIC_DRAW);
 
-	Util::CheckError("VBO & EBO Setup");
+	Util::checkError("VBO & EBO Setup");
 
 	GL::VertexArray vao;
 	vao.elementBuffer(ebo);
-	Util::CheckError("VAO setup");
+	Util::checkError("VAO setup");
 
 	//Setup program
 	GL::VertexShader vShader("../res/basic.v.glsl");
 	if (!vShader.status())
 		std::cout << vShader.getLog() << std::endl;
-	Util::CheckError("Vert shader Setup");
+	Util::checkError("Vert shader Setup");
 
 	GL::FragmentShader fShader("../res/basic.f.glsl");
 	if (!fShader.status())
 		std::cout << fShader.getLog() << std::endl;
-	Util::CheckError("Frag shader Setup");
+	Util::checkError("Frag shader Setup");
 
 	GL::Program program(vShader, fShader);
-	Util::CheckError("Prog Setup");
+	Util::checkError("Prog Setup");
 
 	//Pass vertex pos into position attrib
 	GLint posAttrib = program.getAttribute("position");
@@ -86,7 +86,7 @@ int uboWorking(){
 
 	vao.setAttribPointer(vbo, posAttrib, 4, GL_FLOAT);
 	vao.setAttribPointer(vbo, colAttrib, 4, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 4));
-	Util::CheckError("Pos attrib Setup");
+	Util::checkError("Pos attrib Setup");
 
 	//Set the projection and model matrices
 	glm::mat4 proj = glm::perspective(60.0f, (float)640 / (float)480, 0.1f, 100.0f);
@@ -99,7 +99,7 @@ int uboWorking(){
 
 	GL::UniformBuffer ubo(matrices, GL::USAGE::STATIC_DRAW);
 	glBindBufferBase(GL_UNIFORM_BUFFER, projBufIdx, ubo);
-	Util::CheckError("Proj buf Setup");
+	Util::checkError("Proj buf Setup");
 
 	program.use();
 	while (!Input::Quit()){

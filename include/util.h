@@ -12,7 +12,6 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "material.h"
-#include "model.h"
 
 //Functions for reading in and printing out glm vectors, should be free of any namespace
 //restrictions
@@ -23,9 +22,9 @@ std::ostream& operator<<(std::ostream &os, const glm::vec3 &v);
 namespace Util {
 	//Check if there was an error and print it with some log message
 	//return true if error
-	bool CheckError(std::string msg);
+	bool checkError(std::string msg);
     //Read a file and return its contents as a string
-	std::string ReadFile(const std::string &file);
+	std::string readFile(const std::string &file);
 	/**
 	* Load the object file passed and return the model, will also try to 
 	* load and pick active material based on mtllib and usemtl commands in file
@@ -39,14 +38,14 @@ namespace Util {
 	* @param file The mtl file to load from
 	* @return The map of material name : material
 	*/
-	 std::map<std::string, Material> LoadMaterials(const std::string &file);
+	 std::map<std::string, Material> loadMaterials(const std::string &file);
 	/**
 	* Load a texture and return the handle
 	* TODO: Add ability to set options for loading the texture
 	* @param file File to load texture from
 	* @return The GLuint associated with the texture
 	*/
-	GLuint LoadTexture(const std::string &file);
+	GLuint loadTexture(const std::string &file);
 	//Cast a string to a desired type and return it
 	template<class T>
 	T lexicalCast(const std::string &str){

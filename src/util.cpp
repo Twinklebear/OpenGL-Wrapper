@@ -10,7 +10,6 @@
 #include <SDL.h>
 #include <SOIL.h>
 #include "../include/material.h"
-#include "../include/model.h"
 #include "../include/util.h"
 
 std::ostream& operator<<(std::ostream &os, const glm::vec2 &v){
@@ -23,7 +22,7 @@ std::ostream& operator<<(std::ostream &os, const glm::vec3 &v){
 		os << v[i] << ", ";
 	return os;
 }
-bool Util::CheckError(std::string msg){
+bool Util::checkError(std::string msg){
 		GLint err = glGetError();
 		if (err != GL_NO_ERROR){
 			std::cout << msg << " error: " << std::hex << err << std::endl;
@@ -31,7 +30,7 @@ bool Util::CheckError(std::string msg){
 		}
 		return false;
 	}
-std::string Util::ReadFile(const std::string &file){
+std::string Util::readFile(const std::string &file){
     std::string content = "";
     std::ifstream fileIn(file.c_str());
     if (fileIn.is_open()){
@@ -143,7 +142,7 @@ std::string Util::ReadFile(const std::string &file){
 //	Util::CheckError("Post-pick material");
 //	return model;
 //}
-std::map<std::string, Material> Util::LoadMaterials(const std::string &file){
+std::map<std::string, Material> Util::loadMaterials(const std::string &file){
 	std::map<std::string, Material> mats;
 	if (file.substr(file.length() - 3, 3) != "mtl"){
 		std::cout << "substr: " << file.substr(file.length() - 4, 3) << std::endl;
@@ -192,7 +191,7 @@ std::map<std::string, Material> Util::LoadMaterials(const std::string &file){
 	}
 	return mats;
 }
-GLuint Util::LoadTexture(const std::string &file){
+GLuint Util::loadTexture(const std::string &file){
 	return SOIL_load_OGL_texture(file.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 
 		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB);
 }

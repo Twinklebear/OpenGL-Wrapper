@@ -97,7 +97,7 @@ namespace GL {
         */
 		void create(const std::string &file){
 			mHandle = Handle(glCreateShader(S), sDeleter);
-			std::string src = Util::ReadFile(file);
+			std::string src = Util::readFile(file);
 			const char *srcPtr = src.c_str();
 			glShaderSource(mHandle, 1, &srcPtr, NULL);
 			glCompileShader(mHandle);

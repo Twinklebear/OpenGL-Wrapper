@@ -57,12 +57,12 @@ int uboWorking(){
 	Util::CheckError("VBO & EBO Setup");
 
 	//Setup program
-	GL::Shader<GL::SHADER::VERTEX> vShader("../res/basic.v.glsl");
+	GL::VertexShader vShader("../res/basic.v.glsl");
 	if (!vShader.status())
 		std::cout << vShader.getLog() << std::endl;
 	Util::CheckError("Vert shader Setup");
 
-	GL::Shader<GL::SHADER::FRAGMENT> fShader("../res/basic.f.glsl");
+	GL::FragmentShader fShader("../res/basic.f.glsl");
 	if (!fShader.status())
 		std::cout << fShader.getLog() << std::endl;
 	Util::CheckError("Frag shader Setup");

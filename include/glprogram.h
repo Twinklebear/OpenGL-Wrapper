@@ -30,13 +30,13 @@ namespace GL {
         * @param vertex The vertex shader
         * @param frag The fragment shader
         */
-        Program(Shader<VERTEX> &vert, Shader<FRAGMENT> &frag);
+        Program(VertexShader &vert, FragmentShader &frag);
 		/**
 		* Link the program from two shaders and detach the shaders after linking
 		* @param vert Vertex shader
 		* @param frag Fragment shader
 		*/
-		void link(Shader<VERTEX> &vert, Shader<FRAGMENT> &frag);
+		void link(VertexShader &vert, FragmentShader &frag);
         /**
         * Debug a program, check if it linked successfully and return the 
         * program log

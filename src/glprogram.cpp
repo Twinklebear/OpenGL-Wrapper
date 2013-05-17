@@ -14,8 +14,8 @@ const std::function<void(GLuint*)> GL::Program::sProgDelete =
 GL::Program::Program(){
 }
 GL::Program::Program(std::string vertex, std::string frag){
-	Shader<VERTEX> vertShader(vertex);
-	Shader<FRAGMENT> fragShader(frag);
+	VertexShader vertShader(vertex);
+	FragmentShader fragShader(frag);
 	//Make sure the shaders are ok
 	if (!vertShader.status() || !fragShader.status()){
 		std::cout << vertShader.getLog() << std::endl
@@ -23,10 +23,10 @@ GL::Program::Program(std::string vertex, std::string frag){
 	}
 	link(vertShader, fragShader);
 }
-GL::Program::Program(Shader<VERTEX> &vert, Shader<FRAGMENT> &frag){
+GL::Program::Program(VertexShader &vert, FragmentShader &frag){
 	link(vert, frag);
 }
-void GL::Program::link(Shader<VERTEX> &vert, Shader<FRAGMENT> &frag){
+void GL::Program::link(VertexShader &vert, FragmentShader &frag){
 	mHandle = Handle(glCreateProgram(), sProgDelete);
 	glAttachShader(mHandle, vert);
 	glAttachShader(mHandle, frag);

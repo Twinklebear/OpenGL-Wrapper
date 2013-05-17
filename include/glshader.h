@@ -110,6 +110,14 @@ namespace GL {
     };
 	template<SHADER S>
 	const std::function<void(GLuint*)> Shader<S>::sDeleter = [](GLuint *s){ glDeleteShader(*s); };
+
+	//Some convenient typedefs
+	typedef Shader<VERTEX> VertexShader;
+	typedef Shader<TESS_CONTROL> TessControlShader;
+	typedef Shader<TESS_EVAL> TessEvalShader;
+	typedef Shader<GEOMETRY> GeometryShader;
+	typedef Shader<FRAGMENT> FragmentShader;
+	typedef Shader<COMPUTE> ComputeShader;
 }
 
 #endif

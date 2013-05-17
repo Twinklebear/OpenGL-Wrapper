@@ -102,6 +102,10 @@ int uboWorking(){
 	glBindBufferBase(GL_UNIFORM_BUFFER, projBufIdx, ubo);
 	Util::checkError("Proj buf Setup");
 
+	//Testing bufferSubData
+	model *= glm::rotate<float>(45, glm::vec3(0, 0, -1));
+	ubo.bufferSubData(model, sizeof(glm::mat4));
+
 	program.use();
 	while (!Input::Quit()){
 		Input::PollEvents();

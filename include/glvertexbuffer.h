@@ -84,6 +84,29 @@ namespace GL {
 			glBufferData(B, data.size() * sizeof(T), &data[0], usage);
 		}
 		/**
+		* Replace some data within the buffer at some offset
+		* @param data The data to write
+		* @param offset Offset in buffer to write too, in bytes
+		*/
+		template<class T>
+		void bufferSubData(const T &data, size_t offset){
+			mNvals = 1;
+			glBindBuffer(B, mHandle);
+			glBufferSubData(B, offset, sizeof(T), &data);
+		}
+		template<class T, size_t N>
+		void bufferSubData(const std::array<T, N> &data, size_t offset){
+			mNvals = N;
+			glBindBuffer(B, mHandle);
+			glBufferSubData(B, offset, N * sizeof(T), &data[0]);
+		}
+		template<class T>
+		void bufferSubData(const std::vector<T> &data, size_t offset){
+			mNvals = data.size();
+			glBindBuffer(B, mHandle);
+			glBufferSubData(B, offset, data.size() * sizeof(T), &data[0]);
+		}
+		/**
 		* Get the buffer type 
 		* @return the buffer type
 		*/

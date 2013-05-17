@@ -13,6 +13,7 @@
 #include <glvertexarray.h>
 #include <glshader.h>
 #include <glprogram.h>
+#include <model.h>
 #include <util.h>
 
 //This function demos working usage of ubo for matrices
@@ -114,4 +115,6 @@ int uboWorking(){
 		window.Present();
 	}
 	Window::Quit();
+
+	return 0;
 }

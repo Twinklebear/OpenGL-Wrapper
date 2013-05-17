@@ -24,10 +24,16 @@ int main(int argc, char** argv){
 	return uboWorking();
 }
 
-const std::array<glm::vec4, 4> quad = {
+const std::array<glm::vec4, 8> quad = {
+	//Vertex positions
 	glm::vec4(-1.0, -1.0, 0.0, 1.0),
 	glm::vec4(1.0, -1.0, 0.0, 1.0),
 	glm::vec4(-1.0, 1.0, 0.0, 1.0),
+	glm::vec4(1.0, 1.0, 0.0, 1.0),
+	//Vertex colors
+	glm::vec4(1.0, 0.0, 0.0, 1.0),
+	glm::vec4(0.0, 1.0, 0.0, 1.0),
+	glm::vec4(0.0, 0.0, 1.0, 1.0),
 	glm::vec4(1.0, 1.0, 0.0, 1.0)
 };
 const std::array<unsigned short, 6> quadElems = {
@@ -73,8 +79,13 @@ int uboWorking(){
 	GLint posAttrib = program.getAttribute("position");
 	if (posAttrib == -1)
 		std::cout << "Invalid position attrib loc" << std::endl;
+	
+	GLint colAttrib = program.getAttribute("color");
+	if (colAttrib == -1)
+		std::cout << "Invalid color attrib loc" << std::endl;
 
 	vao.setAttribPointer(vbo, posAttrib, 4, GL_FLOAT);
+	vao.setAttribPointer(vbo, colAttrib, 4, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 4));
 	Util::CheckError("Pos attrib Setup");
 
 	//Set the projection and model matrices

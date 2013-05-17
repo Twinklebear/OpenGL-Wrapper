@@ -14,7 +14,7 @@ GL::VertexArray::VertexArray(){
 	glGenVertexArrays(1, &vao);
 	mHandle = Handle(vao, sDeleter);
 }
-void GL::VertexArray::elementBuffer(std::vector<unsigned short> indices){
+void GL::VertexArray::elementBuffer(const std::vector<unsigned short> &indices){
 	glBindVertexArray(mHandle);
 	mElemBuf = ElementBuffer(indices, USAGE::STATIC_DRAW);
 }

@@ -22,7 +22,7 @@ namespace GL {
 		* if the indices version is used a new element buffer will be made
 		* if an existing element buffer is passed, it will be used
 		*/
-		void elementBuffer(std::vector<unsigned short> indices);
+		void elementBuffer(const std::vector<unsigned short> &indices);
 		void elementBuffer(ElementBuffer &e);
 		//Get the number of elements in the element buffer
 		size_t numElements();

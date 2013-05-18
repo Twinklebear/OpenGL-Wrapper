@@ -26,13 +26,6 @@ namespace Util {
     //Read a file and return its contents as a string
 	std::string readFile(const std::string &file);
 	/**
-	* Load the object file passed and return the model, will also try to 
-	* load and pick active material based on mtllib and usemtl commands in file
-	* @param file File to load from
-	* @return The loaded model
-	*/
-	//std::shared_ptr<Model> LoadObj(const std::string &file);
-	/**
 	* Load the materials defined in a material lib file. Materials will be placed into
 	* the map passed indexed by their name
 	* @param file The mtl file to load from

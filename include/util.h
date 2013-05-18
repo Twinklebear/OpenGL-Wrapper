@@ -49,17 +49,23 @@ namespace Util {
 		return res;
 	}
 	//Using scanf in our lexicalCast float/int gets us some more speed
+	//Yea it's unsafe but at this point we're absolutely sure the type we want is
+	//in there, so suppress the warning
+#pragma warning(disable: 4996)
 	template<>
 	inline float lexicalCast(const std::string &str){
 		float f;
 		sscanf(str.c_str(), "%f", &f);
 		return f;
+		#pragma warning(default: 4996)
 	}
+#pragma warning(disable: 4996)
 	template<>
 	inline int lexicalCast(const std::string &str){
 		int i;
 		sscanf(str.c_str(), "%d", &i);
 		return i;
+		#pragma warning(default: 4996)
 	}
 	//Capture a single item
 	template<class T>

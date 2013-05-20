@@ -73,7 +73,7 @@ namespace Util {
 		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
 		auto end = std::sregex_iterator();
 		T t;
-		for (std::sregex_iterator i = begin; i != end; ++i)
+		for (auto i = begin; i != end; ++i)
 			t = lexicalCast<T>(i->str());
 		return t;
 	}
@@ -84,7 +84,7 @@ namespace Util {
 		auto end = std::sregex_iterator();
 		glm::vec3 v;
 		size_t idx = 0;
-		for (std::sregex_iterator i = begin; i != end, idx < v.length(); ++i, ++idx)
+		for (auto i = begin; i != end, idx < v.length(); ++i, ++idx)
 			v[idx] = lexicalCast<float>(i->str());
 		return v;
 	}
@@ -95,7 +95,7 @@ namespace Util {
 		auto end = std::sregex_iterator();
 		glm::vec2 v;
 		size_t idx = 0;
-		for (std::sregex_iterator i = begin; i != end, idx < v.length(); ++i, ++idx)
+		for (auto i = begin; i != end, idx < v.length(); ++i, ++idx)
 			v[idx] = lexicalCast<float>(i->str());
 		return v;
 	}
@@ -104,7 +104,7 @@ namespace Util {
 	void capture(const std::string &str, const std::regex &reg, std::vector<T> &vect){
 		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
 		auto end = std::sregex_iterator();
-		for (std::sregex_iterator i = begin; i != end; ++i)
+		for (auto i = begin; i != end; ++i)
 			vect.push_back(capture<T>(i->str(), reg));
 	}
 }

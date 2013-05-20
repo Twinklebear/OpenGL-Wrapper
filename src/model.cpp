@@ -135,8 +135,8 @@ void Model::loadObj(const std::string &file){
 			auto end = std::sregex_iterator();
 			//Check if the vertex is already stored, if it is push back the index,
 			//if not store the vertex and push in the new index
-			for (std::sregex_iterator i = begin; i != end; ++i){
-				std::map<std::string, unsigned short>::iterator fnd = vertIndices.find(i->str());
+			for (auto i = begin; i != end; ++i){
+				auto fnd = vertIndices.find(i->str());
 				if (fnd != vertIndices.end())
 					indices.push_back(fnd->second);
 				//If we don't find it we need to store the vertex info, add to the indices vector and 

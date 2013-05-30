@@ -88,7 +88,3 @@ std::map<std::string, Material> Util::loadMaterials(const std::string &file){
 	}
 	return mats;
 }
-GLuint Util::loadTexture(const std::string &file){
-	return SOIL_load_OGL_texture(file.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB);
-}

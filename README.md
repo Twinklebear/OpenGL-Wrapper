@@ -3,4 +3,9 @@ OpenGL-Wrapper
 
 A simple OpenGL Wrapper/Learning project I'm working on
 
-This only really exists as a git repo because my OpenCL-OpenGL Interop project depends on this one to simplify the OpenGL code and I don't want to have my wrapper code get split between these projects and diverge. This project also serves as an OpenGL learning playground for me, or I guess anyone else who wants to mess with it. 
+### Dependencies
+- [SDL2](http://www.libsdl.org/)
+- [GLEW](http://glew.sourceforge.net/)
+- [GLM](http://glm.g-truc.net/)
+- [SOIL](http://www.lonesock.net/soil.html)
+- A few C++11 features and the regex library for the .obj loader.

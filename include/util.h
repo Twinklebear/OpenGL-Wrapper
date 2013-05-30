@@ -32,13 +32,6 @@ namespace Util {
 	* @return The map of material name : material
 	*/
 	 std::map<std::string, Material> loadMaterials(const std::string &file);
-	/**
-	* Load a texture and return the handle
-	* TODO: Add ability to set options for loading the texture
-	* @param file File to load texture from
-	* @return The GLuint associated with the texture
-	*/
-	GLuint loadTexture(const std::string &file);
 	//Cast a string to a desired type and return it
 	template<class T>
 	T lexicalCast(const std::string &str){

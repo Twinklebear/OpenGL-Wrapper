@@ -4,6 +4,7 @@
 #include <string>
 #include <functional>
 #include <SDL_opengl.h>
+#include <SOIL.h>
 #include "handle.h"
 
 namespace GL {
@@ -21,13 +22,15 @@ namespace GL {
 		* @param file File to load from
 		* @param upload If we should upload the texture onto the GPU now
 		*/
-		Texture(const std::string &file, bool upload = true);
+		Texture(const std::string &file, bool upload = true, unsigned int flags = 
+			SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB);
 		/**
 		* Load a texture into this object
 		* @param file File to load texture from
 		*/
-		void load(const std::string &file);
-		///Load the texture referenced by mFile
+		void load(const std::string &file, unsigned int flags = 
+			SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB);
+		///Load the texture referenced by mFile with the preset flags
 		void load();
 		///Unload the texture
 		void unload();
@@ -39,6 +42,7 @@ namespace GL {
 	private:
 		Handle mHandle;
 		std::string mFile;
+		unsigned int mFlags;
 		///The deleter function
 		const static std::function<void(GLuint*)> sDeleter;
 	};

@@ -90,7 +90,7 @@ int uboWorking(){
 	Util::checkError("Pos attrib Setup");
 
 	//Set the projection and model matrices
-	glm::mat4 proj = glm::perspective(60.0f, (float)640 / (float)480, 0.1f, 100.0f);
+	glm::mat4 proj = glm::perspective(60.0f, 640.f / 480.f, 0.1f, 100.0f);
 	glm::mat4 model = glm::translate<float>(0, 0, -4) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
 	std::array<glm::mat4, 2> matrices = { proj, model };
 

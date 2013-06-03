@@ -136,6 +136,11 @@ namespace GL {
 	const std::function<void(GLuint*)> Buffer<B>::sDeleter = [](GLuint *b){
 		glDeleteBuffers(1, b);
 	};
+	//I can't seem to get this to compile for some reason 
+	//template<>
+	//const std::function<void(GLuint*)> Buffer<BUFFER::TRANSFORM_FEEDBACK>::sDeleter = [](GLuint *b){
+	//	glDeleteTransformFeedbacks(1, b);
+	//};
 	//To compare buffers we just see if their handles are the same, ie. same GLuint ref
 	template<BUFFER B>
 	bool operator<(const Buffer<B> &rhs, const Buffer<B> &lhs){

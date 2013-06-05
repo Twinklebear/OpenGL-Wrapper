@@ -25,7 +25,7 @@ std::ostream& operator<<(std::ostream &os, const glm::vec3 &v){
 bool Util::checkError(std::string msg){
 		GLint err = glGetError();
 		if (err != GL_NO_ERROR){
-			std::cout << msg << " error: " << std::hex << err << std::endl;
+			std::cout << msg << " error: " << std::hex << err << std::dec << std::endl;
 			return true;
 		}
 		return false;

@@ -71,7 +71,7 @@ namespace Util {
 	}
 	//Capture a glm::vec3
 	template<>
-	glm::vec3 capture<glm::vec3>(const std::string &str, const std::regex &reg){
+	inline glm::vec3 capture<glm::vec3>(const std::string &str, const std::regex &reg){
 		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
 		auto end = std::sregex_iterator();
 		glm::vec3 v;
@@ -82,7 +82,7 @@ namespace Util {
 	}
 	//Capture a glm::vec2
 	template<>
-	glm::vec2 capture<glm::vec2>(const std::string &str, const std::regex &reg){
+	inline glm::vec2 capture<glm::vec2>(const std::string &str, const std::regex &reg){
 		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
 		auto end = std::sregex_iterator();
 		glm::vec2 v;

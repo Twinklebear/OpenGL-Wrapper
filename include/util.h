@@ -35,9 +35,8 @@ namespace Util {
 	//Cast a string to a desired type and return it
 	template<class T>
 	T lexicalCast(const std::string &str){
-		std::stringstream ss;
+		std::stringstream ss(str);
 		T res;
-		ss << str;
 		ss >> res;
 		return res;
 	}
@@ -72,7 +71,7 @@ namespace Util {
 	}
 	//Capture a glm::vec3
 	template<>
-	inline glm::vec3 capture<glm::vec3>(const std::string &str, const std::regex &reg){
+	glm::vec3 capture<glm::vec3>(const std::string &str, const std::regex &reg){
 		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
 		auto end = std::sregex_iterator();
 		glm::vec3 v;
@@ -83,7 +82,7 @@ namespace Util {
 	}
 	//Capture a glm::vec2
 	template<>
-	inline glm::vec2 capture<glm::vec2>(const std::string &str, const std::regex &reg){
+	glm::vec2 capture<glm::vec2>(const std::string &str, const std::regex &reg){
 		auto begin = std::sregex_iterator(str.begin(), str.end(), reg);
 		auto end = std::sregex_iterator();
 		glm::vec2 v;

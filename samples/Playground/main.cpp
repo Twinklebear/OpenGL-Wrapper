@@ -9,7 +9,7 @@
 #include <glm/ext.hpp>
 #include <window.h>
 #include <input.h>
-#include <glvertexbuffer.h>
+#include <glbuffer.h>
 #include <glvertexarray.h>
 #include <glshader.h>
 #include <glprogram.h>

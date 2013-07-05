@@ -5,7 +5,7 @@
 #include <functional>
 #include <GL/glew.h>
 #include "handle.h"
-#include "glvertexbuffer.h"
+#include "glbuffer.h"
 
 namespace GL {
 	/**

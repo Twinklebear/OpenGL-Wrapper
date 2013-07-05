@@ -1,5 +1,5 @@
-#ifndef GLVERTEXBUFFER_H
-#define GLVERTEXBUFFER_H
+#ifndef GLBUFFER_H
+#define GLBUFFER_H
 
 #include <functional>
 #include <array>

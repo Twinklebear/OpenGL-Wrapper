@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include "../include/glvertexarray.h"
-#include "../include/glvertexbuffer.h"
+#include "../include/glbuffer.h"
 #include "../include/glprogram.h"
 #include "../include/material.h"
 #include "../include/util.h"

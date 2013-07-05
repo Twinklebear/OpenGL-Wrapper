@@ -3,7 +3,7 @@
 #include <functional>
 #include <GL/glew.h>
 #include "../include/handle.h"
-#include "../include/glvertexbuffer.h"
+#include "../include/glbuffer.h"
 #include "../include/glvertexarray.h"
 
 const std::function<void(GLuint*)> GL::VertexArray::sDeleter = 

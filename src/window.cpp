@@ -4,8 +4,6 @@
 #include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
-//#include "../include/glvertexarray.h"
-//#include "../include/glprogram.h"
 #include "../include/window.h"
 
 #include <iostream>

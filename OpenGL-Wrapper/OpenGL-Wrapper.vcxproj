@@ -104,12 +104,12 @@
     <ClCompile Include="..\src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\glbuffer.h" />
     <ClInclude Include="..\include\glcamera.h" />
     <ClInclude Include="..\include\glprogram.h" />
     <ClInclude Include="..\include\glshader.h" />
     <ClInclude Include="..\include\gltexture.h" />
     <ClInclude Include="..\include\glvertexarray.h" />
-    <ClInclude Include="..\include\glvertexbuffer.h" />
     <ClInclude Include="..\include\handle.h" />
     <ClInclude Include="..\include\input.h" />
     <ClInclude Include="..\include\material.h" />

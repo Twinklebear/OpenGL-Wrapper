@@ -6,9 +6,6 @@
 #include <memory>
 #include <SDL.h>
 #include <SDL_opengl.h>
-//#include "glvertexarray.h"
-//#include "glprogram.h"
-//#include "gltexture.h"
 
 /**
 *  Window management class, provides a simple wrapper around

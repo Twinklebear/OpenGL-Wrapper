@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 #include <glm/glm.hpp>
-#include "glvertexbuffer.h"
+#include "glbuffer.h"
 #include "glvertexarray.h"
 #include "glprogram.h"
 #include "material.h"

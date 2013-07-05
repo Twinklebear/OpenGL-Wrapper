@@ -59,9 +59,6 @@
     <ClInclude Include="..\include\glvertexarray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\glvertexbuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\handle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -81,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\glbuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

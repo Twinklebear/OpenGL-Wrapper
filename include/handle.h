@@ -23,7 +23,7 @@ namespace GL {
 		*/
         operator GLuint() const;
         //Release the reference
-        void Release();
+        void release();
 
     private:
 		std::shared_ptr<GLuint> mObj;

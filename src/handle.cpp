@@ -10,7 +10,7 @@ GL::Handle::Handle(GLuint obj, std::function<void(GLuint*)> del)
 {
 	mObj = std::shared_ptr<GLuint>(new GLuint(obj), del);
 }
-void GL::Handle::Release(){
+void GL::Handle::release(){
 	if (mObj != nullptr)
 		mObj.reset();
 }

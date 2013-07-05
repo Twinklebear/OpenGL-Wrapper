@@ -27,7 +27,7 @@ void GL::Texture::load(){
 	mHandle = Handle(t, sDeleter);
 }
 void GL::Texture::unload(){
-	mHandle.Release();
+	mHandle.release();
 }
 std::string GL::Texture::file() const {
 	return mFile;

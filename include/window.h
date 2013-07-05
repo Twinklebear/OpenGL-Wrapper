@@ -18,8 +18,9 @@ public:
 	* @param title window title
 	* @param width window width
 	* @param height window height
+	* @param debug if the OpenGL context should have debugging enabled, default false
 	*/
-	Window(std::string title = "Window", int width = 640, int height = 480);
+	Window(std::string title = "Window", int width = 640, int height = 480, bool debug = false);
 	//Close the window
 	~Window();
     /**

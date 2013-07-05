@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-Window::Window(std::string title, int width, int height)
+Window::Window(std::string title, int width, int height, bool debug)
 	: mWindow(nullptr, SDL_DestroyWindow)
 {
     //Setup our window
@@ -22,6 +22,8 @@ Window::Window(std::string title, int width, int height)
 	//Turn on multisample
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+	if (debug)
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
     //Create our window
     mWindow.reset(SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 

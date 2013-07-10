@@ -8,7 +8,7 @@
 
 namespace GL {
 	//The various shader types
-    enum SHADER { VERTEX = GL_VERTEX_SHADER, TESS_CONTROL = GL_TESS_CONTROL_SHADER,
+    enum class SHADER { VERTEX = GL_VERTEX_SHADER, TESS_CONTROL = GL_TESS_CONTROL_SHADER,
 		TESS_EVAL = GL_TESS_EVALUATION_SHADER, GEOMETRY = GL_GEOMETRY_SHADER,
 		FRAGMENT = GL_FRAGMENT_SHADER, COMPUTE = GL_COMPUTE_SHADER
 	};
@@ -44,22 +44,22 @@ namespace GL {
 				//Setup our error string
 				std::string errorMsg = "";
 				switch (S){
-				case VERTEX:
+				case SHADER::VERTEX:
 					errorMsg = "Vertex shader error log:\n";
 					break;
-				case TESS_CONTROL:
+				case SHADER::TESS_CONTROL:
 					errorMsg = "Tess_control shader error log:\n";
 					break;
-				case TESS_EVAL:
+				case SHADER::TESS_EVAL:
 					errorMsg = "Tess_eval shader error log:\n";
 					break;
-				case GEOMETRY:
+				case SHADER::GEOMETRY:
 					errorMsg = "Geometry shader error log:\n";
 					break;
-				case FRAGMENT:
+				case SHADER::FRAGMENT:
 					errorMsg = "Fragment shader error log:\n";
 					break;
-				case COMPUTE:
+				case SHADER::COMPUTE:
 					errorMsg = "Compute shader error log:\n";
 					break;
 				default:
@@ -96,7 +96,7 @@ namespace GL {
         * @param type The type of shader to create
         */
 		void create(const std::string &file){
-			mHandle = Handle(glCreateShader(S), sDeleter);
+			mHandle = Handle(glCreateShader(static_cast<GLenum>(S)), sDeleter);
 			std::string src = Util::readFile(file);
 			const char *srcPtr = src.c_str();
 			glShaderSource(mHandle, 1, &srcPtr, NULL);
@@ -112,12 +112,12 @@ namespace GL {
 	const std::function<void(GLuint*)> Shader<S>::sDeleter = [](GLuint *s){ glDeleteShader(*s); };
 
 	//Some convenient typedefs
-	typedef Shader<VERTEX> VertexShader;
-	typedef Shader<TESS_CONTROL> TessControlShader;
-	typedef Shader<TESS_EVAL> TessEvalShader;
-	typedef Shader<GEOMETRY> GeometryShader;
-	typedef Shader<FRAGMENT> FragmentShader;
-	typedef Shader<COMPUTE> ComputeShader;
+	typedef Shader<SHADER::VERTEX> VertexShader;
+	typedef Shader<SHADER::TESS_CONTROL> TessControlShader;
+	typedef Shader<SHADER::TESS_EVAL> TessEvalShader;
+	typedef Shader<SHADER::GEOMETRY> GeometryShader;
+	typedef Shader<SHADER::FRAGMENT> FragmentShader;
+	typedef Shader<SHADER::COMPUTE> ComputeShader;
 }
 
 #endif

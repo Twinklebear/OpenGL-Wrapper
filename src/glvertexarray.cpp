@@ -20,7 +20,7 @@ void GL::VertexArray::elementBuffer(const std::vector<unsigned short> &indices){
 }
 void GL::VertexArray::elementBuffer(ElementBuffer &e){
 	glBindVertexArray(mHandle);
-	glBindBuffer(BUFFER::ELEMENT_ARRAY, e);
+	glBindBuffer(static_cast<GLenum>(BUFFER::ELEMENT_ARRAY), e);
 	mElemBuf = e;
 }
 size_t GL::VertexArray::numElements(){
@@ -30,7 +30,7 @@ void GL::VertexArray::setAttribPointer(VertexBuffer &b, GLint attrib, size_t siz
 	bool normalized, size_t stride, void *offset)
 {
 	glBindVertexArray(mHandle);
-	glBindBuffer(BUFFER::ARRAY, b);
+	glBindBuffer(static_cast<GLenum>(BUFFER::ARRAY), b);
 	glEnableVertexAttribArray(attrib);
 	glVertexAttribPointer(attrib, size, type, normalized, stride, offset);
 	//Keep a reference of the buffer so it won't be deleted before the vao

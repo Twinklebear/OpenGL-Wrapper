@@ -11,7 +11,7 @@
 
 namespace GL {
 	//All OpenGL buffer types
-	enum BUFFER { ARRAY = GL_ARRAY_BUFFER, ATOMIC_COUNTER = GL_ATOMIC_COUNTER_BUFFER,
+	enum class BUFFER { ARRAY = GL_ARRAY_BUFFER, ATOMIC_COUNTER = GL_ATOMIC_COUNTER_BUFFER,
 		COPY_READ = GL_COPY_READ_BUFFER, COPY_WRITE = GL_COPY_WRITE_BUFFER,
 		DRAW_INDIRECT = GL_DRAW_INDIRECT_BUFFER, DISPATCH_INDIRECT = GL_DISPATCH_INDIRECT_BUFFER,
 		ELEMENT_ARRAY = GL_ELEMENT_ARRAY_BUFFER, PIXEL_PACK = GL_PIXEL_PACK_BUFFER,
@@ -20,7 +20,7 @@ namespace GL {
 		UNIFORM = GL_UNIFORM_BUFFER
 	};
 	//Buffer usage types
-	enum USAGE { STREAM_DRAW = GL_STREAM_DRAW, STREAM_READ = GL_STREAM_READ,
+	enum class USAGE { STREAM_DRAW = GL_STREAM_DRAW, STREAM_READ = GL_STREAM_READ,
 		STREAM_COPY = GL_STREAM_COPY, STATIC_DRAW = GL_STATIC_DRAW,
 		STATIC_READ = GL_STATIC_READ, STATIC_COPY = GL_STATIC_COPY,
 		DYNAMIC_DRAW = GL_DYNAMIC_DRAW, DYNAMIC_READ = GL_DYNAMIC_READ,
@@ -68,20 +68,20 @@ namespace GL {
 		template<class T>
 		void bufferData(const T &data, USAGE usage){
 			mNvals = 1;
-			glBindBuffer(B, mHandle);
-			glBufferData(B, sizeof(T), &data, usage);
+			glBindBuffer(static_cast<GLenum>(B), mHandle);
+			glBufferData(static_cast<GLenum>(B), sizeof(T), &data, static_cast<GLenum>(usage));
 		}
 		template<class T, size_t N>
 		void bufferData(const std::array<T, N> &data, USAGE usage){
 			mNvals = N;
-			glBindBuffer(B, mHandle);
-			glBufferData(B, N * sizeof(T), &data[0], usage);
+			glBindBuffer(static_cast<GLenum>(B), mHandle);
+			glBufferData(static_cast<GLenum>(B), N * sizeof(T), &data[0], static_cast<GLenum>(usage));
 		}
 		template<class T>
 		void bufferData(const std::vector<T> &data, USAGE usage){
 			mNvals = data.size();
-			glBindBuffer(B, mHandle);
-			glBufferData(B, data.size() * sizeof(T), &data[0], usage);
+			glBindBuffer(static_cast<GLenum>(B), mHandle);
+			glBufferData(static_cast<GLenum>(B), data.size() * sizeof(T), &data[0], static_cast<GLenum>(usage));
 		}
 		/**
 		* Replace some data within the buffer at some offset
@@ -91,20 +91,20 @@ namespace GL {
 		template<class T>
 		void bufferSubData(const T &data, size_t offset){
 			mNvals = 1;
-			glBindBuffer(B, mHandle);
-			glBufferSubData(B, offset, sizeof(T), &data);
+			glBindBuffer(static_cast<GLenum>(B), mHandle);
+			glBufferSubData(static_cast<GLenum>(B), offset, sizeof(T), &data);
 		}
 		template<class T, size_t N>
 		void bufferSubData(const std::array<T, N> &data, size_t offset){
 			mNvals = N;
-			glBindBuffer(B, mHandle);
-			glBufferSubData(B, offset, N * sizeof(T), &data[0]);
+			glBindBuffer(static_cast<GLenum>(B), mHandle);
+			glBufferSubData(static_cast<GLenum>(B), offset, N * sizeof(T), &data[0]);
 		}
 		template<class T>
 		void bufferSubData(const std::vector<T> &data, size_t offset){
 			mNvals = data.size();
-			glBindBuffer(B, mHandle);
-			glBufferSubData(B, offset, data.size() * sizeof(T), &data[0]);
+			glBindBuffer(static_cast<GLenum>(B), mHandle);
+			glBufferSubData(static_cast<GLenum>(B), offset, data.size() * sizeof(T), &data[0]);
 		}
 		/**
 		* Get the buffer type 

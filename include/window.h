@@ -4,8 +4,8 @@
 #include <string>
 #include <stdexcept>
 #include <memory>
+#include <GL/glew.h>
 #include <SDL.h>
-#include <SDL_opengl.h>
 
 /**
 *  Window management class, provides a simple wrapper around

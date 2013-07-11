@@ -97,6 +97,7 @@
     <ClCompile Include="..\src\glvertexarray.cpp" />
     <ClCompile Include="..\src\handle.cpp" />
     <ClCompile Include="..\src\input.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
     <ClCompile Include="..\src\material.cpp" />
     <ClCompile Include="..\src\model.cpp" />
     <ClCompile Include="..\src\timer.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="..\include\glvertexarray.h" />
     <ClInclude Include="..\include\handle.h" />
     <ClInclude Include="..\include\input.h" />
+    <ClInclude Include="..\include\logger.h" />
     <ClInclude Include="..\include\material.h" />
     <ClInclude Include="..\include\model.h" />
     <ClInclude Include="..\include\timer.h" />

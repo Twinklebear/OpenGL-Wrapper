@@ -44,14 +44,18 @@ const std::array<unsigned short, 6> quadElems = {
 
 int uboWorking(){
 	try {
-		Window::Init();
+		Window::init();
 	}
 	catch (const std::runtime_error &e){
 		std::cout << e.what() << std::endl;
 	}
 	Input::Init();
-	Window window("Test");
-	
+	Window window("Test", 640, 480);
+
+	std::string msg("Testing!");
+	glDebugMessageInsert(GL_DEBUG_SOURCE_THIRD_PARTY, GL_DEBUG_TYPE_OTHER, 1, GL_DEBUG_SEVERITY_LOW, 
+		msg.size(), msg.c_str());
+
 	//Setup vbo & ebo
 	GL::VertexBuffer vbo(quad, GL::USAGE::STATIC_DRAW);
 	GL::ElementBuffer ebo(quadElems, GL::USAGE::STATIC_DRAW);
@@ -112,13 +116,13 @@ int uboWorking(){
 		if (Input::KeyDown(SDL_SCANCODE_ESCAPE))
 			Input::Quit(true);
 
-		window.Clear();
+		window.clear();
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 		
-		window.Present();
+		window.present();
 	}
-	Window::Quit();
+	Window::quit();
 
 	return 0;
 }

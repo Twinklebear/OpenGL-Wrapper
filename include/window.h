@@ -6,6 +6,9 @@
 #include <memory>
 #include <GL/glew.h>
 #include <SDL.h>
+#ifdef _DEBUG
+#include "logger.h"
+#endif
 
 /**
 *  Window management class, provides a simple wrapper around
@@ -18,18 +21,18 @@ public:
 	* @param title window title
 	* @param width window width
 	* @param height window height
-	* @param debug if the OpenGL context should have debugging enabled, default false
 	*/
-	Window(std::string title = "Window", int width = 640, int height = 480, bool debug = false);
+	Window(std::string title = "Window", int width = 640, int height = 480);
 	//Close the window
 	~Window();
     /**
-	*  Initialize SDL, setup the window and renderer
-	*  @param title The window title
+	* Initialize SDL, setup the window and renderer
+	* TODO: Change this to its own SDL management class
+	* @param title The window title
 	*/
-	static void Init();
+	static void init();
 	///Quit SDL and destroy the window and renderer
-	static void Quit();
+	static void quit();
     /**
     * Draw a VAO using some program with the desired draw mode
     * @param vao The vao to draw
@@ -61,20 +64,23 @@ public:
     */
 	//void DrawElementsTextured(GL::VertexArray &vao, GL::Program &p, GL::Texture &tex, GLenum mode, int count, size_t offset = 0);
     ///Clear the renderer
-    void Clear();
+    void clear();
     ///Present the renderer, ie. update screen
-    void Present();
+    void present();
     ///Get the window's box
-    SDL_Rect Box();
+    SDL_Rect box();
 	//Make the window the current rendering context
-	bool MakeCurrent();
+	bool makeCurrent();
 	//Close the window & delete the context
-	void Close();
+	void close();
 
 private:
     std::unique_ptr<SDL_Window, void (*)(SDL_Window*)> mWindow;
     SDL_GLContext mContext;
     SDL_Rect mBox;
+#ifdef _DEBUG
+	Util::Logger debugOut;
+#endif
 };
 
 #endif

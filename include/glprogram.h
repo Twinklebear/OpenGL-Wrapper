@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include "handle.h"
+#include "glbuffer.h"
 #include "glshader.h"
 
 namespace GL {
@@ -60,6 +61,15 @@ namespace GL {
 		* @param name Name of the uniform block to get location of
 		*/
 		GLint getUniformBlockIndex(const std::string &name);
+		/**
+		* Bind a buffer to an uniform block in the program. For now this will
+		* only work with UniformBlocks too I think since that's the only pre-4.3 block we
+		* can use from this side.
+		* glGetProgramResourceIndex is needed for shader storage blocks?
+		* @param name Name of the block to bind too
+		* @param buf The uniform buffer to bind
+		*/
+		void bindUniformBlock(const std::string &name, const UniformBuffer &buf);
         //TODO: Come up with a better idea for making all these methods
         //or can i?
 		void uniform1i(const std::string &attrib, int i);

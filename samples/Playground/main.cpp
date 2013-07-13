@@ -52,10 +52,6 @@ int uboWorking(){
 	Input::Init();
 	Window window("Test", 640, 480);
 
-	std::string msg("Testing!");
-	glDebugMessageInsert(GL_DEBUG_SOURCE_THIRD_PARTY, GL_DEBUG_TYPE_OTHER, 1, GL_DEBUG_SEVERITY_LOW, 
-		msg.size(), msg.c_str());
-
 	//Setup vbo & ebo
 	GL::VertexBuffer vbo(quad, GL::USAGE::STATIC_DRAW);
 	GL::ElementBuffer ebo(quadElems, GL::USAGE::STATIC_DRAW);
@@ -98,17 +94,10 @@ int uboWorking(){
 	glm::mat4 model = glm::translate<float>(0, 0, -4) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
 	std::array<glm::mat4, 2> matrices = { proj, model };
 
-	GLint projBufIdx = program.getUniformBlockIndex("Mat");
-	if (projBufIdx == GL_INVALID_INDEX)
-		std::cout << "Invalid attribute location!" << std::endl;
-
 	GL::UniformBuffer ubo(matrices, GL::USAGE::STATIC_DRAW);
-	glBindBufferBase(GL_UNIFORM_BUFFER, projBufIdx, ubo);
-	Util::checkError("Proj buf Setup");
+	program.bindUniformBlock("Mat", ubo);
 
-	//Testing bufferSubData
-	model *= glm::rotate<float>(45, glm::vec3(0, 0, -1));
-	ubo.bufferSubData(model, sizeof(glm::mat4));
+	Util::checkError("Proj buf Setup");
 
 	program.use();
 	while (!Input::Quit()){

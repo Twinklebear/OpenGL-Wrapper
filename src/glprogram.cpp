@@ -59,6 +59,10 @@ GLint GL::Program::getAttribute(const std::string &name){
 GLint GL::Program::getUniformBlockIndex(const std::string &name){
 	return glGetUniformBlockIndex(mHandle, name.c_str());
 }
+void GL::Program::bindUniformBlock(const std::string &name, const UniformBuffer &buf){
+	GLint idx = getUniformBlockIndex(name);
+	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), idx, buf);
+}
 void GL::Program::uniform1i(const std::string &attrib, int i){
 	glUseProgram(mHandle);
 	GLint attribLoc = glGetUniformLocation(mHandle, attrib.c_str());

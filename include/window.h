@@ -73,6 +73,12 @@ public:
 	bool makeCurrent();
 	//Close the window & delete the context
 	void close();
+	/**
+	* Allow user to insert their own messages into the log
+	* if _DEBUG is defined the message will be logged, if not the function
+	* call does nothing
+	*/
+	void logMessage(const std::string &msg);
 
 private:
     std::unique_ptr<SDL_Window, void (*)(SDL_Window*)> mWindow;

@@ -122,15 +122,21 @@ void Window::close(){
 	SDL_GL_DeleteContext(mContext);
 	mWindow.~unique_ptr();
 }
+void Window::logMessage(const std::string &msg){
+#ifdef _DEBUG
+	debugOut << "---User Message---\nTime: " << debugOut.timeStamp()
+		<< "\nMessage: " << msg << "\n---End User Message---\n";
+#endif
+}
+
 #ifdef _DEBUG
 void APIENTRY glDebugCallback(GLenum src, GLenum type, GLuint id, GLenum severity, GLsizei length,
 	const GLchar *msg, void *userParam)
 {
 	Util::Logger &log = *static_cast<Util::Logger*>(userParam);
-	log << "---OpenGL Message---\nTime: ";
-	log.timeStamp();
+	log << "---OpenGL Message---\nTime: " << log.timeStamp();
 	
-	log << "Type: ";
+	log << "\nType: ";
 	switch (type){
 	case GL_DEBUG_TYPE_ERROR:
 		log << "ERROR";

@@ -24,14 +24,15 @@ namespace Util {
 		*/
 		Logger(std::ostream &os);
 		/**
-		* Write some string to the log file, the string will have the time since
-		* the start of the program prepended to it, resulting in output like:
-		* HH:MM:SS - msg
+		* Write some string to the log file and add the time since SDL
+		* was initialized before the message, output will look like:
+		* HH:MM:SS
+		* msg
 		* @param msg The message to log
 		*/
 		void log(const std::string &msg);
-		//Write a timestamp in the log, a newline character is written after the stamp
-		void timeStamp();
+		//Get the current log timestamp as a string
+		std::string timeStamp();
 		//General stream output so the logger can behave like the output stream
 		template<class T>
 		Util::Logger& operator<<(const T &t){

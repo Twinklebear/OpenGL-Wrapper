@@ -57,6 +57,10 @@ namespace GL {
         */
         GLint getAttribute(const std::string &name);
 		/**
+		* Get the location of a uniform with some name
+		*/
+		GLint getUniform(const std::string &name);
+		/**
 		* Get the location of a uniform block  with some name
 		* @param name Name of the uniform block to get location of
 		*/

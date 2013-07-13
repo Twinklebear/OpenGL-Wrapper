@@ -56,6 +56,9 @@ void GL::Program::use(){
 GLint GL::Program::getAttribute(const std::string &name){
 	return glGetAttribLocation(mHandle, name.c_str());
 }
+GLint GL::Program::getUniform(const std::string &name){
+	return glGetUniformLocation(mHandle, name.c_str());
+}
 GLint GL::Program::getUniformBlockIndex(const std::string &name){
 	return glGetUniformBlockIndex(mHandle, name.c_str());
 }

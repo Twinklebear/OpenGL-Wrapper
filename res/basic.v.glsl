@@ -8,9 +8,12 @@ layout (std140) uniform Mat {
 
 in vec4 position;
 in vec4 color;
+in vec2 texUv;
 out vec4 fragColor;
+out vec2 uv;
 
 void main(){
 	fragColor = color;
+	uv = texUv;
 	gl_Position = p * m * position;
 }

@@ -25,7 +25,7 @@ int main(int argc, char** argv){
 	return uboWorking();
 }
 
-const std::array<glm::vec4, 8> quad = {
+const std::array<glm::vec4, 10> quad = {
 	//Vertex positions
 	glm::vec4(-1.0, -1.0, 0.0, 1.0),
 	glm::vec4(1.0, -1.0, 0.0, 1.0),
@@ -35,7 +35,10 @@ const std::array<glm::vec4, 8> quad = {
 	glm::vec4(1.0, 0.0, 0.0, 1.0),
 	glm::vec4(0.0, 1.0, 0.0, 1.0),
 	glm::vec4(0.0, 0.0, 1.0, 1.0),
-	glm::vec4(1.0, 1.0, 0.0, 1.0)
+	glm::vec4(1.0, 1.0, 0.0, 1.0),
+	//Texture UVs, stored 2 to a vec4
+	glm::vec4(0.0, 0.0, 2.0, 0.0),
+	glm::vec4(0.0, 2.0, 2.0, 2.0),
 };
 const std::array<unsigned short, 6> quadElems = {
 	0, 1, 2,
@@ -85,19 +88,37 @@ int uboWorking(){
 	if (colAttrib == -1)
 		std::cout << "Invalid color attrib loc" << std::endl;
 
+	GLint uvAttrib = program.getAttribute("texUv");
+	if (uvAttrib == -1)
+		std::cout << "Invalid uv attrib loc" << std::endl;
+
 	vao.setAttribPointer(vbo, posAttrib, 4, GL_FLOAT);
 	vao.setAttribPointer(vbo, colAttrib, 4, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 4));
+	vao.setAttribPointer(vbo, uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 8));
 	Util::checkError("Pos attrib Setup");
 
 	//Set the projection and model matrices
 	glm::mat4 proj = glm::perspective(60.0f, 640.f / 480.f, 0.1f, 100.0f);
-	glm::mat4 model = glm::translate<float>(0, 0, -4) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
+	glm::mat4 model = glm::translate<float>(0, 0, -2.5) * glm::rotate<float>(45, glm::vec3(0, 0, 1));
 	std::array<glm::mat4, 2> matrices = { proj, model };
 
 	GL::UniformBuffer ubo(matrices, GL::USAGE::STATIC_DRAW);
 	program.bindUniformBlock("Mat", ubo);
-
 	Util::checkError("Proj buf Setup");
+
+	//Creating the texture binds it to TEXTURE_2D so no need to bind again
+	GL::Texture texture("../res/map.png", true);
+
+	//Checking out samplers
+	GLuint sampler;
+	glGenSamplers(1, &sampler);
+	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindSampler(0, sampler);
 
 	program.use();
 	while (!Input::Quit()){

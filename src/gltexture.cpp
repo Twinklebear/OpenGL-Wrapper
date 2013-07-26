@@ -29,6 +29,15 @@ void GL::Texture::load(){
 void GL::Texture::unload(){
 	mHandle.release();
 }
+void GL::Texture::bind(GLenum unit){
+	glActiveTexture(unit);
+	glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(mHandle));
+}
+void GL::Texture::bind(GLenum unit, Sampler &sampler){
+	glActiveTexture(unit);
+	glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(mHandle));
+	glBindSampler(unit - GL_TEXTURE0, sampler);
+}
 std::string GL::Texture::file() const {
 	return mFile;
 }

@@ -6,11 +6,13 @@
 #include <SDL_opengl.h>
 #include <SOIL.h>
 #include "handle.h"
+#include "glsampler.h"
 
 namespace GL {
 	/**
 	* Simple handle for interacting with textures
 	* TODO: Add information about width and height and such
+	* also need to add support for other types of textures via making this a template class
 	*/
 	class Texture {
 	public:
@@ -34,6 +36,10 @@ namespace GL {
 		void load();
 		///Unload the texture
 		void unload();
+		///Bind the texture to a texture unit
+		void bind(GLenum unit);
+		///Bind the texture to a unit along with a sampler
+		void bind(GLenum unit, Sampler &sampler);
 		///Get file name
 		std::string file() const;
 		///Pretend to be a GLuint

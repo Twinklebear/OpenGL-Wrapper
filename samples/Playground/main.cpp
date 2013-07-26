@@ -109,16 +109,13 @@ int uboWorking(){
 	//Creating the texture binds it to TEXTURE_2D so no need to bind again
 	GL::Texture texture("../res/map.png", true);
 
-	//Checking out samplers
-	GLuint sampler;
-	glGenSamplers(1, &sampler);
-	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glBindSampler(0, sampler);
+	GL::Sampler sampler;
+	sampler.parameteri(GL_TEXTURE_WRAP_S, GL_REPEAT);
+	sampler.parameteri(GL_TEXTURE_WRAP_T, GL_CLAMP);
+	sampler.parameteri(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	sampler.parameteri(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
+	texture.bind(GL_TEXTURE0, sampler);
 
 	program.use();
 	while (!Input::Quit()){

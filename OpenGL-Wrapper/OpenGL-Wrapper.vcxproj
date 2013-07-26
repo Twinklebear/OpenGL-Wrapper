@@ -93,6 +93,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\glcamera.cpp" />
     <ClCompile Include="..\src\glprogram.cpp" />
+    <ClCompile Include="..\src\glsampler.cpp" />
     <ClCompile Include="..\src\gltexture.cpp" />
     <ClCompile Include="..\src\glvertexarray.cpp" />
     <ClCompile Include="..\src\handle.cpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="..\include\glbuffer.h" />
     <ClInclude Include="..\include\glcamera.h" />
     <ClInclude Include="..\include\glprogram.h" />
+    <ClInclude Include="..\include\glsampler.h" />
     <ClInclude Include="..\include\glshader.h" />
     <ClInclude Include="..\include\gltexture.h" />
     <ClInclude Include="..\include\glvertexarray.h" />

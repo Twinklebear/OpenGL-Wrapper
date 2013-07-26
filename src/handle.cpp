@@ -7,8 +7,7 @@ GL::Handle::Handle(GLuint obj, std::function<void(GLuint*)> del)
 	: mObj(new GLuint(obj), del)
 {}
 void GL::Handle::release(){
-	if (mObj != nullptr)
-		mObj.reset();
+	mObj.reset();
 }
 GL::Handle::operator GLuint() const {
 	if (mObj == nullptr)

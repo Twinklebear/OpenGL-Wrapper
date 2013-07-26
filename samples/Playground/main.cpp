@@ -37,8 +37,8 @@ const std::array<glm::vec4, 10> quad = {
 	glm::vec4(0.0, 0.0, 1.0, 1.0),
 	glm::vec4(1.0, 1.0, 0.0, 1.0),
 	//Texture UVs, stored 2 to a vec4
-	glm::vec4(0.0, 0.0, 2.0, 0.0),
-	glm::vec4(0.0, 2.0, 2.0, 2.0),
+	glm::vec4(0.0, 0.0, 1.0, 0.0),
+	glm::vec4(0.0, 2.0, 1.0, 2.0),
 };
 const std::array<unsigned short, 6> quadElems = {
 	0, 1, 2,
@@ -71,7 +71,7 @@ int uboWorking(){
 		std::cout << vShader.getLog() << std::endl;
 	Util::checkError("Vert shader Setup");
 
-	GL::FragmentShader fShader("../res/basic.f.glsl");
+	GL::FragmentShader fShader("../res/multitexture.f.glsl");
 	if (!fShader.status())
 		std::cout << fShader.getLog() << std::endl;
 	Util::checkError("Frag shader Setup");
@@ -108,6 +108,7 @@ int uboWorking(){
 
 	//Creating the texture binds it to TEXTURE_2D so no need to bind again
 	GL::Texture texture("../res/map.png", true);
+	GL::Texture textureB("../res/strip.png", true);
 
 	GL::Sampler sampler;
 	sampler.parameteri(GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -116,6 +117,9 @@ int uboWorking(){
 	sampler.parameteri(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
 	texture.bind(GL_TEXTURE0, sampler);
+	textureB.bind(GL_TEXTURE1);
+	program.uniform1i("texA", 0);
+	program.uniform1i("texB", 1);
 
 	program.use();
 	while (!Input::Quit()){

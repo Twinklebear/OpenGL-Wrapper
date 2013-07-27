@@ -21,7 +21,7 @@ std::string Util::Logger::timeStamp(){
 	int min = sec / 60 - hrs * 3600;
 	sec = static_cast<int>(sec - hrs * 3600 - min * 60);
 	std::stringstream ss;
-	ss << hrs << ":" << min << ":" << sec << "\n";
+	ss << hrs << ":" << min << ":" << sec;
 	return ss.str();
 }
 Util::Logger& Util::Logger::operator<<(std::ostream&(*f)(std::ostream&)){

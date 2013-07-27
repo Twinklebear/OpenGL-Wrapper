@@ -32,11 +32,11 @@ const std::array<glm::vec4, 10> quad = {
 	glm::vec4(1.0, -1.0, 0.0, 1.0),
 	glm::vec4(-1.0, 1.0, 0.0, 1.0),
 	glm::vec4(1.0, 1.0, 0.0, 1.0),
-	//Vertex colors
-	glm::vec4(1.0, 0.0, 0.0, 1.0),
-	glm::vec4(0.0, 1.0, 0.0, 1.0),
-	glm::vec4(0.0, 0.0, 1.0, 1.0),
-	glm::vec4(1.0, 1.0, 0.0, 1.0),
+	//Vertex normals
+	glm::vec4(0.0, 0.0, 1.0, 0.0),
+	glm::vec4(0.0, 0.0, 1.0, 0.0),
+	glm::vec4(0.0, 0.0, 1.0, 0.0),
+	glm::vec4(0.0, 0.0, 1.0, 0.0),
 	//Texture UVs, stored 2 to a vec4
 	glm::vec4(0.0, 0.0, 1.0, 0.0),
 	glm::vec4(0.0, 1.0, 1.0, 1.0),
@@ -63,9 +63,12 @@ int uboWorking(){
 	vao.elementBuffer(ebo);
 
 	GL::Program program("../res/basic.v.glsl", "../res/basic.f.glsl");
-	vao.setAttribPointer(vbo, program.getAttribute("position"), 4, GL_FLOAT);
-	vao.setAttribPointer(vbo, program.getAttribute("color"), 4, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 4));
-	vao.setAttribPointer(vbo, program.getAttribute("texUv"), 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 8));
+	if (!program.status())
+		window.logMessage(program.getLog());
+
+	vao.setAttribPointer(vbo, program.getAttribute("vPosition"), 4, GL_FLOAT);
+	vao.setAttribPointer(vbo, program.getAttribute("vNormal"), 4, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 4));
+	vao.setAttribPointer(vbo, program.getAttribute("vUv"), 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 8));
 
 	glm::mat4 quadModel = glm::translate(0.f, -1.f, 0.f) * glm::rotate(-90.f, glm::vec3(1.f, 0.f, 0.f));
 	program.uniformMat4x4("m", quadModel);
@@ -80,8 +83,12 @@ int uboWorking(){
 	GL::VertexBuffer cubeVBO;
 	Model::loadObj("../res/cube.obj", cubeVAO, cubeVBO);
 
-	GL::Program cubeProg("../res/cube_simple.v.glsl", "../res/cube_simple.f.glsl");
-	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("position"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3));
+	GL::Program cubeProg("../res/cube.v.glsl", "../res/cube.f.glsl");
+	if (!cubeProg.status())
+		window.logMessage(program.getLog());
+
+	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("vPosition"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3));
+	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("vNormal"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3), (void*)sizeof(glm::vec3));
 	glm::mat4 cubeModel = glm::translate(0.f, -0.7f, 0.f) * glm::rotate(45.f, glm::vec3(0.f, 1.f, 0.f)) * glm::scale(0.3f, 0.3f, 0.3f);
 	cubeProg.uniformMat4x4("m", cubeModel);
 

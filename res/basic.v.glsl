@@ -9,14 +9,15 @@ layout (std140) uniform Globals {
 //The model matrix
 uniform mat4 m;
 
-in vec4 position;
-in vec4 color;
-in vec2 texUv;
-out vec4 fragColor;
+in vec4 vPosition;
+in vec4 vNormal;
+in vec2 vUv;
+
 out vec2 uv;
+out vec3 normal;
 
 void main(){
-	fragColor = color;
-	uv = texUv;
-	gl_Position = p * m * position;
+	uv = vUv;
+	normal = normalize(m * vNormal).xyz;
+	gl_Position = p * m * vPosition;
 }

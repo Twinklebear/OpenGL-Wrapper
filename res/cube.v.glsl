@@ -8,8 +8,12 @@ layout (std140) uniform Globals {
 
 //The model matrix
 uniform mat4 m;
-in vec4 position;
+in vec4 vPosition;
+in vec3 vNormal;
+
+out vec3 normal;
 
 void main(){
-	gl_Position = p * m * position;
+	normal = normalize(m * vec4(vNormal, 0.f)).xyz;
+	gl_Position = p * m * vPosition;
 }

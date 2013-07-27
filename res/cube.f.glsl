@@ -1,7 +1,9 @@
 #version 330
 
+in vec3 normal;
+
 out vec4 outColor;
 
 void main(){
-	outColor = vec4(0.5f, 0.5f, 1.0f, 1.0f);
+	outColor = vec4(normal.x, normal.y, normal.z, 1.f);
 }

@@ -66,6 +66,15 @@ public:
 	///This is really awful, come up with something better when it's not just a test
 	void draw(bool textured);
 
+public:
+	/**
+	* A utility function, I'm not sure how I want model to look in the end b/c it's complicated
+	* but I want to be able to load obj files for testing and such just into a simple
+	* vbo + vao w/ elems
+	* it also won't handle materials.
+	*/
+	static void loadObj(const std::string &file, GL::VertexArray &vao, GL::VertexBuffer &vbo);
+
 private:
 	///Update the material color properties being sent to the shader
 	void updateColors();

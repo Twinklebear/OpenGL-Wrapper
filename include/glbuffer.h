@@ -28,6 +28,8 @@ namespace GL {
 	};
 	/**
 	* Handles and simplifies interacting with OpenGL Buffers
+	* TODO: Should I be using glm::value_ptr for reading in glm types?
+	* it seems to be ok without it, but I'm not sure if that's just coincidence
 	*/
 	template<BUFFER B>
 	class Buffer {

@@ -1,7 +1,14 @@
 #version 330
 
-layout (std140) uniform Globals {
+//Block for the projection and viewing information
+layout(std140) uniform PV {
 	mat4 p;
+	mat4 v;
+	// vec4 eyeDir;
+};
+
+//Block for lighting information
+layout(std140) uniform Lighting {
 	vec4 ambient;
 };
 

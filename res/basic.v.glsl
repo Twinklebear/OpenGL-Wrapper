@@ -1,10 +1,10 @@
 #version 330
 
-//A block for shared globals between shaders
-//ie. the projection/camera matrix, lights etc.
-layout (std140) uniform Globals {
+//Block for the projection and viewing information
+layout(std140) uniform PV {
 	mat4 p;
-	vec4 ambient;
+	mat4 v;
+	// vec4 eyeDir;
 };
 
 //The model matrix
@@ -20,5 +20,5 @@ out vec3 normal;
 void main(){
 	uv = vUv;
 	normal = normalize(m * vNormal).xyz;
-	gl_Position = p * m * vPosition;
+	gl_Position = p * v * m * vPosition;
 }

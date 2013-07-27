@@ -92,28 +92,38 @@ int uboWorking(){
 	glm::mat4 cubeModel = glm::translate(0.f, -0.7f, 0.f) * glm::rotate(45.f, glm::vec3(0.f, 1.f, 0.f)) * glm::scale(0.3f, 0.3f, 0.3f);
 	cubeProg.uniformMat4x4("m", cubeModel);
 
-	//Testing an idea
-	GLuint quadGBind = program.getUniformBlockIndex("Globals");
-	GLuint cubeGBind = cubeProg.getUniformBlockIndex("Globals");
 	//It seems that uniform block indices are a global thing, similar to how TEXTURE0 and such work
 	//How can I make this more general? I'd need to track how many UBOs were active or something
 	//Set the projection and other globals into a shared UBO
-	glm::mat4 proj = glm::perspective(60.0f, 640.f / 480.f, 0.1f, 100.0f)
-		* glm::lookAt(glm::vec3(0.f, 1.f, 2.f), glm::vec3(0.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f));
-	glm::vec4 ambient(1.f, 1.f, 1.f, 1.f);
-	std::vector<float> uboVals;
+	glm::mat4 proj = glm::perspective(60.0f, 640.f / 480.f, 0.1f, 100.0f);
+	glm::mat4 view = glm::lookAt(glm::vec3(0.f, 1.f, 2.f), glm::vec3(0.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f));
+	glm::vec4 eyeDir(0.f, -1.f, -1.f, 0.f);
+	//Push values into a vector of floats
+	std::vector<float> viewingVals;
 	for (int i = 0; i < proj.length(); ++i){
 		for (int j = 0; j < 4; ++j)
-			uboVals.push_back(proj[i][j]);
+			viewingVals.push_back(proj[i][j]);
 	}
-	for (int i = 0; i < 4; ++i)
-		uboVals.push_back(ambient[i]);
+	for (int i = 0; i < view.length(); ++i){
+		for (int j = 0; j < 4; ++j)
+			viewingVals.push_back(view[i][j]);
+	}
+	//This isn't used at the moment and will be compiled out
+	//for (int i = 0; i < 4; ++i)
+	//	viewingVals.push_back(eyeDir[i]);
 
-	GL::UniformBuffer globalUbo(uboVals, GL::USAGE::STATIC_DRAW);
+	GL::UniformBuffer viewingUbo(viewingVals, GL::USAGE::STATIC_DRAW);
 	//The default point is 0, but this is here to illustrate the idea
-	glUniformBlockBinding(program, quadGBind, 0);
-	glUniformBlockBinding(cubeProg, cubeGBind, 0);
-	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, globalUbo);
+	glUniformBlockBinding(program, program.getUniformBlockIndex("PV"), 0);
+	glUniformBlockBinding(cubeProg, cubeProg.getUniformBlockIndex("PV"), 0);
+	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, viewingUbo);
+
+	//Setup the lighting information
+	glm::vec4 ambient(1.f, 1.f, 1.f, 1.f);
+	GL::UniformBuffer lightingUbo(ambient, GL::USAGE::STATIC_DRAW);
+	glUniformBlockBinding(program, program.getUniformBlockIndex("Lighting"), 1);
+	glUniformBlockBinding(cubeProg, cubeProg.getUniformBlockIndex("Lighting"), 1);
+	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 1, lightingUbo);
 
 	while (!Input::Quit()){
 		Input::PollEvents();

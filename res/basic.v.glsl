@@ -4,6 +4,7 @@
 //ie. the projection/camera matrix, lights etc.
 layout (std140) uniform Globals {
 	mat4 p;
+	vec4 ambient;
 };
 
 //The model matrix

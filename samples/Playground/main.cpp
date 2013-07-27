@@ -100,7 +100,16 @@ int uboWorking(){
 	//Set the projection and other globals into a shared UBO
 	glm::mat4 proj = glm::perspective(60.0f, 640.f / 480.f, 0.1f, 100.0f)
 		* glm::lookAt(glm::vec3(0.f, 1.f, 2.f), glm::vec3(0.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f));
-	GL::UniformBuffer globalUbo(proj, GL::USAGE::STATIC_DRAW);
+	glm::vec4 ambient(1.f, 1.f, 1.f, 1.f);
+	std::vector<float> uboVals;
+	for (int i = 0; i < proj.length(); ++i){
+		for (int j = 0; j < 4; ++j)
+			uboVals.push_back(proj[i][j]);
+	}
+	for (int i = 0; i < 4; ++i)
+		uboVals.push_back(ambient[i]);
+
+	GL::UniformBuffer globalUbo(uboVals, GL::USAGE::STATIC_DRAW);
 	//The default point is 0, but this is here to illustrate the idea
 	glUniformBlockBinding(program, quadGBind, 0);
 	glUniformBlockBinding(cubeProg, cubeGBind, 0);

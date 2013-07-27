@@ -1,10 +1,14 @@
 #version 330
 
 //A very basic vertex shader for testing the ubo stuff
-layout (std140) uniform Mat {
+//A block for shared globals between shaders
+//ie. the projection/camera matrix, lights etc.
+layout (std140) uniform Globals {
 	mat4 p;
-	mat4 m;
 };
+
+//The model matrix
+uniform mat4 m;
 
 in vec4 position;
 in vec4 color;

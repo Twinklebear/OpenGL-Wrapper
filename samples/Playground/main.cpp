@@ -67,12 +67,8 @@ int uboWorking(){
 	vao.setAttribPointer(vbo, program.getAttribute("color"), 4, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 4));
 	vao.setAttribPointer(vbo, program.getAttribute("texUv"), 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 8));
 
-	//Set the projection and model matrices
-	glm::mat4 proj = glm::perspective(60.0f, 640.f / 480.f, 0.1f, 100.0f)
-		* glm::lookAt(glm::vec3(0.f, 1.f, 2.f), glm::vec3(0.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f));
-	glm::mat4 model = glm::translate(0.f, -1.f, 0.f) * glm::rotate(-90.f, glm::vec3(1.f, 0.f, 0.f));
-	std::array<glm::mat4, 2> matrices = { proj, model };
-	GL::UniformBuffer ubo(matrices, GL::USAGE::STATIC_DRAW);
+	glm::mat4 quadModel = glm::translate(0.f, -1.f, 0.f) * glm::rotate(-90.f, glm::vec3(1.f, 0.f, 0.f));
+	program.uniformMat4x4("m", quadModel);
 
 	//Creating the texture binds it to TEXTURE_2D so no need to bind again
 	GL::Texture<GL::TEXTURE::T2D> texture("../res/map.png");
@@ -87,21 +83,23 @@ int uboWorking(){
 	GL::Program cubeProg("../res/cube_simple.v.glsl", "../res/cube_simple.f.glsl");
 	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("position"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3));
 
-	std::array<glm::mat4, 2> cubeMats = { proj, 
-		glm::translate(0.f, -0.5f, 0.f) * glm::rotate(45.f, glm::vec3(0.f, 1.f, 0.f)) * glm::scale(0.3f, 0.3f, 0.3f)
-	};
-	GL::UniformBuffer cubeUBO(cubeMats, GL::USAGE::STATIC_DRAW);
+	glm::mat4 cubeModel = glm::translate(0.f, -0.5f, 0.f) * glm::rotate(45.f, glm::vec3(0.f, 1.f, 0.f)) * glm::scale(0.3f, 0.3f, 0.3f);
+	cubeProg.uniformMat4x4("m", cubeModel);
 
 	//Testing an idea
-	GLuint quadMatBind = program.getUniformBlockIndex("Mat");
-	GLuint cubeMatBind = cubeProg.getUniformBlockIndex("Mat");
+	GLuint quadGBind = program.getUniformBlockIndex("Globals");
+	GLuint cubeGBind = cubeProg.getUniformBlockIndex("Globals");
 
 	//It seems that uniform block indices are a global thing, similar to how TEXTURE0 and such work
 	//How can I make this more general? I'd need to track how many UBOs were active or something
-	glUniformBlockBinding(program, quadMatBind, 0);
-	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, ubo);
-	glUniformBlockBinding(cubeProg, cubeMatBind, 1);
-	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 1, cubeUBO);
+	//Set the projection and other globals into a shared UBO
+	glm::mat4 proj = glm::perspective(60.0f, 640.f / 480.f, 0.1f, 100.0f)
+		* glm::lookAt(glm::vec3(0.f, 1.f, 2.f), glm::vec3(0.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f));
+	GL::UniformBuffer globalUbo(proj, GL::USAGE::STATIC_DRAW);
+	//The default point is 0, but this is here to illustrate the idea
+	glUniformBlockBinding(program, quadGBind, 0);
+	glUniformBlockBinding(cubeProg, cubeGBind, 0);
+	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, globalUbo);
 
 	Util::checkError("cube setup");
 

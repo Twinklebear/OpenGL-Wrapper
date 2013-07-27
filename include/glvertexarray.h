@@ -10,6 +10,7 @@
 namespace GL {
 	/**
 	* Handles and simplifies interacting with OpenGL VBOs
+	* TODO: Add function for assigning the VBO, don't just take whatever is currently bound
 	*/
 	class VertexArray {
 	public:

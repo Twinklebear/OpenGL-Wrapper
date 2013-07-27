@@ -76,11 +76,11 @@ std::map<std::string, Material> Util::loadMaterials(const std::string &file){
 				//Read texture maps
 				else if (line.substr(0, 3) == "map"){
 					if (line.substr(4, 2) == "Ka")
-						material.mapKa = GL::Texture("../res/" + line.substr(7), false);
+						material.mapKa = GL::Texture<GL::TEXTURE::T2D>("../res/" + line.substr(7), false);
 					else if (line.substr(4, 2) == "Kd")
-						material.mapKd = GL::Texture("../res/" + line.substr(7), false);
+						material.mapKd = GL::Texture<GL::TEXTURE::T2D>("../res/" + line.substr(7), false);
 					else if (line.substr(4, 2) == "Ks")
-						material.mapKs = GL::Texture("../res/" + line.substr(7), false);
+						material.mapKs = GL::Texture<GL::TEXTURE::T2D>("../res/" + line.substr(7), false);
 				}
 			}
 			mats[material.name] = material;

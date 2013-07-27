@@ -33,7 +33,7 @@ struct Material {
 	* @param load If we should load the textures onto the GPU now
 	*/
 	Material(std::string name, glm::vec3 kA, glm::vec3 kD, glm::vec3 kS, float nS,
-		GL::Texture mapKa, GL::Texture mapKd, GL::Texture mapKs);
+		GL::Texture<GL::TEXTURE::T2D> mapKa, GL::Texture<GL::TEXTURE::T2D> mapKd, GL::Texture<GL::TEXTURE::T2D> mapKs);
 	///Load the texture files onto the GPU for usage
 	void loadTextures();
 	///Unload the textures
@@ -42,7 +42,7 @@ struct Material {
 	std::string name;
 	glm::vec3 kA, kD, kS;
 	float nS;
-	GL::Texture mapKa, mapKd, mapKs;
+	GL::Texture<GL::TEXTURE::T2D> mapKa, mapKd, mapKs;
 };
 
 #endif

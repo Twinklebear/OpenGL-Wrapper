@@ -13,6 +13,7 @@
 #include <glvertexarray.h>
 #include <glshader.h>
 #include <glprogram.h>
+#include <gltexture.h>
 #include <model.h>
 #include <util.h>
 
@@ -107,8 +108,8 @@ int uboWorking(){
 	Util::checkError("Proj buf Setup");
 
 	//Creating the texture binds it to TEXTURE_2D so no need to bind again
-	GL::Texture texture("../res/map.png", true);
-	GL::Texture textureB("../res/strip.png", true);
+	GL::Texture<GL::TEXTURE::T2D> texture("../res/map.png", true);
+	GL::Texture<GL::TEXTURE::T2D> textureB("../res/strip.png", true);
 
 	GL::Sampler sampler;
 	sampler.parameteri(GL_TEXTURE_WRAP_S, GL_REPEAT);

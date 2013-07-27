@@ -25,9 +25,6 @@
     <ClCompile Include="..\src\glvertexarray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\gltexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\glprogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -94,7 +94,6 @@
     <ClCompile Include="..\src\glcamera.cpp" />
     <ClCompile Include="..\src\glprogram.cpp" />
     <ClCompile Include="..\src\glsampler.cpp" />
-    <ClCompile Include="..\src\gltexture.cpp" />
     <ClCompile Include="..\src\glvertexarray.cpp" />
     <ClCompile Include="..\src\handle.cpp" />
     <ClCompile Include="..\src\input.cpp" />

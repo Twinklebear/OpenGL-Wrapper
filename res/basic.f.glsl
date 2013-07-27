@@ -2,7 +2,6 @@
 
 uniform sampler2D tex2D;
 
-//A basic fragment shader, just sets to white
 in vec4 fragColor;
 in vec2 uv;
 out vec4 color;

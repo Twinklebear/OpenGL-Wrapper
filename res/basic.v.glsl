@@ -1,6 +1,5 @@
 #version 330
 
-//A very basic vertex shader for testing the ubo stuff
 //A block for shared globals between shaders
 //ie. the projection/camera matrix, lights etc.
 layout (std140) uniform Globals {

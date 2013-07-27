@@ -82,14 +82,12 @@ int uboWorking(){
 
 	GL::Program cubeProg("../res/cube_simple.v.glsl", "../res/cube_simple.f.glsl");
 	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("position"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3));
-
-	glm::mat4 cubeModel = glm::translate(0.f, -0.5f, 0.f) * glm::rotate(45.f, glm::vec3(0.f, 1.f, 0.f)) * glm::scale(0.3f, 0.3f, 0.3f);
+	glm::mat4 cubeModel = glm::translate(0.f, -0.7f, 0.f) * glm::rotate(45.f, glm::vec3(0.f, 1.f, 0.f)) * glm::scale(0.3f, 0.3f, 0.3f);
 	cubeProg.uniformMat4x4("m", cubeModel);
 
 	//Testing an idea
 	GLuint quadGBind = program.getUniformBlockIndex("Globals");
 	GLuint cubeGBind = cubeProg.getUniformBlockIndex("Globals");
-
 	//It seems that uniform block indices are a global thing, similar to how TEXTURE0 and such work
 	//How can I make this more general? I'd need to track how many UBOs were active or something
 	//Set the projection and other globals into a shared UBO
@@ -100,8 +98,6 @@ int uboWorking(){
 	glUniformBlockBinding(program, quadGBind, 0);
 	glUniformBlockBinding(cubeProg, cubeGBind, 0);
 	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, globalUbo);
-
-	Util::checkError("cube setup");
 
 	while (!Input::Quit()){
 		Input::PollEvents();

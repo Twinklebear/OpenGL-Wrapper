@@ -91,6 +91,11 @@ void GL::Program::uniformMat4x4(const std::string &attrib, const glm::mat4 &matr
 	GLint attribLoc = glGetUniformLocation(mHandle, attrib.c_str());
 	glUniformMatrix4fv(attribLoc, 1, GL_FALSE, glm::value_ptr(matrix));
 }
+void GL::Program::uniformMat3x3(const std::string &attrib, const glm::mat3 &matrix){
+	glUseProgram(mHandle);
+	GLint loc = glGetUniformLocation(mHandle, attrib.c_str());
+	glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
+}
 GL::Program::operator GLuint(){
 	return mHandle;
 }

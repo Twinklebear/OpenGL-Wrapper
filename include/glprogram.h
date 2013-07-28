@@ -92,11 +92,12 @@ namespace GL {
         */
         void uniform4fv(const std::string &attrib, const glm::vec4 &vec);
         /**
-        * Pass a glm::mat4x4 as a uniform attribute
+        * Pass a glm::mat as a uniform attribute
         * @param attrib The name of the uniform to set
         * @param matrix The matrix to be passed
         */
         void uniformMat4x4(const std::string &attrib, const glm::mat4 &matrix);
+		void uniformMat3x3(const std::string &attrib, const glm::mat3 &matrix);
         /**
         * Implicitly convert to a GLuint if trying to use
         * the program as such

@@ -8,13 +8,6 @@ struct DirectionalLight {
 	vec4 halfVector;
 };
 
-//Block for the projection and viewing information
-layout(std140) uniform PV {
-	mat4 p;
-	mat4 v;
-	// vec4 eyeDir;
-};
-
 //Block for lighting information
 layout(std140) uniform Lighting {
 	DirectionalLight light;

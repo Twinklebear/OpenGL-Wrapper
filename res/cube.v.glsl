@@ -8,13 +8,15 @@ layout(std140) uniform PV {
 };
 
 //The model matrix
-uniform mat4 m;
+uniform mat4 modelMat;
+uniform mat3 normalMat;
+
 in vec4 vPosition;
 in vec3 vNormal;
 
 out vec3 normal;
 
 void main(){
-	normal = normalize(m * vec4(vNormal, 0.f)).xyz;
-	gl_Position = p * v * m * vPosition;
+	normal = normalize(normalMat * vNormal);
+	gl_Position = p * v * modelMat * vPosition;
 }

@@ -73,7 +73,9 @@ int uboWorking(){
 	vao.setAttribPointer(vbo, program.getAttribute("vUv"), 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(glm::vec4) * 8));
 
 	glm::mat4 quadModel = glm::translate(0.f, -1.f, 0.f) * glm::rotate(-90.f, glm::vec3(1.f, 0.f, 0.f));
-	program.uniformMat4x4("m", quadModel);
+	glm::mat4 quadNormal = glm::transpose(glm::inverse(quadModel));
+	program.uniformMat4x4("modelMat", quadModel);
+	program.uniformMat4x4("normalMat", quadNormal);
 
 	//Creating the texture binds it to TEXTURE_2D so no need to bind again
 	GL::Texture<GL::TEXTURE::T2D> texture("../res/map.png");
@@ -92,7 +94,9 @@ int uboWorking(){
 	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("vPosition"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3));
 	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("vNormal"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3), (void*)sizeof(glm::vec3));
 	glm::mat4 cubeModel = glm::translate(0.f, -0.7f, 0.f) * glm::rotate(45.f, glm::vec3(0.f, 1.f, 0.f)) * glm::scale(0.3f, 0.3f, 0.3f);
-	cubeProg.uniformMat4x4("m", cubeModel);
+	glm::mat3 cubeNormalMat(glm::transpose(glm::inverse(cubeModel)));
+	cubeProg.uniformMat4x4("modelMat", cubeModel);
+	cubeProg.uniformMat3x3("normalMat", cubeNormalMat);
 
 	//It seems that uniform block indices are a global thing, similar to how TEXTURE0 and such work
 	//How can I make this more general? I'd need to track how many UBOs were active or something

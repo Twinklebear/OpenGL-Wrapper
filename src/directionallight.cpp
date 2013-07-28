@@ -4,15 +4,17 @@
 #include "../include/directionallight.h"
 
 DirectionalLight::DirectionalLight(const glm::vec4 &color, const glm::vec4 &ambient,
-	const glm::vec4 &lightDir, const glm::vec4 &viewDir)
+	const glm::vec4 &lightDir, glm::vec4 viewDir)
 	: Light(ambient), mColor(color), mLightDir(glm::normalize(-lightDir))
 {
+	viewDir = glm::normalize(viewDir);
 	mHalfVector = (mLightDir + viewDir) / glm::length(mLightDir + viewDir);
 }
 DirectionalLight::DirectionalLight(const glm::vec4 &color, float ambScale,
-	const glm::vec4 &lightDir, const glm::vec4 &viewDir)
+	const glm::vec4 &lightDir, glm::vec4 viewDir)
 	: Light(ambScale * color), mColor(color), mLightDir(glm::normalize(-lightDir))
 {
+	viewDir = glm::normalize(viewDir);
 	mHalfVector = (mLightDir + viewDir) / glm::length(mLightDir + viewDir);
 }
 void DirectionalLight::updateViewDir(const glm::vec4 &viewDir){

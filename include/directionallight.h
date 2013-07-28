@@ -18,14 +18,14 @@ public:
 	* we flip the light direction vector
 	*/
 	DirectionalLight(const glm::vec4 &color, const glm::vec4 &ambient,
-		const glm::vec4 &lightDir, const glm::vec4 &viewDir);
+		const glm::vec4 &lightDir, glm::vec4 viewDir);
 	/**
 	* Use this constructor to set the ambient as some percentage of the color
 	* Also, because the light direction when computing is with respect to the object
 	* we flip the light direction vector
 	*/
 	DirectionalLight(const glm::vec4 &color, float ambScale,
-		const glm::vec4 &lightDir, const glm::vec4 &viewDir);
+		const glm::vec4 &lightDir, glm::vec4 viewDir);
 	///Update the viewing direction to re-compute the half vector
 	void updateViewDir(const glm::vec4 &viewDir);
 	/**

@@ -16,6 +16,8 @@
 #include <gltexture.h>
 #include <model.h>
 #include <util.h>
+#include <light.h>
+#include <directionallight.h>
 
 //This function demos working usage of ubo for matrices
 int uboWorking();
@@ -96,8 +98,10 @@ int uboWorking(){
 	//How can I make this more general? I'd need to track how many UBOs were active or something
 	//Set the projection and other globals into a shared UBO
 	glm::mat4 proj = glm::perspective(60.0f, 640.f / 480.f, 0.1f, 100.0f);
-	glm::mat4 view = glm::lookAt(glm::vec3(0.f, 1.f, 2.f), glm::vec3(0.f, -1.f, -1.f), glm::vec3(0.f, 1.f, 0.f));
-	glm::vec4 eyeDir(0.f, -1.f, -1.f, 0.f);
+	glm::vec3 eyePos(0.f, 1.f, 2.f), lookTarget(0.f, -1.f, -1.f), eyeUp(0.f, 1.f, 0.f);
+	glm::mat4 view = glm::lookAt(eyePos, lookTarget, eyeUp);
+	glm::vec3 lookDir = glm::normalize(lookTarget - eyePos);
+
 	//Push values into a vector of floats
 	std::vector<float> viewingVals;
 	for (int i = 0; i < proj.length(); ++i){
@@ -110,7 +114,7 @@ int uboWorking(){
 	}
 	//This isn't used at the moment and will be compiled out
 	//for (int i = 0; i < 4; ++i)
-	//	viewingVals.push_back(eyeDir[i]);
+	//	viewingVals.push_back(lookDir[i]);
 
 	GL::UniformBuffer viewingUbo(viewingVals, GL::USAGE::STATIC_DRAW);
 	//The default point is 0, but this is here to illustrate the idea
@@ -119,8 +123,10 @@ int uboWorking(){
 	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, viewingUbo);
 
 	//Setup the lighting information
-	glm::vec4 ambient(1.f, 1.f, 1.f, 1.f);
-	GL::UniformBuffer lightingUbo(ambient, GL::USAGE::STATIC_DRAW);
+	DirectionalLight light(glm::vec4(1.f, 1.f, 1.f, 1.f), 0.5f, glm::vec4(1.0f, -1.0f, 0.f, 0.f),
+		glm::vec4(lookDir, 0.f));
+
+	GL::UniformBuffer lightingUbo(light.getRaw(), GL::USAGE::STATIC_DRAW);
 	glUniformBlockBinding(program, program.getUniformBlockIndex("Lighting"), 1);
 	glUniformBlockBinding(cubeProg, cubeProg.getUniformBlockIndex("Lighting"), 1);
 	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 1, lightingUbo);

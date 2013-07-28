@@ -6,6 +6,7 @@ struct DirectionalLight {
 	vec4 color;
 	vec4 direction;
 	vec4 halfVector;
+	float strength;
 };
 
 //Block for lighting information
@@ -32,7 +33,7 @@ void main(){
 	}
 	vec4 scattered = light.ambient + light.color * diffuse;
 	//add 5 strength, hardcoded for now but this should be added to the light as a property
-	vec4 reflected = light.color * specular * 5.f;
+	vec4 reflected = light.color * specular * light.strength;
 
 	fragColor = min(texture(tex2D, uv) * scattered + reflected, vec4(1.f));
 }

@@ -18,26 +18,27 @@ public:
 	* we flip the light direction vector
 	*/
 	DirectionalLight(const glm::vec4 &color, const glm::vec4 &ambient,
-		const glm::vec4 &lightDir, glm::vec4 viewDir);
+		const glm::vec4 &lightDir, glm::vec4 viewDir, float strength);
 	/**
 	* Use this constructor to set the ambient as some percentage of the color
 	* Also, because the light direction when computing is with respect to the object
 	* we flip the light direction vector
 	*/
 	DirectionalLight(const glm::vec4 &color, float ambScale,
-		const glm::vec4 &lightDir, glm::vec4 viewDir);
+		const glm::vec4 &lightDir, glm::vec4 viewDir, float strength);
 	///Update the viewing direction to re-compute the half vector
 	void updateViewDir(const glm::vec4 &viewDir);
 	/**
 	* Get a packed float array of the lighting information
 	* for passing to shaders
 	* @return Light information ordered like so:
-	* ambient, color, direction, half vector
+	* ambient, color, direction, half vector, strength
 	*/
 	std::vector<float> getRaw() const override;
 
 private:
 	glm::vec4 mColor, mLightDir, mHalfVector;
+	float mStrength;
 };
 
 #endif

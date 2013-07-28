@@ -128,7 +128,7 @@ int uboWorking(){
 
 	//Setup the lighting information
 	DirectionalLight light(glm::vec4(1.f, 1.f, 1.f, 1.f), 0.5f, glm::vec4(1.0f, -1.0f, 0.f, 0.f),
-		glm::vec4(lookDir, 0.f));
+		glm::vec4(lookDir, 0.f), 5.f);
 
 	GL::UniformBuffer lightingUbo(light.getRaw(), GL::USAGE::STATIC_DRAW);
 	glUniformBlockBinding(program, program.getUniformBlockIndex("Lighting"), 1);

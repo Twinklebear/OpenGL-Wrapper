@@ -1,6 +1,5 @@
 #version 330
 
-//Defintion for a directional light
 struct DirectionalLight {
 	vec4 ambient;
 	vec4 color;
@@ -8,32 +7,64 @@ struct DirectionalLight {
 	vec4 halfVector;
 	float strength;
 };
+struct PointLight {
+	vec4 ambient;
+	vec4 color;
+	vec4 position;
+	float strength;
+	float constAtten;
+	float linearAtten;
+	float quadraticAtten;
+};
 
+//Block for the projection and viewing information
+layout(std140) uniform PV {
+	mat4 p;
+	mat4 v;
+	vec3 eyePos;
+};
 //Block for lighting information
 layout(std140) uniform Lighting {
-	DirectionalLight light;
+	//TODO: Need to be aware of alignments, the current method for 
+	//retrieving raw lighting info as a vector doesn't work, perhaps
+	//I should just get a char array or vector?
+	PointLight pointLight;
+	DirectionalLight dirLight;
 };
 
 uniform sampler2D tex2D;
 
 in vec3 normal;
 in vec2 uv;
+in vec4 position;
 
 out vec4 fragColor;
 
 void main(){
-	float diffuse = max(0.f, dot(normal, light.direction.xyz));
-	float specular = max(0.f, dot(normal, light.halfVector.xyz));
-	//Surfaces with no diffuse should also have no spec b/c they're facing the wrong way
+	//Is this right? I'm familiar with the light direction and half vector pointing away
+	//from the object, this looks like they're doing it with it pointing to the object
+	vec3 lightDir = vec3(v * pointLight.position) - vec3(position);
+	float lightDistance = length(lightDir);
+	//Normalize the light direction
+	lightDir = lightDir / lightDistance;
+
+	float attenuation = 1.f / (pointLight.constAtten + pointLight.linearAtten * lightDistance
+		+ pointLight.quadraticAtten * pow(lightDistance, 2.f));
+
+	//Eyedir is probably ok to do per-vertex
+	vec3 eyeDir = eyePos - vec3(position);
+	vec3 halfVector = normalize(lightDir + eyeDir);
+
+	float diffuse = max(0.f, dot(normal, lightDir));
+	float specular = max(0.f, dot(normal, halfVector));
+
 	if (diffuse == 0.f)
 		specular = 0.f;
-	else {
-		//Hardcode shininess to some value for now
-		specular = pow(specular, 30.f);
-	}
-	vec4 scattered = light.ambient + light.color * diffuse;
-	//add 5 strength, hardcoded for now but this should be added to the light as a property
-	vec4 reflected = light.color * specular * light.strength;
+	else
+		//Some arbitrary constant shininess
+		specular = pow(specular, 10.f) * pointLight.strength;
 
+	vec4 scattered = pointLight.ambient + pointLight.color * diffuse * attenuation;
+	vec4 reflected = pointLight.color * specular * attenuation;
 	fragColor = min(texture(tex2D, uv) * scattered + reflected, vec4(1.f));
 }

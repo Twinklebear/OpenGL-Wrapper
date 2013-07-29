@@ -4,7 +4,7 @@
 layout(std140) uniform PV {
 	mat4 p;
 	mat4 v;
-	// vec4 eyeDir;
+	vec3 eyePos;
 };
 
 //The model matrix
@@ -17,9 +17,11 @@ in vec2 vUv;
 
 out vec2 uv;
 out vec3 normal;
+out vec4 position;
 
 void main(){
 	uv = vUv;
 	normal = normalize((normalMat * vNormal).xyz);
+	position = v * modelMat * vPosition;
 	gl_Position = p * v * modelMat * vPosition;
 }

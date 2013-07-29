@@ -18,6 +18,7 @@
 #include <util.h>
 #include <light.h>
 #include <directionallight.h>
+#include <pointlight.h>
 
 //This function demos working usage of ubo for matrices
 int uboWorking();
@@ -116,9 +117,8 @@ int uboWorking(){
 		for (int j = 0; j < 4; ++j)
 			viewingVals.push_back(view[i][j]);
 	}
-	//This isn't used at the moment and will be compiled out
-	//for (int i = 0; i < 4; ++i)
-	//	viewingVals.push_back(lookDir[i]);
+	for (int i = 0; i < 3; ++i)
+		viewingVals.push_back(eyePos[i]);
 
 	GL::UniformBuffer viewingUbo(viewingVals, GL::USAGE::STATIC_DRAW);
 	//The default point is 0, but this is here to illustrate the idea
@@ -127,10 +127,16 @@ int uboWorking(){
 	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, viewingUbo);
 
 	//Setup the lighting information
-	DirectionalLight light(glm::vec4(1.f, 1.f, 1.f, 1.f), 0.5f, glm::vec4(1.0f, -1.0f, 0.f, 0.f),
+	DirectionalLight dirLight(glm::vec4(1.0f, -1.0f, -1.f, 0.f), glm::vec4(0.5f, 0.5f, 0.5f, 1.f), 0.3f,
 		glm::vec4(lookDir, 0.f), 5.f);
+	PointLight pointLight(glm::vec4(0.7f, -0.5f, 0.2f, 1.f), glm::vec4(1.f, 1.f, 1.f, 1.f), 0.1f, 1.f,
+		0.2f, 1.f, 1.f);
 
-	GL::UniformBuffer lightingUbo(light.getRaw(), GL::USAGE::STATIC_DRAW);
+	std::vector<float> lightVals = pointLight.getRaw();
+	std::vector<float> other = dirLight.getRaw();
+	lightVals.insert(lightVals.end(), other.begin(), other.end());
+
+	GL::UniformBuffer lightingUbo(lightVals, GL::USAGE::STATIC_DRAW);
 	glUniformBlockBinding(program, program.getUniformBlockIndex("Lighting"), 1);
 	glUniformBlockBinding(cubeProg, cubeProg.getUniformBlockIndex("Lighting"), 1);
 	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 1, lightingUbo);

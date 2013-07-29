@@ -127,20 +127,52 @@ int uboWorking(){
 	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, viewingUbo);
 
 	//Setup the lighting information
-	DirectionalLight dirLight(glm::vec4(1.0f, -1.0f, -1.f, 0.f), glm::vec4(0.5f, 0.5f, 0.5f, 1.f), 0.3f,
+	DirectionalLight dirLight(glm::vec4(1.0f, -1.0f, -1.f, 0.f), glm::vec4(0.f, 0.6f, 0.6f, 1.f), 0.3f,
 		glm::vec4(lookDir, 0.f), 5.f);
-	PointLight pointLight(glm::vec4(0.7f, -0.5f, 0.2f, 1.f), glm::vec4(1.f, 1.f, 1.f, 1.f), 0.1f, 1.f,
+	PointLight pointLight(glm::vec4(0.7f, -0.5f, 0.2f, 1.f), glm::vec4(1.f, 1.f, 1.f, 1.f), 0.3f, 1.f,
 		0.2f, 1.f, 1.f);
 
-	std::vector<float> lightVals = pointLight.getRaw();
-	std::vector<float> other = dirLight.getRaw();
-	lightVals.insert(lightVals.end(), other.begin(), other.end());
-
-	GL::UniformBuffer lightingUbo(lightVals, GL::USAGE::STATIC_DRAW);
 	glUniformBlockBinding(program, program.getUniformBlockIndex("Lighting"), 1);
 	glUniformBlockBinding(cubeProg, cubeProg.getUniformBlockIndex("Lighting"), 1);
-	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 1, lightingUbo);
+	
+	//Querying some information about the uniform block layout
+	GLuint idx = cubeProg.getUniformBlockIndex("Lighting");
+	int size;
+	glGetActiveUniformBlockiv(cubeProg, idx, GL_UNIFORM_BLOCK_DATA_SIZE, &size);
+	std::cout << "the Lighting uniform block (# " << idx << " in cubeProg) requires: " << size << " bytes" << std::endl;
+	//Allocate a buffer for the uniform block and assign it to the binding point
+	GL::UniformBuffer lightUbo(size_t(size), GL::USAGE::STATIC_DRAW);
+	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 1, lightUbo);
 
+	//Directional light is the first entry so we can write that now
+	lightUbo.bufferSubData(dirLight.getRaw(), 0);
+
+	glGetActiveUniformBlockiv(cubeProg, idx, GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, &size);
+	GLint *uniforms = new GLint[size];
+	glGetActiveUniformBlockiv(cubeProg, idx, GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, uniforms);
+	std::cout << "# of uniforms: " << size << std::endl;
+
+	//Run over the uniforms and print their names
+	//We're looking for the offset of pointLight.ambient to write the point light information
+	//Question: How would this be done generically?
+	for (int i = 0; i < size; ++i){
+		int len = 0;
+		glGetActiveUniformsiv(cubeProg, 1, (const GLuint*)(uniforms + i), GL_UNIFORM_NAME_LENGTH, &len);
+		char *name = new char[len];
+		glGetActiveUniformName(cubeProg, uniforms[i], len, NULL, name);
+		int offset = 0;
+		glGetActiveUniformsiv(cubeProg, 1, (const GLuint*)(uniforms + i), GL_UNIFORM_OFFSET, &offset);
+		std::cout << "uniform # " << uniforms[i] << " name: " << name 
+			<< " is at byte offset " << offset << std::endl;
+		if (std::strcmp("pointLight.ambient", name) == 0){
+			std::cout << "found it!" << std::endl;
+			lightUbo.bufferSubData(pointLight.getRaw(), offset);
+			//We won't break for now so that we print out the rest of the block info
+		}
+		delete[] name;
+	}
+	delete[] uniforms;
+	
 	while (!Input::Quit()){
 		Input::PollEvents();
 		if (Input::KeyDown(SDL_SCANCODE_ESCAPE))

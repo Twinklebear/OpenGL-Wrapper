@@ -26,8 +26,8 @@ layout(std140) uniform PV {
 
 //Block for lighting information
 layout(std140) uniform Lighting {
-	PointLight pointLight;
 	DirectionalLight dirLight;
+	PointLight pointLight;
 };
 
 in vec4 position;
@@ -36,6 +36,17 @@ in vec3 normal;
 out vec4 fragColor;
 
 void main(){
+	//Compute directional light contribution
+	float diffuse = max(0.f, dot(normal, dirLight.direction.xyz));
+	float specular = max(0.f, dot(normal, dirLight.halfVector.xyz));
+	if (diffuse == 0.f)
+		specular = 0.f;
+	else
+		specular = pow(specular, 10.f) * dirLight.strength;
+
+	vec4 scattered = dirLight.ambient + dirLight.color * diffuse;
+	vec4 reflected = dirLight.color * specular * dirLight.strength;
+
 	//Is this right? I'm familiar with the light direction and half vector pointing away
 	//from the object, this looks like they're doing it with it pointing to the object
 	vec3 lightDir = vec3(v * pointLight.position) - vec3(position);
@@ -50,17 +61,16 @@ void main(){
 	vec3 eyeDir = eyePos - vec3(position);
 	vec3 halfVector = normalize(lightDir + eyeDir);
 
-	float diffuse = max(0.f, dot(normal, lightDir));
-	float specular = max(0.f, dot(normal, halfVector));
-
+	diffuse = max(0.f, dot(normal, lightDir));
+	specular = max(0.f, dot(normal, halfVector));
 	if (diffuse == 0.f)
 		specular = 0.f;
 	else
 		//Some arbitrary constant shininess
 		specular = pow(specular, 10.f) * pointLight.strength;
 
-	vec4 scattered = pointLight.ambient + pointLight.color * diffuse * attenuation;
-	vec4 reflected = pointLight.color * specular * attenuation;
+	scattered = scattered + pointLight.ambient + pointLight.color * diffuse * attenuation;
+	reflected = reflected + pointLight.color * specular * attenuation;
 
 	fragColor = min(vec4(normal, 1.f) * scattered + reflected, vec4(1.f));
 }

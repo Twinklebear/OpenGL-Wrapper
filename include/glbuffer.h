@@ -62,6 +62,17 @@ namespace GL {
 			bufferData(data, usage);
 		}
 		/**
+		* Create a buffer and allocate an amount of memory but don't write anything
+		* must be called with size_t to not interfere with the generic single-item template
+		*/
+		Buffer(size_t size, USAGE usage) : mNvals(0) {
+			GLuint buf;
+			glGenBuffers(1, &buf);
+			mHandle = Handle(buf, sDeleter);
+			glBindBuffer(static_cast<GLenum>(B), mHandle);
+			glBufferData(static_cast<GLenum>(B), size, NULL, static_cast<GLenum>(usage));
+		}
+		/**
 		* Write some data to the buffer, creating a new data store
 		* and erasing any previous data
 		* @param data The data to write

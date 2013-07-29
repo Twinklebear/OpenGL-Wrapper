@@ -72,5 +72,5 @@ void main(){
 	scattered = scattered + pointLight.ambient + pointLight.color * diffuse * attenuation;
 	reflected = reflected + pointLight.color * specular * attenuation;
 
-	fragColor = min(vec4(normal, 1.f) * scattered + reflected, vec4(1.f));
+	fragColor = min(vec4(1.f) * scattered + reflected, vec4(1.f));
 }

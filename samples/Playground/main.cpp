@@ -86,15 +86,15 @@ int uboWorking(){
 	//Setup a simple cube model to draw
 	GL::VertexArray cubeVAO;
 	GL::VertexBuffer cubeVBO;
-	Model::loadObj("../res/cube.obj", cubeVAO, cubeVBO);
+	Model::loadObj("../res/sphere.obj", cubeVAO, cubeVBO);
 
-	GL::Program cubeProg("../res/cube.v.glsl", "../res/cube.f.glsl");
+	GL::Program cubeProg("../res/model.v.glsl", "../res/model.f.glsl");
 	if (!cubeProg.status())
 		window.logMessage(program.getLog());
 
 	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("vPosition"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3));
 	cubeVAO.setAttribPointer(cubeVBO, cubeProg.getAttribute("vNormal"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(glm::vec3), (void*)sizeof(glm::vec3));
-	glm::mat4 cubeModel = glm::translate(0.f, -0.7f, 0.f) * glm::rotate(45.f, glm::vec3(0.f, 1.f, 0.f)) * glm::scale(0.3f, 0.3f, 0.3f);
+	glm::mat4 cubeModel = glm::translate(0.f, -0.7f, 0.f) * glm::scale(0.3f, 0.3f, 0.3f);
 	glm::mat3 cubeNormalMat(glm::transpose(glm::inverse(cubeModel)));
 	cubeProg.uniformMat4x4("modelMat", cubeModel);
 	cubeProg.uniformMat3x3("normalMat", cubeNormalMat);
@@ -127,9 +127,9 @@ int uboWorking(){
 	glBindBufferBase(static_cast<GLenum>(GL::BUFFER::UNIFORM), 0, viewingUbo);
 
 	//Setup the lighting information
-	DirectionalLight dirLight(glm::vec4(1.0f, -1.0f, -1.f, 0.f), glm::vec4(0.f, 0.6f, 0.6f, 1.f), 0.3f,
+	DirectionalLight dirLight(glm::vec4(1.0f, -1.0f, -1.f, 0.f), glm::vec4(0.f, 0.f, 1.f, 1.f), 0.3f,
 		glm::vec4(lookDir, 0.f), 5.f);
-	PointLight pointLight(glm::vec4(0.7f, -0.5f, 0.2f, 1.f), glm::vec4(1.f, 1.f, 1.f, 1.f), 0.3f, 1.f,
+	PointLight pointLight(glm::vec4(0.3f, 0.f, 0.0f, 1.f), glm::vec4(1.f, 0.f, 0.f, 1.f), 0.3f, 1.f,
 		0.2f, 1.f, 1.f);
 
 	glUniformBlockBinding(program, program.getUniformBlockIndex("Lighting"), 1);

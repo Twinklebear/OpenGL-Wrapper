@@ -65,7 +65,7 @@ namespace GL {
 		* Create a buffer and allocate an amount of memory but don't write anything
 		* must be called with size_t to not interfere with the generic single-item template
 		*/
-		Buffer(size_t size, USAGE usage) : mNvals(0) {
+		Buffer(size_t size, USAGE usage) : mNvals(-1) {
 			GLuint buf;
 			glGenBuffers(1, &buf);
 			mHandle = Handle(buf, sDeleter);
@@ -97,25 +97,27 @@ namespace GL {
 			glBufferData(static_cast<GLenum>(B), data.size() * sizeof(T), &data[0], static_cast<GLenum>(usage));
 		}
 		/**
-		* Replace some data within the buffer at some offset
+		* Replace some data within the buffer at some offset, note that
+		* after this operation we don't know how many "values" are in the buffer
+		* and it will be set to -1
 		* @param data The data to write
 		* @param offset Offset in buffer to write too, in bytes
 		*/
 		template<class T>
 		void bufferSubData(const T &data, size_t offset){
-			mNvals = 1;
+			mNvals = -1;
 			glBindBuffer(static_cast<GLenum>(B), mHandle);
 			glBufferSubData(static_cast<GLenum>(B), offset, sizeof(T), &data);
 		}
 		template<class T, size_t N>
 		void bufferSubData(const std::array<T, N> &data, size_t offset){
-			mNvals = N;
+			mNvals = -1;
 			glBindBuffer(static_cast<GLenum>(B), mHandle);
 			glBufferSubData(static_cast<GLenum>(B), offset, N * sizeof(T), &data[0]);
 		}
 		template<class T>
 		void bufferSubData(const std::vector<T> &data, size_t offset){
-			mNvals = data.size();
+			mNvals = -1;
 			glBindBuffer(static_cast<GLenum>(B), mHandle);
 			glBufferSubData(static_cast<GLenum>(B), offset, data.size() * sizeof(T), &data[0]);
 		}
@@ -127,7 +129,8 @@ namespace GL {
 			return B;
 		}
 		/**
-		* Get the number of values
+		* Get the number of values, this will be -1 if the buffer
+		* was created in such a way that we don't know how many "values" are in it
 		*/
 		size_t numVals(){
 			return mNvals;

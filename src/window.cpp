@@ -1,7 +1,13 @@
 #include <iostream>
 #include <GL/glew.h>
+
+#if defined(_MSC_VER)
 #include <SDL.h>
-#include <window.h>
+#else
+#include <SDL2/SDL.h>
+#endif
+
+#include "window.h"
 
 oglw::SDL::SDL(){}
 oglw::SDL::SDL(int flags){

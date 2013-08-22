@@ -10,15 +10,9 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\samples\Playground\main.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and '$(VisualStudioVersion)' == ''">$(VCTargetsPath11)</VCTargetsPath>
-  </PropertyGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{2FD15742-793A-445C-8CA5-0D5C0940B84F}</ProjectGuid>
-    <RootNamespace>Playground</RootNamespace>
+    <ProjectGuid>{B12C7D41-CA12-49D7-9C3C-871B152172B9}</ProjectGuid>
+    <RootNamespace>Usage</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -49,13 +43,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\glew-1.9.0\include;$(SolutionDir)/include;C:\SOIL\include;C:\glm-0.9.4.1;C:\SDL2-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\glew-1.9.0\include;C:\SDL2-2.0.0\include;$(SolutionDir)/OpenGL-Wrapper/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\glew-1.9.0\lib;$(OutDir);C:\SOIL\lib;C:\glm-0.9.4.1\bin;C:\SDL2-2.0.0\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;SDL2.lib;SDL2main.lib;SOIL.lib;OpenGL-Wrapper.lib;glm.lib;OpenGL32.lib</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>C:\glew-1.9.0\lib;C:\SDL2-2.0.0\lib\x86;$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;OpenGL-Wrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -64,17 +59,21 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>C:\glew-1.9.0\include;$(SolutionDir)/include;C:\SOIL\include;C:\glm-0.9.4.1;C:\SDL2-2.0.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\glew-1.9.0\include;C:\SDL2-2.0.0\include;$(SolutionDir)/OpenGL-Wrapper/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\glew-1.9.0\lib;$(OutDir);C:\SOIL\lib;C:\glm-0.9.4.1\bin;C:\SDL2-2.0.0\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;SDL2.lib;SDL2main.lib;SOIL.lib;OpenGL-Wrapper.lib;glm.lib;OpenGL32.lib</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>C:\glew-1.9.0\lib;C:\SDL2-2.0.0\lib\x86;$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;OpenGL-Wrapper.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

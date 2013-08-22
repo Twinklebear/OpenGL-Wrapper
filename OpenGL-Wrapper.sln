@@ -1,12 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGL-Wrapper", "OpenGL-Wrapper\OpenGL-Wrapper.vcxproj", "{E8F91025-4187-44A4-A8FB-3B65DB3E7A97}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGL-Wrapper", "OpenGL-Wrapper\OpenGL-Wrapper.vcxproj", "{C9FD3BA6-D2FE-423C-B87D-F77D6F96CDF2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Playground", "Playground\Playground.vcxproj", "{2FD15742-793A-445C-8CA5-0D5C0940B84F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E8F91025-4187-44A4-A8FB-3B65DB3E7A97} = {E8F91025-4187-44A4-A8FB-3B65DB3E7A97}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Usage", "Usage\Usage.vcxproj", "{B12C7D41-CA12-49D7-9C3C-871B152172B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,14 +11,14 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E8F91025-4187-44A4-A8FB-3B65DB3E7A97}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E8F91025-4187-44A4-A8FB-3B65DB3E7A97}.Debug|Win32.Build.0 = Debug|Win32
-		{E8F91025-4187-44A4-A8FB-3B65DB3E7A97}.Release|Win32.ActiveCfg = Release|Win32
-		{E8F91025-4187-44A4-A8FB-3B65DB3E7A97}.Release|Win32.Build.0 = Release|Win32
-		{2FD15742-793A-445C-8CA5-0D5C0940B84F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{2FD15742-793A-445C-8CA5-0D5C0940B84F}.Debug|Win32.Build.0 = Debug|Win32
-		{2FD15742-793A-445C-8CA5-0D5C0940B84F}.Release|Win32.ActiveCfg = Release|Win32
-		{2FD15742-793A-445C-8CA5-0D5C0940B84F}.Release|Win32.Build.0 = Release|Win32
+		{C9FD3BA6-D2FE-423C-B87D-F77D6F96CDF2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C9FD3BA6-D2FE-423C-B87D-F77D6F96CDF2}.Debug|Win32.Build.0 = Debug|Win32
+		{C9FD3BA6-D2FE-423C-B87D-F77D6F96CDF2}.Release|Win32.ActiveCfg = Release|Win32
+		{C9FD3BA6-D2FE-423C-B87D-F77D6F96CDF2}.Release|Win32.Build.0 = Release|Win32
+		{B12C7D41-CA12-49D7-9C3C-871B152172B9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B12C7D41-CA12-49D7-9C3C-871B152172B9}.Debug|Win32.Build.0 = Debug|Win32
+		{B12C7D41-CA12-49D7-9C3C-871B152172B9}.Release|Win32.ActiveCfg = Release|Win32
+		{B12C7D41-CA12-49D7-9C3C-871B152172B9}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

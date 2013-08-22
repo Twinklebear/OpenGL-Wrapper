@@ -34,7 +34,7 @@ namespace GL {
 	template<BUFFER B>
 	class Buffer {
 	public:
-		Buffer() : mNvals(0) {};
+		Buffer() : mNvals(0) {}
 		/**
 		* Create a new buffer using the data stored in the array passed
 		* @param data The array of data to be passed

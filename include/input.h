@@ -61,15 +61,13 @@ public:
 
 private:
     static void ClearQuit();
-    ///Clear the keystates
-    static void ClearKeys();
     ///Clear the mouse
     static void ClearMouse();
 
 private:
     static SDL_Event evt;
     static bool mQuit, mMouseMove, mMouseClick;
-    static Uint8 *mKeyStates;
+    static const Uint8 *mKeyStates;
     static SDL_MouseButtonEvent mButtonEvt;
     static SDL_MouseMotionEvent mMotionEvt;
 };

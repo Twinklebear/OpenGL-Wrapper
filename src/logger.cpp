@@ -12,8 +12,7 @@ Util::Logger::Logger(const std::string &file)
 Util::Logger::Logger(std::ostream &os) : output(os) {
 }
 void Util::Logger::log(const std::string &msg){
-	timeStamp();
-	output << msg;
+	output << timeStamp() << msg;
 }
 std::string Util::Logger::timeStamp(){
 	float sec = SDL_GetTicks() / 1000.f;

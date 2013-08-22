@@ -6,17 +6,18 @@
 #include "../include/input.h"
 
 SDL_Event Input::evt;
-Uint8* Input::mKeyStates = nullptr;
+const Uint8 *Input::mKeyStates = nullptr;
 SDL_MouseButtonEvent Input::mButtonEvt;
 SDL_MouseMotionEvent Input::mMotionEvt;
 bool Input::mQuit = false;
 bool Input::mMouseMove = false;
 bool Input::mMouseClick = false;
 
-Input::Input(){}
+Input::Input(){
+}
 Input::~Input(){}
 void Input::Init(){
-    mKeyStates = SDL_GetKeyboardState(NULL);
+	mKeyStates = SDL_GetKeyboardState(NULL);
 }
 void Input::PollEvents(){
     //Clear mouse data
@@ -153,17 +154,10 @@ void Input::Quit(bool b){
 }
 void Input::Clear(){
     ClearQuit();
-    ClearKeys();
     ClearMouse();
 }
 void Input::ClearQuit(){
     mQuit = false;
-}
-void Input::ClearKeys(){
-    //I'm not sure if there's a better way to 0 out the values
-    //for now this will do
-    for (int i = 0; i < 282; ++i)
-	    mKeyStates[i] = 0;
 }
 void Input::ClearMouse(){
     mMouseClick = false;
